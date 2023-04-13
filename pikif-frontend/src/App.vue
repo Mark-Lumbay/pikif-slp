@@ -1,13 +1,17 @@
 <template>
-  <h1>Test</h1>
+  <NavBar></NavBar>
+  <div class="w-screen h-screen flex flex-col"></div>
 </template>
 
 <script>
 import "./assets/tailwind.css";
+import NavBar from "./components/NavBar.vue";
 
 export default {
   name: "App",
-  components: {},
+  components: {
+    NavBar,
+  },
 };
 </script>
 

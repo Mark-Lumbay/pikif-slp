@@ -1,0 +1,47 @@
+class Informant {
+  constructor(
+    id,
+    interviewDate,
+    firstName,
+    middleName,
+    lastName,
+    status,
+    age,
+    sex,
+    address,
+    birthDate,
+    birthPlace,
+    religion,
+    contactNum,
+    educAttn,
+    occupation,
+    income,
+    employment,
+    employmentStat,
+    employer,
+    employerAdd,
+    govAsst
+  ) {
+    (this.id = id),
+      (this.interviewDate = interviewDate),
+      (this.firstName = firstName),
+      (this.middleName = middleName),
+      (this.lastName = lastName),
+      (this.status = status),
+      (this.age = age),
+      (this.sex = sex),
+      (this.address = address),
+      (this.birthDate = birthDate),
+      (this.birthPlace = birthPlace),
+      (this.religion = religion);
+    (this.contactNum = contactNum),
+      (this.educAttn = educAttn),
+      (this.occupation = occupation),
+      (this.income = income),
+      (this.employment = employment),
+      (this.employmentStat = employmentStat),
+      (this.employer = employer),
+      (this.employerAdd = employerAdd),
+      (this.govAsst = govAsst);
+  }
+}

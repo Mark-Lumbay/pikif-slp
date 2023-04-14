@@ -27,4 +27,15 @@ router.post("/addInformantInfo", async (req, res) => {
   }
 });
 
+router.post("/addClientHousing", async (req, res) => {
+  try {
+    const info = req.body;
+    info.personId = clientId;
+    const result = await ClientModel.addHousing(info);
+    res.send(result.id);
+  } catch (err) {
+    console.log(err.message);
+  }
+});
+
 export default router;

@@ -14,7 +14,7 @@ class Database {
 
   async addClientHousing(collectionName, data) {
     const result = await firestore().collection(collectionName).add(data);
-    return result.id;
+    return result;
   }
 }
 

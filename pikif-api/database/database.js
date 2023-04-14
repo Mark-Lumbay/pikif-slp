@@ -6,21 +6,6 @@ class Database {
     const result = await firestore().collection(collectionName).add(data);
     return result;
   }
-
-  async addInformantInfo(collectionName, data) {
-    const result = await firestore().collection(collectionName).add(data);
-    return result;
-  }
-
-  async addClientHousing(collectionName, data) {
-    const result = await firestore().collection(collectionName).add(data);
-    return result;
-  }
-
-  async addClientFindings(collectionName, data) {
-    const result = await firestore().collection(collectionName).add(data);
-    return result;
-  }
 }
 
 export default new Database();

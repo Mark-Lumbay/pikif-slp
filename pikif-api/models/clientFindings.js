@@ -3,8 +3,8 @@ import Database from "../database/database.js";
 class ClientFindings {
   addInfo(data) {
     // Perform checks here before creating
-    return Database.addClientInfo("clientInfo", data);
+    return Database.addClientFindings("clientFindings", data);
   }
 }
 
-export default new ClientModel();
+export default new ClientFindings();

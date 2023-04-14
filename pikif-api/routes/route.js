@@ -10,40 +10,8 @@ router.post("/addClientInfo", async (req, res) => {
     const clientInfo = await ClientModel.addInfo(info);
     clientId = clientInfo.id;
 
+    if (!clientInfo) res.status(400).send("Request Incomplete");
     res.status(200).send(clientId);
-  } catch (err) {
-    console.log(err.message);
-  }
-});
-
-// router.post("/addClientHousing", async (req, res) => {
-//   try {
-//     const info = req.body;
-//     info.personId = clientId;
-//     const result = await ClientModel.addHousing(info);
-//     res.send(result.id);
-//   } catch (err) {
-//     console.log(err.message);
-//   }
-// });
-
-// router.post("/addClientFindings", async (req, res) => {
-//   try {
-//     const findings = req.body;
-//     findings.personId = clientId;
-
-//     const result = await ClientModel.addFindings(findings);
-//     res.status(200).send(result.id);
-//   } catch (err) {
-//     console.log(err.message);
-//   }
-// });
-
-router.post("/addClientFindings", async (req, res) => {
-  try {
-    const info = req.body;
-    info.personId = clientId;
-    res.send(result.id);
   } catch (err) {
     console.log(err.message);
   }

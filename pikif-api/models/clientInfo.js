@@ -60,6 +60,12 @@ class ClientModel {
         date: Joi.string().required(),
       }).required(),
     });
+
+    const { error } = clientInfoSchema.validate(data, {
+      abortEarly: false,
+    });
+
+    if (error) return false;
     return Database.addClientInfo("clientInfo", data);
   }
 }

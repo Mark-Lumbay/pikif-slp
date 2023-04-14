@@ -1,19 +1,24 @@
-const express = require("express");
-const firebase = require("../db");
-const clientInfo = require("./models/clientInfo");
-const clientFindings = require("./models/clientFindings");
-const clientHousing = require("./models/clientHousing");
-const informant = require("./models/informant");
-const firestore = firebase.firestore();
+import { Router } from "express";
+import pkg from "firebase-admin";
+import clientInfo from "../models/clientInfo.js";
+import clientFindings from "../models/clientFindings.js";
+import clientHousing from "../models/clientHousing.js";
+// import informant from "../models/informant";
 
-const router = express.Router();
+const router = Router();
+const { firestore } = pkg;
+// setTimeout(() => {
+//   firestore().collection("test").add({ value: "hatdog" });
+// }, 2000);
+
 router.post("/addClient", async (req, res) => {
   try {
     const info = req.body;
-    console.log(info);
+
+    res.send(info);
   } catch (err) {
     console.log(err.message);
   }
 });
 
-module.exports = router;
+export default router;

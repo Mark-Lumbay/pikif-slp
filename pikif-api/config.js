@@ -1,8 +1,8 @@
 "use strict";
 
-const dotenv = require("dotenv");
+import { config } from "dotenv";
 
-dotenv.config();
+config();
 
 const {
   PORT,
@@ -16,16 +16,14 @@ const {
   APP_ID,
 } = process.env;
 
-module.exports = {
-  port: PORT,
-  host: HOST,
-  url: HOST_URL,
-  firebaseConfig: {
-    apiKey: API_KEY,
-    authDomain: AUTH_DOMAIN,
-    projectId: PROJECT_ID,
-    storageBucket: STORAGE_BUCKET,
-    messagingSenderId: MESSAGING_SENDER_ID,
-    appId: APP_ID,
-  },
+export const port = PORT;
+export const host = HOST;
+export const url = HOST_URL;
+export const firebaseConfig = {
+  apiKey: API_KEY,
+  authDomain: AUTH_DOMAIN,
+  projectId: PROJECT_ID,
+  storageBucket: STORAGE_BUCKET,
+  messagingSenderId: MESSAGING_SENDER_ID,
+  appId: APP_ID,
 };

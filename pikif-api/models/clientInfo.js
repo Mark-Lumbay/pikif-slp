@@ -1,4 +1,4 @@
-class ChildInfo {
+export default class ClientInfo {
   constructor(
     id,
     interviewDate,

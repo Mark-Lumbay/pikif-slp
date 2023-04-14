@@ -1,4 +1,4 @@
-class Housing {
+export default class Housing {
   constructor(id, condition, materialObj, appliances) {
     (this.id = id),
       (this.condition = condition),

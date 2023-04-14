@@ -1,23 +1,21 @@
 "use strict";
 
-const express = require("express");
-const cors = require("cors");
-const bodyParser = require("body-parser");
-const router = express.Router();
-const config = require("./config");
+import express, { json } from "express";
+import cors from "cors";
+import { port } from "./config.js";
+import "./db.js";
 
-const path = require("./routes/route");
+import path from "./routes/route.js";
 
 const app = express();
 
-app.use(express.json());
+app.use(json());
 app.use(cors());
-app.use(bodyParser.json());
 
-app.listen(config.port, () => {
-  console.log(`Listening on url http://localhost${config.port}`);
+app.listen(port, () => {
+  console.log(`Listening on url http://localhost${port}`);
 });
 
 app.use("/island-kids", path);
 
-module.exports = app;
+export default app;

@@ -10,6 +10,11 @@ class ClientModel {
     // Perform checks here before creating
     return Database.addClientHousing("clientHousing", data);
   }
+
+  addFindings(data) {
+    // Perform checks here before creating
+    return Database.addClientFindings("clientFindings", data);
+  }
 }
 
 export default new ClientModel();

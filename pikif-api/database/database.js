@@ -16,6 +16,11 @@ class Database {
     const result = await firestore().collection(collectionName).add(data);
     return result;
   }
+
+  async addClientFindings(collectionName, data) {
+    const result = await firestore().collection(collectionName).add(data);
+    return result;
+  }
 }
 
 export default new Database();

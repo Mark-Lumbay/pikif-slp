@@ -38,4 +38,16 @@ router.post("/addClientHousing", async (req, res) => {
   }
 });
 
+router.post("/addClientFindings", async (req, res) => {
+  try {
+    const findings = req.body;
+    findings.personId = clientId;
+
+    const result = await ClientModel.addFindings(findings);
+    res.status(200).send(result.id);
+  } catch (err) {
+    console.log(err.message);
+  }
+});
+
 export default router;

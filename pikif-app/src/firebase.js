@@ -12,7 +12,7 @@ export const firebaseConfig = {
 
 console.log(firebaseConfig);
 
-const fb = initializeApp(firebaseConfig);
+initializeApp(firebaseConfig);
 const auth = getAuth();
 
-export { fb, auth };
+export { auth };

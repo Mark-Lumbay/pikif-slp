@@ -1,7 +1,7 @@
 <template>
   <div class="w-full h-full justify-center items-center flex">
     <div class="outline-2">
-      <form class="">
+      <form class="" @submit.prevent="loginUser">
         <div class="mb-2 space-y-2">
           <label class="block font-semibold" for="email">Email</label>
           <input
@@ -29,7 +29,7 @@
         <div class="mb-2 space-y-2 mt-8">
           <button
             class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full transition-all ease-in-out"
-            @click.prevent="login"
+            @click.prevent="loginUser"
           >
             Login
           </button>
@@ -40,28 +40,29 @@
 </template>
 
 <script>
-import firebase from "@/firebase.js";
+import { ref } from "vue";
+import { useStore } from "vuex";
 
 export default {
-  data() {
-    return {
-      email: "",
-      password: "",
-    };
-  },
+  setup() {
+    const email = ref("");
+    const password = ref("");
+    const store = useStore();
 
-  methods: {
-    login() {
-      firebase
-        .auth()
-        .signInWithEmailAndPassword(this.email, this.password)
-        .then(() => {
-          console.log("You have logged in!");
-        })
-        .catch((err) => {
-          console.log(err);
+    const loginUser = async () => {
+      try {
+        await store.dispatch("login", {
+          email: email.value,
+          password: password.value,
         });
-    },
+        console.log("You are logged in!");
+      } catch {
+        console.log("You were not able to login");
+        console.log(email, password);
+      }
+    };
+
+    return { loginUser, email, password };
   },
 };
 </script>

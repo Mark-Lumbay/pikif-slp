@@ -1,11 +1,6 @@
 import { createStore } from "vuex";
-
-import { auth } from "../firebase/config";
-import {
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-  signOut,
-} from "firebase/auth";
+import { auth } from "../firebase.js";
+import { signInWithEmailAndPassword, signOut } from "firebase/auth";
 
 const store = createStore({
   state: {
@@ -18,19 +13,6 @@ const store = createStore({
     },
   },
   actions: {
-    async signup(context, { email, password }) {
-      const response = await createUserWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
-      if (response) {
-        context.commit("setUser", response.user);
-      } else {
-        throw new Error("signup failed");
-      }
-    },
-
     async login(context, { email, password }) {
       const response = await signInWithEmailAndPassword(auth, email, password);
       if (response) {

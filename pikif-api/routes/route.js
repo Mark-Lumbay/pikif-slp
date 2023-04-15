@@ -17,4 +17,10 @@ router.post("/addClientInfo", async (req, res) => {
   }
 });
 
+// router.post("/register", async (req, res) => {
+//   try {
+//     const credentials = req.body
+//   }
+// });
+
 export default router;

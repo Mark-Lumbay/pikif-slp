@@ -1,7 +1,11 @@
-import Database from "../database/database.js";
 import Joi from "joi";
 
 class ClientModel {
+  async addClientInfo(collectionName, data) {
+    const result = await firestore().collection(collectionName).add(data);
+    return result;
+  }
+
   addInfo(data) {
     // Perform checks here before creating
     const clientInfoSchema = Joi.object({
@@ -66,7 +70,7 @@ class ClientModel {
     });
 
     if (error) return false;
-    return Database.addClientInfo("clientInfo", data);
+    return this.addClientInfo("clientInfo", data);
   }
 }
 

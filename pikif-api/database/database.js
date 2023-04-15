@@ -1,5 +1,5 @@
 import pkg from "firebase-admin";
-const { firestore } = pkg;
+const { firestore, auth } = pkg;
 
 class Database {
   async addClientInfo(collectionName, data) {

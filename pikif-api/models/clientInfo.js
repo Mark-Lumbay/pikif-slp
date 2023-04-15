@@ -68,11 +68,11 @@ class ClientModel {
       }).required(),
     });
 
-    const { error } = clientInfoSchema.validate(data, {
+    const validate = clientInfoSchema.validate(data, {
       abortEarly: false,
     });
 
-    if (error) return false;
+    if (validate.error) return false;
     return this.addClientInfo("clientInfo", data);
   }
 }

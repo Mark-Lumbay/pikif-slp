@@ -29,4 +29,42 @@ router.post("/register", async (req, res) => {
   }
 });
 
+router.post("/setInactive/:id", async (req, res) => {
+  try {
+    
+  } catch(err) {
+    console.log(err.message);
+  }
+});
+
+router.get("/loadDashboard", async (req, res) => {
+  const docRef = db.collection('name sa collection').doc(id);
+  try {
+    const data = doc.data();
+    const dataFields = {
+      id: req.params.id,
+      firstName: data.firstName,
+      middleName: data.middleName,
+      lastName: data.lastName,
+      age: data.age,
+      sex: data.sex,
+      category: data.category,
+      educAttn: data.educAttn,
+    };
+    // res. ??? (dataFields); dont know what to output here
+
+  } catch(err) {
+    console.log(err.log);
+    res.status(500).send('Error retrieving document');
+  }
+});
+
+router.get("/getClient/:id", async (req, res) => {
+  try {
+    
+  } catch(err) {
+    console.log(err.message);
+  }
+});
+
 export default router;

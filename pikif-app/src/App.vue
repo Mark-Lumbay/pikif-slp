@@ -1,16 +1,20 @@
 <template>
-  <NavBar></NavBar>
-  <div class="w-screen h-screen flex flex-col"></div>
+  <div class="w-screen h-screen flex flex-col">
+    <LogIn></LogIn>
+  </div>
 </template>
 
 <script>
 import "./assets/tailwind.css";
-import NavBar from "./components/NavBar.vue";
+// import NavBar from "./components/NavBar.vue";
+// import HomePage from "./views/HomePage.vue";
+import LogIn from "./views/LogIn.vue";
 
 export default {
   name: "App",
   components: {
-    NavBar,
+    // NavBar,
+    LogIn,
   },
 };
 </script>

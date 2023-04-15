@@ -1,4 +1,6 @@
 import Joi from "joi";
+import pkg from "firebase-admin";
+const { firestore, auth } = pkg;
 
 class ClientModel {
   async addClientInfo(collectionName, data) {
@@ -10,6 +12,7 @@ class ClientModel {
     // Perform checks here before creating
     const clientInfoSchema = Joi.object({
       clientInfo: Joi.object({
+        active: Joi.boolean().required(),
         interviewDate: Joi.string().required(),
         firstName: Joi.string().required(),
         middleName: Joi.string().required(),

@@ -8,6 +8,7 @@ const { auth } = pkg;
 let clientId = 0;
 
 router.get("/test", async (req, res) => {
+  console.log("I was called");
   try {
     const header = req.headers.authorization;
     const token = header.split("Bearer ")[1];
@@ -15,8 +16,7 @@ router.get("/test", async (req, res) => {
     const result = await auth().verifyIdToken(token);
     req.isAuthenticated = true;
     req.token = result;
-
-    next();
+    return res.status(200).send("Verification Success");
   } catch {
     return res.status(404).send("Could not verify token");
   }

@@ -17,6 +17,9 @@ const store = createStore({
       const response = await signInWithEmailAndPassword(auth, email, password);
       if (response) {
         context.commit("setUser", response.user);
+        response.user.getIdToken(/* forceRefresh */ true).then((token) => {
+          console.log(token);
+        });
       } else {
         throw new Error("login failed");
       }

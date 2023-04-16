@@ -55,10 +55,8 @@ export default {
           email: email.value,
           password: password.value,
         });
-        console.log("You are logged in!");
       } catch {
         console.log("You were not able to login");
-        console.log(email, password);
       }
     };
 

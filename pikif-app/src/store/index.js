@@ -13,7 +13,6 @@ const store = createStore({
 
     setUserToken(state, token) {
       state.token = token;
-      console.log(state.token);
     },
   },
   actions: {

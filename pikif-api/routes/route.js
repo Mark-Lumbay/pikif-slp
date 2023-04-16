@@ -7,6 +7,21 @@ const { auth } = pkg;
 
 let clientId = 0;
 
+router.get("/test", async (req, res) => {
+  try {
+    const header = req.headers.authorization;
+    const token = header.split("Bearer ")[1];
+
+    const result = await auth().verifyIdToken(token);
+    req.isAuthenticated = true;
+    req.token = result;
+
+    next();
+  } catch {
+    return res.status(404).send("Could not verify token");
+  }
+});
+
 router.post("/addClientInfo", async (req, res) => {
   try {
     const info = req.body;

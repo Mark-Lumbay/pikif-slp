@@ -33,6 +33,13 @@
           >
             Login
           </button>
+
+          <button
+            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full transition-all ease-in-out"
+            @click.prevent="test"
+          >
+            Test
+          </button>
         </div>
       </form>
     </div>
@@ -60,7 +67,15 @@ export default {
       }
     };
 
-    return { loginUser, email, password };
+    const test = async () => {
+      try {
+        await store.dispatch("checkToken");
+      } catch {
+        console.log("Error in verification");
+      }
+    };
+
+    return { loginUser, test, email, password };
   },
 };
 </script>

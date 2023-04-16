@@ -9,17 +9,21 @@ const store = createStore({
   mutations: {
     setUser(state, payload) {
       state.user = payload;
-      console.log(state.user);
+    },
+
+    setUserToken(state, token) {
+      state.token = token;
+      console.log(state.token);
     },
   },
   actions: {
     async login(context, { email, password }) {
       const response = await signInWithEmailAndPassword(auth, email, password);
       if (response) {
+        const token = await response.user.getIdToken(true);
+
+        context.commit("setUserToken", token);
         context.commit("setUser", response.user);
-        response.user.getIdToken(/* forceRefresh */ true).then((token) => {
-          console.log(token);
-        });
       } else {
         throw new Error("login failed");
       }

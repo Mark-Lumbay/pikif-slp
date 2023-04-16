@@ -1,7 +1,9 @@
 import { Router } from "express";
 import ClientModel from "../models/clientInfo.js";
 import userModel from "../models/user.js";
+import pkg from "firebase-admin";
 const router = Router();
+const { auth } = pkg;
 
 let clientId = 0;
 
@@ -31,14 +33,13 @@ router.post("/register", async (req, res) => {
 
 router.post("/setInactive/:id", async (req, res) => {
   try {
-    
-  } catch(err) {
+  } catch (err) {
     console.log(err.message);
   }
 });
 
 router.get("/loadDashboard", async (req, res) => {
-  const docRef = db.collection('name sa collection').doc(id);
+  const docRef = db.collection("name sa collection").doc(id);
   try {
     const data = doc.data();
     const dataFields = {
@@ -52,23 +53,21 @@ router.get("/loadDashboard", async (req, res) => {
       educAttn: data.educAttn,
     };
     // res. ??? (dataFields); dont know what to output here
-
-  } catch(err) {
+  } catch (err) {
     console.log(err.log);
-    res.status(500).send('Error retrieving document');
+    res.status(500).send("Error retrieving document");
   }
 });
 
 router.get("/getClient/:id", async (req, res) => {
   try {
-    
-  } catch(err) {
+  } catch (err) {
     console.log(err.message);
   }
 });
 
 //update Info
-router.put("updateInfo/:id", async (req,res)=> {
+router.put("updateInfo/:id", async (req, res) => {
   try {
     const id = req.params.id;
     const interviewDate = req.body.interviewDate;
@@ -89,70 +88,88 @@ router.put("updateInfo/:id", async (req,res)=> {
     const materials = req.body.materials;
     const appliances = req.body.appliances;
     const all = await db.findById(id);
- 
-    const result = await db.collection({_id: id}, {$set:{
-       interviewDate: interviewDate,
-       firstName: firstName,
-       middleName: middleName,
-       lastName: lastName,
-       status: status,
-       age: age,
-       sex: sex,
-       address: address,
-       birthDate: birthDate,
-       birthPlace: birthPlace,
-       religion: religion,
-       contactNum: contactNum,
-       educAttn: educAttn,
-       categoryObj: categoryObj,
-       condition: condition,
-       materials: materials,
-       appliances: appliances
-    }})
 
-     const data = await db.findById(id);
-    res.status(200).json({success: true, message: `Flight with flightID: ${id} has been updated`, confirmation:result, Before: all, After:data})
-}
-catch (error) {
-    res.status(400).json({ message: error.message })
-}
+    const result = await db.collection(
+      { _id: id },
+      {
+        $set: {
+          interviewDate: interviewDate,
+          firstName: firstName,
+          middleName: middleName,
+          lastName: lastName,
+          status: status,
+          age: age,
+          sex: sex,
+          address: address,
+          birthDate: birthDate,
+          birthPlace: birthPlace,
+          religion: religion,
+          contactNum: contactNum,
+          educAttn: educAttn,
+          categoryObj: categoryObj,
+          condition: condition,
+          materials: materials,
+          appliances: appliances,
+        },
+      }
+    );
+
+    const data = await db.findById(id);
+    res.status(200).json({
+      success: true,
+      message: `Flight with flightID: ${id} has been updated`,
+      confirmation: result,
+      Before: all,
+      After: data,
+    });
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
 });
 
 //update Findings
-router.put("/updateFindings/:id", async (req, res) =>{
-try {
-  const personId = req.body.personId;
-  const findings = req.body.findings;
-  const date = req.body.date;
+router.put("/updateFindings/:id", async (req, res) => {
+  try {
+    const personId = req.body.personId;
+    const findings = req.body.findings;
+    const date = req.body.date;
 
-  const result = await ({_id: id}, {$set:{
-       personId: personId,
-       findings: findings,
-       date: date,   
-    }})
+    const result = await ({ _id: id },
+    {
+      $set: {
+        personId: personId,
+        findings: findings,
+        date: date,
+      },
+    });
 
-    res.status(200).json({success: true, message: `Flight with flightID: ${id} has been updated`, confirmation:result, Before: all, After:data})
-} catch (error) {
-  res.status(400).json({ message: error.message })
-}
+    res.status(200).json({
+      success: true,
+      message: `Flight with flightID: ${id} has been updated`,
+      confirmation: result,
+      Before: all,
+      After: data,
+    });
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
 });
 
 //search  by first name, middle name and last name
 router.get("/search/params-here", async (req, res) => {
-  try{
+  try {
     const firstName = req.body.firstName;
     const middleName = req.body.middleName;
     const lastName = rqe.body.lastName;
 
     const data = await db.find({
-      'firstName': firstName,
-      'middleName': middleName,
-      'lastName': lastName
+      firstName: firstName,
+      middleName: middleName,
+      lastName: lastName,
     });
-    res.status(200).json({success: true, result: data})
-}
-catch(error){
-    res.status(400).json({success: false, message: error.message})
-}
+    res.status(200).json({ success: true, result: data });
+  } catch (error) {
+    res.status(400).json({ success: false, message: error.message });
+  }
 });
 export default router;

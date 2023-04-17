@@ -46,38 +46,71 @@ router.post("/register", async (req, res) => {
   }
 });
 
-router.post("/setInactive/:id", async (req, res) => {
+router.post('/setInactive/:id/status', async (req, res) => {
+  const id = req.params.id;
+  const { status } = req.body;
+
+  if (status !== 'active' && status !== 'inactive') {
+    res.status(400).log('Invalid status');
+    return;
+  }
+
+  const docRef = db.collection('your-collection').doc(id);
   try {
-  } catch (err) {
-    console.log(err.message);
+    await docRef.update({ status });
+    res.log(`Status updated to ${status}`);
+  } catch (error) {
+    console.error(error);
+    res.status(500).log('Error updating status');
   }
 });
 
 router.get("/loadDashboard", async (req, res) => {
-  const docRef = db.collection("name sa collection").doc(id);
+  const { dataFields } = req.query;
+
+  let query = db.collection('name sa collection');
+  if (dataFields) {
+    query = query.select(dataFields.split(','));
+  }
+
   try {
-    const data = doc.data();
-    const dataFields = {
-      id: req.params.id,
-      firstName: data.firstName,
-      middleName: data.middleName,
-      lastName: data.lastName,
-      age: data.age,
-      sex: data.sex,
-      category: data.category,
-      educAttn: data.educAttn,
-    };
-    // res. ??? (dataFields); dont know what to output here
-  } catch (err) {
-    console.log(err.log);
-    res.status(500).send("Error retrieving document");
+    const snapshot = await query.get();
+    const documents = [];
+    snapshot.forEach((doc) => {
+      documents.push({
+        id: data.id,
+        firstName: data.firstName(),
+        middleName: data.middleName(),
+        lastName: data.lastName(),
+        age: data.age(),
+        sex: data.sex(),
+        category: data.category(),
+        educAttn: data.educAttn(),  
+      });
+    });
+    res.json(documents);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Error retrieving client info');
   }
 });
 
 router.get("/getClient/:id", async (req, res) => {
+  const id = req.params.id;
+
+  const docRef = db.collection('name sa collection').doc(id);
   try {
-  } catch (err) {
-    console.log(err.message);
+    const doc = await docRef.get();
+    if (!doc.exists) {
+      res.status(404).send('Client not found');
+      return;
+    }
+
+    const data = doc.data();
+    res.json({ id: doc.id, ...data });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Error retrieving client info');
   }
 });
 

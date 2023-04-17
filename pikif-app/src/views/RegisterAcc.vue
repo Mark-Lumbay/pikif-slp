@@ -1,5 +1,7 @@
 <template>
-  <div class="w-full h-full flex flex-row items-center justify-center">
+  <div
+    class="w-full h-full flex flex-row items-center justify-center overflow-x-hidden"
+  >
     <div
       class="w-[55%] h-full bg-[url('../assets/bg.png')] bg-center bg-no-repeat bg-cover"
     ></div>
@@ -52,6 +54,18 @@
                 name="email"
                 type="password"
                 placeholder="Enter Password"
+              />
+            </div>
+
+            <div class="mb-6 space-y-2">
+              <label class="block font-semibold" for="email"
+                >Confirm Password</label
+              >
+              <input
+                class="shadow appearance-none border rounded h-14 py-2 px-3 w-full text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                name="email"
+                type="password"
+                placeholder="Re-enter Password"
               />
             </div>
 

@@ -51,17 +51,17 @@ router.post('/setInactive/:id/status', async (req, res) => {
   const { status } = req.body;
 
   if (status !== 'active' && status !== 'inactive') {
-    res.status(400).log('Invalid status');
+    res.status(400).send('Invalid status');
     return;
   }
 
-  const docRef = db.collection('your-collection').doc(id);
+  const data = db.collection('your-collection').doc(id);
   try {
-    await docRef.update({ status });
-    res.log(`Status updated to ${status}`);
+    await data.update({ status });
+    res.send(`Status updated to ${status}`);
   } catch (error) {
     console.error(error);
-    res.status(500).log('Error updating status');
+    res.status(500).send('Error updating status');
   }
 });
 
@@ -76,7 +76,7 @@ router.get("/loadDashboard", async (req, res) => {
   try {
     const snapshot = await query.get();
     const documents = [];
-    snapshot.forEach((doc) => {
+    snapshot.forEach((data) => {
       documents.push({
         id: data.id,
         firstName: data.firstName(),

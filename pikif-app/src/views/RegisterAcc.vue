@@ -1,18 +1,20 @@
 <template>
   <div
-    class="w-full h-full flex flex-row items-center justify-center overflow-x-hidden"
+    class="w-full h-full flex flex-row items-center justify-center overflow-x-hidden mb-2"
   >
-    <div
-      class="w-[55%] h-full bg-[url('../assets/bg.png')] bg-center bg-no-repeat bg-cover"
-    ></div>
+    <div class="w-[55%] h-full">
+      <div
+        class="w-[35%] h-full bg-[url('../assets/bg.png')] bg-center bg-no-repeat bg-cover absolute"
+      ></div>
+    </div>
 
     <div class="w-full h-full">
-      <div class="w-full h-[25%] flex">
+      <div class="w-full h-[20%] flex">
         <div class="w-full h-full flex justify-end items-center px-6">
           <img src="../assets/logo_banner_2.jpg" />
         </div>
       </div>
-      <div class="w-full px-52">
+      <div class="w-full px-52 mt-4">
         <div class="mb-12 w-full text-center">
           <h1 class="text-4xl font-semibold">Create an Account</h1>
         </div>
@@ -27,7 +29,7 @@
               />
             </div>
 
-            <div class="mb-6 space-y-2">
+            <div class="mb-5 space-y-2">
               <label class="block font-semibold" for="email">Last Name</label>
               <input
                 class="shadow appearance-none border rounded h-14 py-2 px-3 w-full text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
@@ -37,7 +39,7 @@
               />
             </div>
 
-            <div class="mb-6 space-y-2">
+            <div class="mb-5 space-y-2">
               <label class="block font-semibold" for="email">Email</label>
               <input
                 class="shadow appearance-none border rounded h-14 py-2 px-3 w-full text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
@@ -47,7 +49,7 @@
               />
             </div>
 
-            <div class="mb-6 space-y-2">
+            <div class="mb-5 space-y-2">
               <label class="block font-semibold" for="email">Password</label>
               <input
                 class="shadow appearance-none border rounded h-14 py-2 px-3 w-full text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
@@ -57,7 +59,7 @@
               />
             </div>
 
-            <div class="mb-6 space-y-2">
+            <div class="mb-5 space-y-2">
               <label class="block font-semibold" for="email"
                 >Confirm Password</label
               >

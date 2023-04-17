@@ -10,7 +10,7 @@
           <img src="../assets/logo_banner_2.jpg" />
         </div>
       </div>
-      <div class="w-full px-52 py-8">
+      <div class="w-full px-52 py-12">
         <div class="mb-12 w-full text-center">
           <h1 class="text-4xl font-semibold">Welcome Back</h1>
         </div>

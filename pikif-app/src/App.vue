@@ -1,6 +1,6 @@
 <template>
   <div class="w-screen h-screen flex flex-col">
-    <LogIn></LogIn>
+    <RegisterAcc></RegisterAcc>
   </div>
 </template>
 
@@ -8,13 +8,15 @@
 import "./assets/tailwind.css";
 // import NavBar from "./components/NavBar.vue";
 // import HomePage from "./views/HomePage.vue";
-import LogIn from "./views/LogIn.vue";
+// import LogIn from "./views/LogIn.vue";
+import RegisterAcc from "./views/RegisterAcc.vue";
 
 export default {
   name: "App",
   components: {
     // NavBar,
-    LogIn,
+    // LogIn,
+    RegisterAcc,
   },
 };
 </script>

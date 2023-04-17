@@ -5,17 +5,21 @@
     ></div>
 
     <div class="w-full h-full">
-      <div class="w-full h-[25%] bg-blue-900"></div>
-      <div class="w-full px-56 py-12">
-        <div class="mb-12 w-full text-center">
-          <h1 class="text-4xl font-semibold">LOGIN</h1>
+      <div class="w-full h-[25%] flex">
+        <div class="w-full h-full flex justify-end items-center px-6">
+          <img src="../assets/logo_banner_2.jpg" />
         </div>
-        <div class="outline-2">
-          <form class="" @submit.prevent="loginUser">
+      </div>
+      <div class="w-full px-52 py-8">
+        <div class="mb-12 w-full text-center">
+          <h1 class="text-4xl font-semibold">Welcome Back</h1>
+        </div>
+        <div class="outline-2 w-full flex justify-center">
+          <form class="w-[80%]" @submit.prevent="loginUser">
             <div class="mb-6 space-y-2">
               <label class="block font-semibold" for="email">Email</label>
               <input
-                class="shadow appearance-none border rounded w-full h-14 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                class="shadow appearance-none border rounded h-14 py-2 px-3 w-full text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 name="email"
                 type="email"
                 placeholder="Enter Email"
@@ -26,7 +30,7 @@
             <div class="mb-2 space-y-2">
               <label class="block font-semibold" for="email">Password</label>
               <input
-                class="shadow appearance-none border rounded w-full h-14 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                class="shadow appearance-none border rounded h-14 py-2 px-3 w-full text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 name="email"
                 type="password"
                 placeholder="Enter Password"

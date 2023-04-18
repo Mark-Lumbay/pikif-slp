@@ -98,7 +98,7 @@ router.get("/loadDashboard", async (req, res) => {
 router.get("/getClient/:id", async (req, res) => {
   const id = req.params.id;
 
-  const docRef = db.collection('name sa collection').doc(id);
+  const docRef = db.collection("clientInfo").doc(id);
   try {
     const doc = await docRef.get();
     if (!doc.exists) {
@@ -177,12 +177,15 @@ router.put("updateInfo/:id", async (req, res) => {
 
 //update Findings
 router.put("/updateFindings/:id", async (req, res) => {
+  
   try {
     const personId = req.body.personId;
     const findings = req.body.findings;
     const date = req.body.date;
+    const finding = db.collection("clientFindings").doc(personId)
+    const all = await db.collection("clientFindings").doc(personId);
 
-    const result = await ({ _id: id },
+    const result = await finding.update({ _id: id },
     {
       $set: {
         personId: personId,
@@ -190,10 +193,12 @@ router.put("/updateFindings/:id", async (req, res) => {
         date: date,
       },
     });
+    
+    const data = await db.collection("clientFindings").doc(personId);
 
     res.status(200).json({
       success: true,
-      message: `Flight with flightID: ${id} has been updated`,
+      message: `user with user ID: ${id} has been updated`,
       confirmation: result,
       Before: all,
       After: data,

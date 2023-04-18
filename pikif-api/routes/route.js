@@ -135,9 +135,10 @@ router.put("updateInfo/:id", async (req, res) => {
     const condition = req.body.condition;
     const materials = req.body.materials;
     const appliances = req.body.appliances;
-    const all = await db.findById(id);
+    const client = db.collection("clientInfo").doc(id)
+    const all = await db.collection("clientInfo").doc(id);
 
-    const result = await db.collection(
+    const result = await client.update(
       { _id: id },
       {
         $set: {
@@ -161,11 +162,11 @@ router.put("updateInfo/:id", async (req, res) => {
         },
       }
     );
-
-    const data = await db.findById(id);
+      
+    const data = await db.collection("clientInfo").doc(id);
     res.status(200).json({
       success: true,
-      message: `Flight with flightID: ${id} has been updated`,
+      message: `Client with client ID: ${id} has been updated`,
       confirmation: result,
       Before: all,
       After: data,

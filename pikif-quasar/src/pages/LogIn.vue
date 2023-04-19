@@ -68,6 +68,7 @@
 
 <script>
 import { ref } from "vue";
+import { useRouter } from "vue-router";
 import { useStore } from "vuex";
 
 export default {
@@ -75,6 +76,7 @@ export default {
     const email = ref("");
     const password = ref("");
     const store = useStore();
+    const router = useRouter();
 
     const loginUser = async () => {
       try {
@@ -82,6 +84,7 @@ export default {
           email: email.value,
           password: password.value,
         });
+        router.push("/home");
       } catch {
         console.log("You were not able to login");
       }

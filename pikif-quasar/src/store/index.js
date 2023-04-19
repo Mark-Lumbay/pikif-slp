@@ -2,22 +2,27 @@ import { createStore } from "vuex";
 import { auth } from "../firebase.js";
 import { signInWithEmailAndPassword, signOut } from "firebase/auth";
 import { testCall } from "src/services/services.js";
-
 const store = createStore({
   state: {
     user: null,
     token: null,
+    loggedIn: false,
   },
 
   getters: {
     getToken: (state) => {
       return state.token;
     },
+
+    getState: (state) => {
+      return state.loggedIn;
+    },
   },
 
   mutations: {
-    setUser(state, payload) {
+    setState(state, payload) {
       state.user = payload;
+      state.loggedIn = true;
     },
 
     setUserToken(state, token) {
@@ -31,7 +36,7 @@ const store = createStore({
         const token = await response.user.getIdToken(true);
 
         context.commit("setUserToken", token);
-        context.commit("setUser", response.user);
+        context.commit("setState", response.user);
 
         console.log(context.state.token);
       } else {

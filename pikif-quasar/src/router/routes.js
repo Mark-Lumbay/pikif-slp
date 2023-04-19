@@ -1,13 +1,11 @@
 const routes = [
   {
     path: "/",
-    component: () => import("layouts/NavBar.vue"),
-    children: [{ path: "", component: () => import("pages/HomePage.vue") }],
+    children: [{ path: "", component: () => import("pages/TestPage.vue") }],
   },
 
   {
     path: "/login",
-
     children: [{ path: "", component: () => import("pages/LogIn.vue") }],
   },
 
@@ -15,6 +13,16 @@ const routes = [
     path: "/register",
 
     children: [{ path: "", component: () => import("pages/RegisterAcc.vue") }],
+  },
+
+  {
+    path: "/home",
+    name: "home",
+    meta: {
+      requiresAuth: true,
+    },
+    component: () => import("layouts/NavBar.vue"),
+    children: [{ path: "", component: () => import("pages/HomePage.vue") }],
   },
 
   // Always leave this as last one,

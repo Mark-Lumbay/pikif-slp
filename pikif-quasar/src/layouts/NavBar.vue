@@ -158,20 +158,32 @@
     </q-header>
 
     <q-drawer show-if-above v-model="leftDrawerOpen" side="left" bordered>
-      <div class="flex flex-col">
-        <div class="flex flex-row">
-          <q-icon name="las la-home"></q-icon>
-          <span>Home</span>
+      <div class="flex flex-col pt-2">
+        <div
+          class="hover:bg-slate-200 p-4 transition-all ease-in-out cursor-pointer"
+        >
+          <div class="flex flex-row items-center space-x-2">
+            <q-icon name="las la-home" size="35px"></q-icon>
+            <span class="text-lg font-semibold">Home</span>
+          </div>
         </div>
 
-        <div class="flex flex-row">
-          <q-icon name="las la-user-plus"></q-icon>
-          <span>Add Student Information</span>
+        <div
+          class="hover:bg-slate-200 p-4 transition-all ease-in-out cursor-pointer"
+        >
+          <div class="flex flex-row items-center space-x-2">
+            <q-icon name="las la-user-plus" size="35px"></q-icon>
+            <span class="text-lg font-semibold">Add Student Information</span>
+          </div>
         </div>
 
-        <div class="flex flex-row">
-          <q-icon name="las la-clipboard-list"></q-icon>
-          <span>Generate Report</span>
+        <div
+          class="hover:bg-slate-200 p-4 transition-all ease-in-out cursor-pointer"
+        >
+          <div class="flex flex-row items-center space-x-2">
+            <q-icon name="las la-clipboard-list" size="35px"></q-icon>
+            <span class="text-lg font-semibold">Generate Report</span>
+          </div>
         </div>
       </div>
     </q-drawer>

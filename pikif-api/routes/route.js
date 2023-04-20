@@ -1,4 +1,4 @@
-import { Router } from "express";
+import { Router, query } from "express";
 import ClientModel from "../models/clientInfo.js";
 import userModel from "../models/user.js";
 import pkg from "firebase-admin";
@@ -210,17 +210,11 @@ router.put("/updateFindings/:id", async (req, res) => {
 });
 
 //search  by first name, middle name and last name
-router.get("/search/params-here", async (req, res) => {
+router.get("/search", async (req, res) => {
   try {
-    const firstName = req.body.firstName;
-    const middleName = req.body.middleName;
-    const lastName = rqe.body.lastName;
+    const info = req.query;
+    const clientInfo = await ClientModel.getClientInfo(info);
 
-    const data = await db.find({
-      firstName: firstName,
-      middleName: middleName,
-      lastName: lastName,
-    });
     res.status(200).json({ success: true, result: data });
   } catch (error) {
     res.status(400).json({ success: false, message: error.message });

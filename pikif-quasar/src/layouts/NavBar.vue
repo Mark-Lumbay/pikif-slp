@@ -155,18 +155,24 @@
           Dashboard
         </q-toolbar-title>
       </q-toolbar>
-
-      <q-tabs align="left">
-        <q-route-tab to="/page1" label="Page One" />
-        <q-route-tab to="/page2" label="Page Two" />
-        <q-route-tab to="/page3" label="Page Three" />
-      </q-tabs>
     </q-header>
 
     <q-drawer show-if-above v-model="leftDrawerOpen" side="left" bordered>
-      <div class="flex flex-row">
-        <q-icon name="las la-home"></q-icon>
-        <h1>Test</h1>
+      <div class="flex flex-col">
+        <div class="flex flex-row">
+          <q-icon name="las la-home"></q-icon>
+          <span>Home</span>
+        </div>
+
+        <div class="flex flex-row">
+          <q-icon name="las la-user-plus"></q-icon>
+          <span>Add Student Information</span>
+        </div>
+
+        <div class="flex flex-row">
+          <q-icon name="las la-clipboard-list"></q-icon>
+          <span>Generate Report</span>
+        </div>
       </div>
     </q-drawer>
 

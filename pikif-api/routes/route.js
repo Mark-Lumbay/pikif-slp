@@ -46,31 +46,31 @@ router.post("/register", async (req, res) => {
   }
 });
 
-router.post('/setInactive/:id/status', async (req, res) => {
+router.post("/setInactive/:id/status", async (req, res) => {
   const id = req.params.id;
   const { status } = req.body;
 
-  if (status !== 'active' && status !== 'inactive') {
-    res.status(400).send('Invalid status');
+  if (status !== "active" && status !== "inactive") {
+    res.status(400).send("Invalid status");
     return;
   }
 
-  const data = db.collection('your-collection').doc(id);
+  const data = db.collection("your-collection").doc(id);
   try {
     await data.update({ status });
     res.send(`Status updated to ${status}`);
   } catch (error) {
     console.error(error);
-    res.status(500).send('Error updating status');
+    res.status(500).send("Error updating status");
   }
 });
 
 router.get("/loadDashboard", async (req, res) => {
   const { dataFields } = req.query;
 
-  let query = db.collection('name sa collection');
+  let query = db.collection("name sa collection");
   if (dataFields) {
-    query = query.select(dataFields.split(','));
+    query = query.select(dataFields.split(","));
   }
 
   try {
@@ -85,13 +85,13 @@ router.get("/loadDashboard", async (req, res) => {
         age: data.age(),
         sex: data.sex(),
         category: data.category(),
-        educAttn: data.educAttn(),  
+        educAttn: data.educAttn(),
       });
     });
     res.json(documents);
   } catch (error) {
     console.error(error);
-    res.status(500).send('Error retrieving client info');
+    res.status(500).send("Error retrieving client info");
   }
 });
 
@@ -102,7 +102,7 @@ router.get("/getClient/:id", async (req, res) => {
   try {
     const doc = await docRef.get();
     if (!doc.exists) {
-      res.status(404).send('Client not found');
+      res.status(404).send("Client not found");
       return;
     }
 
@@ -110,7 +110,7 @@ router.get("/getClient/:id", async (req, res) => {
     res.json({ id: doc.id, ...data });
   } catch (error) {
     console.error(error);
-    res.status(500).send('Error retrieving client info');
+    res.status(500).send("Error retrieving client info");
   }
 });
 
@@ -135,7 +135,7 @@ router.put("updateInfo/:id", async (req, res) => {
     const condition = req.body.condition;
     const materials = req.body.materials;
     const appliances = req.body.appliances;
-    const client = db.collection("clientInfo").doc(id)
+    const client = db.collection("clientInfo").doc(id);
     const all = await db.collection("clientInfo").doc(id);
 
     const result = await client.update(
@@ -162,7 +162,7 @@ router.put("updateInfo/:id", async (req, res) => {
         },
       }
     );
-      
+
     const data = await db.collection("clientInfo").doc(id);
     res.status(200).json({
       success: true,
@@ -178,23 +178,24 @@ router.put("updateInfo/:id", async (req, res) => {
 
 //update Findings
 router.put("/updateFindings/:id", async (req, res) => {
-  
   try {
     const personId = req.body.personId;
     const findings = req.body.findings;
     const date = req.body.date;
-    const finding = db.collection("clientFindings").doc(personId)
+    const finding = db.collection("clientFindings").doc(personId);
     const all = await db.collection("clientFindings").doc(personId);
 
-    const result = await finding.update({ _id: id },
-    {
-      $set: {
-        personId: personId,
-        findings: findings,
-        date: date,
-      },
-    });
-    
+    const result = await finding.update(
+      { _id: id },
+      {
+        $set: {
+          personId: personId,
+          findings: findings,
+          date: date,
+        },
+      }
+    );
+
     const data = await db.collection("clientFindings").doc(personId);
 
     res.status(200).json({
@@ -211,13 +212,13 @@ router.put("/updateFindings/:id", async (req, res) => {
 
 //search  by first name, middle name and last name
 router.get("/search", async (req, res) => {
-  try {
-    const info = req.query;
-    const clientInfo = await ClientModel.getClientInfo(info);
+  const info = req.query;
+  const clientInfo = await ClientModel.getClientInfo(info);
 
-    res.status(200).json({ success: true, result: data });
-  } catch (error) {
-    res.status(400).json({ success: false, message: error.message });
+  if (clientInfo) {
+    res.status(200).json({ success: true, result: clientInfo });
+  } else {
+    res.status(400).json({ success: false });
   }
 });
 export default router;

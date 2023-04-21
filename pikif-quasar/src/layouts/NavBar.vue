@@ -146,7 +146,7 @@
   <q-layout view="hHh lpR fFf">
     <q-header bordered class="bg-primary text-white" height-hint="98">
       <q-toolbar>
-        <q-btn dense flat round icon="menu" @click="toggleLeftDrawer" />
+        <q-btn dense flat round icon="menu" @click="drawerState" />
 
         <q-toolbar-title>
           <q-avatar>
@@ -157,15 +157,17 @@
       </q-toolbar>
     </q-header>
 
-    <q-drawer show-if-above v-model="leftDrawerOpen" side="left" bordered>
-      <div class="flex flex-col pt-2">
+    <div class="flex flex-row mt-12 w-[30vh]">
+      <div class="flex flex-col h-screen bg-slate-200" :class="classWidth">
         <a href="/home">
           <div
             class="hover:bg-slate-200 p-4 transition-all ease-in-out cursor-pointer"
           >
             <div class="flex flex-row items-center space-x-3">
               <q-icon name="las la-home" size="35px"></q-icon>
-              <span class="text-lg font-semibold">Home</span>
+              <span class="text-lg font-semibold" v-if="leftDrawerOpen"
+                >Home</span
+              >
             </div>
           </div>
         </a>
@@ -176,7 +178,9 @@
           >
             <div class="flex flex-row items-center space-x-3">
               <q-icon name="las la-user-plus" size="35px"></q-icon>
-              <span class="text-lg font-semibold">Add Student Information</span>
+              <span class="text-lg font-semibold" v-if="leftDrawerOpen"
+                >Add Student</span
+              >
             </div>
           </div>
         </a>
@@ -187,31 +191,42 @@
           >
             <div class="flex flex-row items-center space-x-3">
               <q-icon name="las la-clipboard-list" size="35px"></q-icon>
-              <span class="text-lg font-semibold">Generate Report</span>
+              <span class="text-lg font-semibold" v-if="leftDrawerOpen"
+                >Generate Report</span
+              >
             </div>
           </div>
         </a>
       </div>
-    </q-drawer>
-
-    <q-page-container>
-      <router-view />
-    </q-page-container>
+    </div>
   </q-layout>
 </template>
 
 <script>
-import { ref } from "vue";
+import { ref, computed } from "vue";
 
 export default {
   setup() {
-    const leftDrawerOpen = ref(false);
+    let width = ref("w-[30vh]");
+    const leftDrawerOpen = ref(true);
+
+    const drawerState = () => {
+      leftDrawerOpen.value = !leftDrawerOpen.value;
+      if (leftDrawerOpen.value) {
+        width.value = "w-[30vh]";
+      } else {
+        width.value = "";
+      }
+    };
+
+    const classWidth = computed(() => {
+      return width.value;
+    });
 
     return {
       leftDrawerOpen,
-      toggleLeftDrawer() {
-        leftDrawerOpen.value = !leftDrawerOpen.value;
-      },
+      drawerState,
+      classWidth,
     };
   },
 };

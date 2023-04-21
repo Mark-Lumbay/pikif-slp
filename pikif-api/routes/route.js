@@ -23,6 +23,7 @@ router.get("/test", async (req, res) => {
   }
 });
 
+// Completed
 router.post("/addClientInfo", async (req, res) => {
   try {
     const info = req.body;
@@ -36,6 +37,7 @@ router.post("/addClientInfo", async (req, res) => {
   }
 });
 
+// Completed
 router.post("/register", async (req, res) => {
   const credentials = req.body;
   const registerReq = await userModel.register(credentials);
@@ -66,6 +68,7 @@ router.post("/setInactive/:id/status", async (req, res) => {
   }
 });
 
+// Completed
 router.get("/loadDashboard", async (req, res) => {
   const result = await ClientModel.loadDashboard();
 
@@ -77,22 +80,31 @@ router.get("/loadDashboard", async (req, res) => {
 });
 
 router.get("/getClient/:id", async (req, res) => {
+  if (req.params.id == ":id")
+    return res.status(400).send({ success: false, message: "No ID Passed" });
+
   const id = req.params.id;
+  const result = await ClientModel.getSpecClient(id);
 
-  const docRef = db.collection("clientInfo").doc(id);
-  try {
-    const doc = await docRef.get();
-    if (!doc.exists) {
-      res.status(404).send("Client not found");
-      return;
-    }
-
-    const data = doc.data();
-    res.json({ id: doc.id, ...data });
-  } catch (error) {
-    console.error(error);
-    res.status(500).send("Error retrieving client info");
+  if (result.status) {
+    res.status(200).send({ success: true, data: result.data });
+  } else {
+    res.status(500).send({ success: false, message: result.message });
   }
+  // const docRef = db.collection("clientInfo").doc(id);
+  // try {
+  //   const doc = await docRef.get();
+  //   if (!doc.exists) {
+  //     res.status(404).send("Client not found");
+  //     return;
+  //   }
+
+  //   const data = doc.data();
+  //   res.json({ id: doc.id, ...data });
+  // } catch (error) {
+  //   console.error(error);
+  //   res.status(500).send("Error retrieving client info");
+  // }
 });
 
 //update Info
@@ -191,6 +203,7 @@ router.put("/updateFindings/:id", async (req, res) => {
   }
 });
 
+// Completed
 //search  by first name, middle name and last name
 router.get("/search", async (req, res) => {
   const info = req.query;

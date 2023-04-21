@@ -146,6 +146,24 @@ class ClientModel {
       return { status: false, message: "Internal Server Error" };
     }
   }
+
+  async getSpecClient(id) {
+    const docId = id;
+    const docRef = firestore().collection("clientInfo").doc(docId);
+
+    try {
+      const doc = await docRef.get();
+      if (!doc.exists) {
+        return { status: false, message: "Data does not exist" };
+        return;
+      }
+
+      const data = doc.data();
+      return { status: true, data: data };
+    } catch (error) {
+      return { status: false, message: "Error retrieving client info" };
+    }
+  }
 }
 
 export default new ClientModel();

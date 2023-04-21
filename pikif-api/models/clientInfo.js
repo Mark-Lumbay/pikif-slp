@@ -121,6 +121,31 @@ class ClientModel {
 
     return this.getInfo("clientInfo", params);
   }
+
+  async loadDashboard() {
+    const query = firestore().collection("clientInfo");
+
+    try {
+      const snapshot = await query.get();
+      const documents = [];
+      snapshot.forEach((doc) => {
+        const data = doc.data();
+        documents.push({
+          id: doc.id,
+          firstName: data.clientInfo.firstName,
+          middleName: data.clientInfo.middleName,
+          lastName: data.clientInfo.lastName,
+          age: data.clientInfo.age,
+          sex: data.clientInfo.sex,
+          category: data.clientInfo.category,
+          educAttn: data.clientInfo.educAttn,
+        });
+      });
+      return { status: true, data: documents };
+    } catch (error) {
+      return { status: false, message: "Internal Server Error" };
+    }
+  }
 }
 
 export default new ClientModel();

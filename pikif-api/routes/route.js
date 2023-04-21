@@ -2,6 +2,7 @@ import { Router, query } from "express";
 import ClientModel from "../models/clientInfo.js";
 import userModel from "../models/user.js";
 import pkg from "firebase-admin";
+import clientInfo from "../models/clientInfo.js";
 const router = Router();
 const { auth } = pkg;
 
@@ -66,33 +67,38 @@ router.post("/setInactive/:id/status", async (req, res) => {
 });
 
 router.get("/loadDashboard", async (req, res) => {
-  const { dataFields } = req.query;
+  const result = await ClientModel.loadDashboard();
 
-  let query = db.collection("name sa collection");
-  if (dataFields) {
-    query = query.select(dataFields.split(","));
+  if (result.status) {
+    res.status(200).send({ success: true, data: result.data });
+  } else {
+    res.status(500).send({ success: false, message: result.message });
   }
+  // let query = db.collection("name sa collection");
+  // if (dataFields) {
+  //   query = query.select(dataFields.split(","));
+  // }
 
-  try {
-    const snapshot = await query.get();
-    const documents = [];
-    snapshot.forEach((data) => {
-      documents.push({
-        id: data.id,
-        firstName: data.firstName(),
-        middleName: data.middleName(),
-        lastName: data.lastName(),
-        age: data.age(),
-        sex: data.sex(),
-        category: data.category(),
-        educAttn: data.educAttn(),
-      });
-    });
-    res.json(documents);
-  } catch (error) {
-    console.error(error);
-    res.status(500).send("Error retrieving client info");
-  }
+  // try {
+  //   const snapshot = await query.get();
+  //   const documents = [];
+  //   snapshot.forEach((data) => {
+  //     documents.push({
+  //       id: data.id,
+  //       firstName: data.firstName(),
+  //       middleName: data.middleName(),
+  //       lastName: data.lastName(),
+  //       age: data.age(),
+  //       sex: data.sex(),
+  //       category: data.category(),
+  //       educAttn: data.educAttn(),
+  //     });
+  //   });
+  //   res.json(documents);
+  // } catch (error) {
+  //   console.error(error);
+  //   res.status(500).send("Error retrieving client info");
+  // }
 });
 
 router.get("/getClient/:id", async (req, res) => {

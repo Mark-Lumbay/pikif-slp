@@ -7,6 +7,7 @@ class ClientModel {
     const result = await firestore().collection(collectionName).add(data);
     return result;
   }
+
   async getInfo(collectionName, data) {
     const { firstName, lastName } = data;
 
@@ -34,6 +35,10 @@ class ClientModel {
     } catch {
       return { status: false, message: "Internal Server Error" };
     }
+  }
+  async updateClientFindings(collectionName, data) {
+     const result = await firestore().collection(collectionName).update(data);
+     return result;
   }
 
   addInfo(data) {
@@ -120,6 +125,15 @@ class ClientModel {
       return { status: false, message: "Search parameters incomplete/wrong" };
 
     return this.getInfo("clientInfo", params);
+  }
+  updateFinding(data) {
+   const docRef = firestore().collection('clientFindings').doc(data);
+   data = {
+    date : data.date,
+    findings : data.findings};
+   docRef.update(data);
+   console.log;
+   return this.updateClientFindings;
   }
 
   async loadDashboard() {

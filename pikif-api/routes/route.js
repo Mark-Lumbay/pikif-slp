@@ -4,7 +4,7 @@ import userModel from "../models/user.js";
 import pkg from "firebase-admin";
 import clientInfo from "../models/clientInfo.js";
 const router = Router();
-const { auth } = pkg;
+const { firestore, auth } = pkg;
 
 let clientId = 0;
 
@@ -95,7 +95,7 @@ router.get("/getClient/:id", async (req, res) => {
 });
 
 //update Info
-router.put("updateInfo/:id", async (req, res) => {
+router.put("/updateInfo/:id", async (req, res) => {
   try {
     const id = req.params.id;
     const interviewDate = req.body.interviewDate;
@@ -157,46 +157,33 @@ router.put("updateInfo/:id", async (req, res) => {
 });
 
 //update Findings
-router.put("/updateFindings/:id", async (req, res) => {
+router.put("/updateFindings", async (req, res) => {
   try {
-    const personId = req.body.personId;
-    const findings = req.body.findings;
-    const date = req.body.date;
-    const finding = db.collection("clientFindings").doc(personId);
-    const all = await db.collection("clientFindings").doc(personId);
-
-    const result = await finding.update(
-      { _id: id },
-      {
-        $set: {
-          personId: personId,
-          findings: findings,
-          date: date,
-        },
-      }
-    );
-
-    const data = await db.collection("clientFindings").doc(personId);
-
+    const id = req.query;
+    
+    const data = {
+      id: id,
+      date: req.body.date,
+      findings: req.body.findings
+    }
+   
+    ClientModel.updateFinding(data);
+    
     res.status(200).json({
       success: true,
-      message: `user with user ID: ${id} has been updated`,
-      confirmation: result,
-      Before: all,
-      After: data,
     });
   } catch (error) {
     res.status(400).json({ message: error.message });
   }
 });
 
-// Completed
-//search  by first name, middle name and last name
+// Completedimage.png
+//search  by first name, last name
 router.get("/search", async (req, res) => {
   const info = req.query;
-
+ 
   const clientInfo = await ClientModel.getClientInfo(info);
-
+  
   if (clientInfo.status) {
     res.status(200).json({ success: true, result: clientInfo });
   } else {

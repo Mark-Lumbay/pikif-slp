@@ -213,12 +213,13 @@ router.put("/updateFindings/:id", async (req, res) => {
 //search  by first name, middle name and last name
 router.get("/search", async (req, res) => {
   const info = req.query;
+
   const clientInfo = await ClientModel.getClientInfo(info);
 
-  if (clientInfo) {
+  if (clientInfo.status) {
     res.status(200).json({ success: true, result: clientInfo });
   } else {
-    res.status(400).json({ success: false });
+    res.status(400).json({ success: false, message: clientInfo.message });
   }
 });
 export default router;

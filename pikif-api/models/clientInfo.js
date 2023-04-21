@@ -8,17 +8,20 @@ class ClientModel {
     return result;
   }
   async getInfo(collectionName, data) {
-    const fName = data.firstName;
-    const lName = data.lastName;
+    const { firstName, lastName } = data;
 
     const clientRef = firestore().collection(collectionName);
     const query = clientRef
-      .where("clientInfo.firstName", "==", fName)
-      .where("clientInfo.lastName", "==", lName);
+      .where("clientInfo.firstName", "==", firstName)
+      .where("clientInfo.lastName", "==", lastName);
 
     try {
       const snapshot = await query.get();
-      console.log(snapshot);
+
+      if (snapshot.empty) {
+        return { status: false, message: "No Matching Documents" };
+      }
+
       const users = [];
       snapshot.forEach((doc) => {
         const userData = doc.data();
@@ -27,9 +30,9 @@ class ClientModel {
           ...userData,
         });
       });
-      return users;
+      return { status: true, result: users };
     } catch {
-      return false;
+      return { status: false, message: "Internal Server Error" };
     }
   }
 
@@ -102,7 +105,21 @@ class ClientModel {
   }
 
   getClientInfo(data) {
-    return this.getInfo("clientInfo", data);
+    const params = {
+      firstName: data.firstName,
+      lastName: data.lastName,
+    };
+
+    const searchSchema = Joi.object({
+      firstName: Joi.string().required(),
+      lastName: Joi.string().required(),
+    });
+
+    const validate = searchSchema.validate(params);
+    if (validate.error)
+      return { status: false, message: "Search parameters incomplete/wrong" };
+
+    return this.getInfo("clientInfo", params);
   }
 }
 

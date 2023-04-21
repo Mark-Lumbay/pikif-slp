@@ -79,6 +79,7 @@ router.get("/loadDashboard", async (req, res) => {
   }
 });
 
+// Completed
 router.get("/getClient/:id", async (req, res) => {
   if (req.params.id == ":id")
     return res.status(400).send({ success: false, message: "No ID Passed" });

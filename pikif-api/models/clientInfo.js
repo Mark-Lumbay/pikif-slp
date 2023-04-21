@@ -169,7 +169,6 @@ class ClientModel {
       const doc = await docRef.get();
       if (!doc.exists) {
         return { status: false, message: "Data does not exist" };
-        return;
       }
 
       const data = doc.data();

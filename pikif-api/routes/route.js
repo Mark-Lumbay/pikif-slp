@@ -74,31 +74,6 @@ router.get("/loadDashboard", async (req, res) => {
   } else {
     res.status(500).send({ success: false, message: result.message });
   }
-  // let query = db.collection("name sa collection");
-  // if (dataFields) {
-  //   query = query.select(dataFields.split(","));
-  // }
-
-  // try {
-  //   const snapshot = await query.get();
-  //   const documents = [];
-  //   snapshot.forEach((data) => {
-  //     documents.push({
-  //       id: data.id,
-  //       firstName: data.firstName(),
-  //       middleName: data.middleName(),
-  //       lastName: data.lastName(),
-  //       age: data.age(),
-  //       sex: data.sex(),
-  //       category: data.category(),
-  //       educAttn: data.educAttn(),
-  //     });
-  //   });
-  //   res.json(documents);
-  // } catch (error) {
-  //   console.error(error);
-  //   res.status(500).send("Error retrieving client info");
-  // }
 });
 
 router.get("/getClient/:id", async (req, res) => {

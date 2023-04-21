@@ -91,20 +91,6 @@ router.get("/getClient/:id", async (req, res) => {
   } else {
     res.status(500).send({ success: false, message: result.message });
   }
-  // const docRef = db.collection("clientInfo").doc(id);
-  // try {
-  //   const doc = await docRef.get();
-  //   if (!doc.exists) {
-  //     res.status(404).send("Client not found");
-  //     return;
-  //   }
-
-  //   const data = doc.data();
-  //   res.json({ id: doc.id, ...data });
-  // } catch (error) {
-  //   console.error(error);
-  //   res.status(500).send("Error retrieving client info");
-  // }
 });
 
 //update Info

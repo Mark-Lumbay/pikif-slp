@@ -159,21 +159,36 @@ router.put("/updateInfo/:id", async (req, res) => {
 //update Findings
 router.put("/updateFindings", async (req, res) => {
   try {
-    const id = req.query;
+    const id = req.query.id;
     
     const data = {
-      id: id,
       date: req.body.date,
       findings: req.body.findings
     }
-   
-    ClientModel.updateFinding(data);
-    
+  const result = await ClientModel.updateFinding(data, id);
+  const findingID = firestore().collection('clientFindings');
+  const query = findingID
+    .where("personId", "==", id)
+  try {
+    const snapshot = await query.get();
+    if (snapshot.empty) {
+      return { status: false, message: "No Matching Documents" };
+    }
+    const user = snapshot.docs[0].data();
+    console.log(user);
+    const personId = snapshot.docs[0].id;
+    console.log(personId);
     res.status(200).json({
       success: true,
+      result,
+      user
     });
+  }catch(error){
+    return { status: false, message: error.message};
+  }
+ 
   } catch (error) {
-    res.status(400).json({ message: error.message });
+    res.status(400).json({  success: false, message: error.message });
   }
 });
 

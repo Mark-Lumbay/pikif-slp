@@ -36,10 +36,6 @@ class ClientModel {
       return { status: false, message: "Internal Server Error" };
     }
   }
-  async updateClientFindings(collectionName, data) {
-     const result = await firestore().collection(collectionName).update(data);
-     return result;
-  }
 
   addInfo(data) {
     // Perform checks here before creating
@@ -126,14 +122,26 @@ class ClientModel {
 
     return this.getInfo("clientInfo", params);
   }
-  updateFinding(data) {
-   const docRef = firestore().collection('clientFindings').doc(data);
-   data = {
-    date : data.date,
-    findings : data.findings};
-   docRef.update(data);
-   console.log;
-   return this.updateClientFindings;
+ async  updateFinding(data, id) {
+   
+   const findingID = firestore().collection('clientFindings');
+    const query = findingID
+      .where("personId", "==", id)
+    try {
+      const snapshot = await query.get();
+      if (snapshot.empty) {
+        return { status: false, message: "No Matching Documents" };
+      }
+      const user = snapshot.docs[0].data();
+      console.log(user);
+      const personId = snapshot.docs[0].id;
+      console.log(personId);
+      const docRef = firestore().collection('clientFindings').doc(personId);
+      const result = await docRef.update(data);
+      return result;
+    }catch(error){
+      return { status: false, message: error.message};
+    }
   }
 
   async loadDashboard() {

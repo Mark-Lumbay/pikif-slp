@@ -49,22 +49,25 @@ router.post("/register", async (req, res) => {
   }
 });
 
-router.post("/setInactive/:id/status", async (req, res) => {
-  const id = req.params.id;
-  const { status } = req.body;
+router.post('/setInactive/:id', async (req, res) => {
+  const id = req.params.id;x
+  const isActive = req.body.active;
 
-  if (status !== "active" && status !== "inactive") {
-    res.status(400).send("Invalid status");
-    return;
-  }
-
-  const data = db.collection("your-collection").doc(id);
+  const docRef = db.collection('clientInfo').doc(id);
   try {
-    await data.update({ status });
-    res.send(`Status updated to ${status}`);
+    const doc = await docRef.get();
+    if (!doc.exists) {
+      res.status(404).send('Client not found');
+      return;
+    }
+
+    // "true" to "active" and "false" to "inactive"
+    const activeStatus = isActive ? 'active' : 'inactive';
+    await docRef.update({ active: activeStatus });
+    res.send(`Client's status updated successfully to ${activeStatus}`);
   } catch (error) {
     console.error(error);
-    res.status(500).send("Error updating status");
+    res.status(500).send('Error updating client');
   }
 });
 

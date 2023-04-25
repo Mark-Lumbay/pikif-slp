@@ -41,7 +41,7 @@
               <input
                 class="shadow appearance-none border rounded h-14 py-2 px-3 w-full text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 name="lName"
-                type="password"
+                type="text"
                 placeholder="Enter Last Name"
                 v-model="lName"
               />
@@ -52,7 +52,7 @@
               <input
                 class="shadow appearance-none border rounded h-14 py-2 px-3 w-full text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 name="email"
-                type="password"
+                type="text"
                 placeholder="Enter Email"
                 v-model="email"
               />
@@ -95,7 +95,7 @@
             <div class="mb-2 space-y-2 mt-14">
               <button
                 class="bg-primaryBtn mb-2 hover:bg-primaryHovBtn text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full h-14 transition-all ease-in-out"
-                @click.prevent="register"
+                @click.prevent="reg"
               >
                 Sign Up
               </button>
@@ -116,10 +116,16 @@
 <script>
 import { useRouter } from "vue-router";
 import { ref } from "vue";
+import { useStore } from "vuex";
+import { register } from "../services/services";
+import { auth } from "../firebase.js";
+import { fetchSignInMethodsForEmail } from "@firebase/auth";
 
 export default {
   setup() {
     const router = useRouter();
+    const store = useStore();
+
     const fName = ref("");
     const lName = ref("");
     const email = ref("");
@@ -128,7 +134,7 @@ export default {
     const fieldsErr = ref(false);
     const err = ref(false);
 
-    const register = async () => {
+    const reg = async () => {
       if (!fName.value || !lName.value || !email.value || !password.value) {
         fieldsErr.value = true;
         return;
@@ -138,6 +144,26 @@ export default {
         err.value = true;
         return;
       }
+
+      const emailCheck = await fetchSignInMethodsForEmail(auth, email.value);
+      if (emailCheck.length) {
+        console.log("Email exists");
+        return;
+      }
+
+      const creds = {
+        email: email.value,
+        firstName: fName.value,
+        lastName: lName.value,
+        password: password.value,
+      };
+
+      const regReq = await register(creds);
+      if (regReq.success) {
+        console.log("Success");
+      } else {
+        console.log(`Internal Server Error ${regReq.message}`);
+      }
     };
 
     const clearErr = () => {
@@ -146,7 +172,7 @@ export default {
     };
 
     return {
-      register,
+      reg,
       fName,
       lName,
       email,

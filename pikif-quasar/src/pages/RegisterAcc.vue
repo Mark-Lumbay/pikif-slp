@@ -59,7 +59,8 @@
             </div>
 
             <div class="mb-5 space-y-2">
-              <label class="block font-semibold" for="email">Password</label>
+              <label class="block font-semibold" for="email">Password </label>
+
               <input
                 class="shadow appearance-none border rounded h-14 py-2 px-3 w-full text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 name="email"
@@ -67,6 +68,17 @@
                 placeholder="Enter Password"
                 v-model="password"
               />
+            </div>
+
+            <div
+              class="mb-5 w-full bg-red-500 p-2 text-white font-semibold rounded"
+              v-if="passModal"
+              @click.prevent="clearErr"
+            >
+              <h3 class="text-sm">
+                Password must be at least 8 characters long and must have
+                uppercase, lowercase, and numbers.
+              </h3>
             </div>
 
             <div class="mb-5 space-y-2">
@@ -131,8 +143,14 @@ export default {
     const email = ref("");
     const password = ref("");
     const confirmPass = ref("");
+
+    const passErr = ref(false);
+
     const fieldsErr = ref(false);
     const err = ref(false);
+    const passModal = ref(false);
+
+    const errModals = [fieldsErr, err, passModal];
 
     const reg = async () => {
       if (!fName.value || !lName.value || !email.value || !password.value) {
@@ -142,6 +160,12 @@ export default {
 
       if (password.value != confirmPass.value) {
         err.value = true;
+        return;
+      }
+
+      passCheck(password.value);
+      if (passErr.value) {
+        passModal.value = true;
         return;
       }
 
@@ -167,8 +191,15 @@ export default {
     };
 
     const clearErr = () => {
-      const varName = fieldsErr.value ? fieldsErr : err;
-      varName.value = false;
+      for (const modal of errModals) {
+        if (modal.value) modal.value = false;
+      }
+    };
+
+    const passCheck = (pass) => {
+      const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
+
+      passErr.value = !passwordRegex.test(pass);
     };
 
     return {
@@ -181,6 +212,7 @@ export default {
       fieldsErr,
       err,
       clearErr,
+      passModal,
     };
   },
 };

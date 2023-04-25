@@ -49,12 +49,8 @@ router.post("/register", async (req, res) => {
   }
 });
 
-// For revision
-router.post("/setInactive/:id", async (req, res) => {
+router.post("/setInactive/:id/toggle", async (req, res) => {
   const id = req.params.id;
-  x;
-  const isActive = req.body.active;
-
   const docRef = db.collection("clientInfo").doc(id);
   try {
     const doc = await docRef.get();
@@ -64,7 +60,9 @@ router.post("/setInactive/:id", async (req, res) => {
     }
 
     // "true" to "active" and "false" to "inactive"
-    const activeStatus = isActive ? "active" : "inactive";
+    const activeStatus = doc.data().active;
+    const newActiveStatus = !activeStatus; // Toggle the value of the "active" field
+
     await docRef.update({ active: activeStatus });
     res.send(`Client's status updated successfully to ${activeStatus}`);
   } catch (error) {

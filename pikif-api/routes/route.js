@@ -49,25 +49,13 @@ router.post("/register", async (req, res) => {
   }
 });
 
-router.post("/setInactive/:id/toggle", async (req, res) => {
+router.post("/setInactive/toggle/:id", async (req, res) => {
   const id = req.params.id;
-  const docRef = db.collection("clientInfo").doc(id);
   try {
-    const doc = await docRef.get();
-    if (!doc.exists) {
-      res.status(404).send("Client not found");
-      return;
-    }
-
-    // "true" to "active" and "false" to "inactive"
-    const activeStatus = doc.data().active;
-    const newActiveStatus = !activeStatus; // Toggle the value of the "active" field
-
-    await docRef.update({ active: activeStatus });
-    res.send(`Client's status updated successfully to ${activeStatus}`);
+    await ClientModel.toggleStatus(id);
+    res.send({ success: true });
   } catch (error) {
-    console.error(error);
-    res.status(500).send("Error updating client");
+    res.status(500).send({ success: false });
   }
 });
 

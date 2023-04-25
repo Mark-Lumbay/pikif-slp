@@ -183,6 +183,34 @@ class ClientModel {
       return { status: false, message: "Error retrieving client info" };
     }
   }
+
+  async toggleStatus(id) {
+    const docRef = firestore().collection("clientInfo").doc(id);
+
+    try {
+      const doc = await docRef.get();
+      if (!doc.exists) {
+        res.status(404).send("Client not found");
+        return;
+      }
+
+      // "true" to "active" and "false" to "inactive"
+      const activeStatus = doc.data().clientInfo.active;
+      const newActiveStatus = !activeStatus; // Toggle the value of the "active" field
+      console.log(newActiveStatus);
+      const updatePayload = {
+        clientInfo: {
+          active: newActiveStatus,
+        },
+      };
+
+      await docRef.update(updatePayload);
+      return;
+    } catch (error) {
+      console.error(error);
+      return { status: false, message: "Internal Server Error" };
+    }
+  }
 }
 
 export default new ClientModel();

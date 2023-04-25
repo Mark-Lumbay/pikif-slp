@@ -122,11 +122,9 @@ class ClientModel {
 
     return this.getInfo("clientInfo", params);
   }
- async  updateFinding(data, id) {
-   
-   const findingID = firestore().collection('clientFindings');
-    const query = findingID
-      .where("personId", "==", id)
+  async updateFinding(data, id) {
+    const findingID = firestore().collection("clientFindings");
+    const query = findingID.where("personId", "==", id);
     try {
       const snapshot = await query.get();
       if (snapshot.empty) {
@@ -136,11 +134,11 @@ class ClientModel {
       console.log(user);
       const personId = snapshot.docs[0].id;
       console.log(personId);
-      const docRef = firestore().collection('clientFindings').doc(personId);
+      const docRef = firestore().collection("clientFindings").doc(personId);
       const result = await docRef.update(data);
       return result;
-    }catch(error){
-      return { status: false, message: error.message};
+    } catch (error) {
+      return { status: false, message: error.message };
     }
   }
 

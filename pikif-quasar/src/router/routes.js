@@ -19,7 +19,7 @@ const routes = [
     path: "/home",
     name: "home",
     meta: {
-      requiresAuth: true,
+      requiresAuth: false,
     },
     component: () => import("layouts/NavBar.vue"),
     children: [{ path: "", component: () => import("pages/HomePage.vue") }],

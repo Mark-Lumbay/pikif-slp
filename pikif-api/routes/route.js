@@ -49,25 +49,27 @@ router.post("/register", async (req, res) => {
   }
 });
 
-router.post('/setInactive/:id', async (req, res) => {
-  const id = req.params.id;x
+// For revision
+router.post("/setInactive/:id", async (req, res) => {
+  const id = req.params.id;
+  x;
   const isActive = req.body.active;
 
-  const docRef = db.collection('clientInfo').doc(id);
+  const docRef = db.collection("clientInfo").doc(id);
   try {
     const doc = await docRef.get();
     if (!doc.exists) {
-      res.status(404).send('Client not found');
+      res.status(404).send("Client not found");
       return;
     }
 
     // "true" to "active" and "false" to "inactive"
-    const activeStatus = isActive ? 'active' : 'inactive';
+    const activeStatus = isActive ? "active" : "inactive";
     await docRef.update({ active: activeStatus });
     res.send(`Client's status updated successfully to ${activeStatus}`);
   } catch (error) {
     console.error(error);
-    res.status(500).send('Error updating client');
+    res.status(500).send("Error updating client");
   }
 });
 
@@ -163,35 +165,33 @@ router.put("/updateInfo/:id", async (req, res) => {
 router.put("/updateFindings", async (req, res) => {
   try {
     const id = req.query.id;
-    
+
     const data = {
       date: req.body.date,
-      findings: req.body.findings
+      findings: req.body.findings,
+    };
+    const result = await ClientModel.updateFinding(data, id);
+    const findingID = firestore().collection("clientFindings");
+    const query = findingID.where("personId", "==", id);
+    try {
+      const snapshot = await query.get();
+      if (snapshot.empty) {
+        return { status: false, message: "No Matching Documents" };
+      }
+      const user = snapshot.docs[0].data();
+      console.log(user);
+      const personId = snapshot.docs[0].id;
+      console.log(personId);
+      res.status(200).json({
+        success: true,
+        result,
+        user,
+      });
+    } catch (error) {
+      return { status: false, message: error.message };
     }
-  const result = await ClientModel.updateFinding(data, id);
-  const findingID = firestore().collection('clientFindings');
-  const query = findingID
-    .where("personId", "==", id)
-  try {
-    const snapshot = await query.get();
-    if (snapshot.empty) {
-      return { status: false, message: "No Matching Documents" };
-    }
-    const user = snapshot.docs[0].data();
-    console.log(user);
-    const personId = snapshot.docs[0].id;
-    console.log(personId);
-    res.status(200).json({
-      success: true,
-      result,
-      user
-    });
-  }catch(error){
-    return { status: false, message: error.message};
-  }
- 
   } catch (error) {
-    res.status(400).json({  success: false, message: error.message });
+    res.status(400).json({ success: false, message: error.message });
   }
 });
 
@@ -199,9 +199,9 @@ router.put("/updateFindings", async (req, res) => {
 //search  by first name, last name
 router.get("/search", async (req, res) => {
   const info = req.query;
- 
+
   const clientInfo = await ClientModel.getClientInfo(info);
-  
+
   if (clientInfo.status) {
     res.status(200).json({ success: true, result: clientInfo });
   } else {

@@ -18,6 +18,14 @@
         </div>
         <div class="outline-2 w-full flex justify-center">
           <form class="w-[80%]">
+            <div
+              class="mb-5 w-full bg-red-500 p-2 text-white font-semibold rounded"
+              v-if="fieldsErr"
+              @click.prevent="clearErr"
+            >
+              <h3 class="text-sm">Please fill all fields</h3>
+            </div>
+
             <div class="mb-6 space-y-2">
               <label class="block font-semibold" for="email">First Name</label>
               <input
@@ -74,6 +82,16 @@
               />
             </div>
 
+            <div
+              class="mb-5 w-full bg-red-500 p-2 text-white font-semibold rounded"
+              v-if="err"
+              @click.prevent="clearErr"
+            >
+              <h3 class="text-sm">
+                Password does not match confirmation field
+              </h3>
+            </div>
+
             <div class="mb-2 space-y-2 mt-14">
               <button
                 class="bg-primaryBtn mb-2 hover:bg-primaryHovBtn text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full h-14 transition-all ease-in-out"
@@ -107,10 +125,24 @@ export default {
     const email = ref("");
     const password = ref("");
     const confirmPass = ref("");
+    const fieldsErr = ref(false);
+    const err = ref(false);
 
     const register = async () => {
-      if (password.value != confirmPass.value) {
+      if (!fName.value || !lName.value || !email.value || !password.value) {
+        fieldsErr.value = true;
+        return;
       }
+
+      if (password.value != confirmPass.value) {
+        err.value = true;
+        return;
+      }
+    };
+
+    const clearErr = () => {
+      const varName = fieldsErr.value ? fieldsErr : err;
+      varName.value = false;
     };
 
     return {
@@ -120,6 +152,9 @@ export default {
       email,
       password,
       confirmPass,
+      fieldsErr,
+      err,
+      clearErr,
     };
   },
 };

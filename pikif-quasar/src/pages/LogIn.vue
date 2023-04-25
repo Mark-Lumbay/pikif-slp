@@ -54,7 +54,7 @@
 
               <button
                 class="bg-primaryBtn mb-2 hover:bg-primaryHovBtn text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full h-14 transition-all ease-in-out"
-                @click.prevent="test"
+                @click.prevent="router.push('/register')"
               >
                 Sign Up
               </button>
@@ -98,7 +98,7 @@ export default {
       }
     };
 
-    return { loginUser, test, email, password };
+    return { loginUser, test, email, password, router };
   },
 };
 </script>

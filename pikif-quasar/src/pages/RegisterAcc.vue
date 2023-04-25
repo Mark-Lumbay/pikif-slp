@@ -24,6 +24,7 @@
                 class="shadow appearance-none border rounded h-14 py-2 px-3 w-full text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 name="fName"
                 placeholder="Enter First Name"
+                v-model="fName"
               />
             </div>
 
@@ -34,6 +35,7 @@
                 name="lName"
                 type="password"
                 placeholder="Enter Last Name"
+                v-model="lName"
               />
             </div>
 
@@ -44,6 +46,7 @@
                 name="email"
                 type="password"
                 placeholder="Enter Email"
+                v-model="email"
               />
             </div>
 
@@ -54,6 +57,7 @@
                 name="email"
                 type="password"
                 placeholder="Enter Password"
+                v-model="password"
               />
             </div>
 
@@ -66,12 +70,14 @@
                 name="email"
                 type="password"
                 placeholder="Re-enter Password"
+                v-model="confirmPass"
               />
             </div>
 
             <div class="mb-2 space-y-2 mt-14">
               <button
                 class="bg-primaryBtn mb-2 hover:bg-primaryHovBtn text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full h-14 transition-all ease-in-out"
+                @click.prevent="register"
               >
                 Sign Up
               </button>
@@ -89,4 +95,32 @@
   </div>
 </template>
 
-<script></script>
+<script>
+import { useRouter } from "vue-router";
+import { ref } from "vue";
+
+export default {
+  setup() {
+    const router = useRouter();
+    const fName = ref("");
+    const lName = ref("");
+    const email = ref("");
+    const password = ref("");
+    const confirmPass = ref("");
+
+    const register = async () => {
+      if (password.value != confirmPass.value) {
+      }
+    };
+
+    return {
+      register,
+      fName,
+      lName,
+      email,
+      password,
+      confirmPass,
+    };
+  },
+};
+</script>

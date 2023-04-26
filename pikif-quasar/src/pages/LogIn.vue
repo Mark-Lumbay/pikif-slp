@@ -90,14 +90,6 @@ export default {
       }
     };
 
-    const test = async () => {
-      try {
-        await store.dispatch("checkToken");
-      } catch {
-        console.log("Error in verification");
-      }
-    };
-
     return { loginUser, test, email, password, router };
   },
 };

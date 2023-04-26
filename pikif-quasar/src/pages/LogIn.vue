@@ -40,6 +40,14 @@
               />
             </div>
 
+            <div
+              class="mb-5 w-full bg-red-500 p-2 text-white font-semibold rounded"
+              v-if="incorrect"
+              @click.prevent="closeModal"
+            >
+              <h3 class="text-sm">Email or password is incorrect</h3>
+            </div>
+
             <div class="mb-2 space-y-2 mt-4 w-full text-right">
               <a href="#" class="text-s underline">Forgot Password?</a>
             </div>
@@ -78,6 +86,8 @@ export default {
     const store = useStore();
     const router = useRouter();
 
+    const incorrect = ref(false);
+
     const loginUser = async () => {
       try {
         await store.dispatch("login", {
@@ -85,12 +95,16 @@ export default {
           password: password.value,
         });
         router.push("/home");
-      } catch {
-        console.log("You were not able to login");
+      } catch (err) {
+        incorrect.value = true;
       }
     };
 
-    return { loginUser, test, email, password, router };
+    const closeModal = () => {
+      incorrect.value = false;
+    };
+
+    return { loginUser, email, password, router, incorrect, closeModal };
   },
 };
 </script>

@@ -31,16 +31,23 @@ const store = createStore({
   },
   actions: {
     async login(context, { email, password }) {
-      const response = await signInWithEmailAndPassword(auth, email, password);
-      if (response) {
-        const token = await response.user.getIdToken(true);
+      try {
+        const response = await signInWithEmailAndPassword(
+          auth,
+          email,
+          password
+        );
+        if (response) {
+          const token = await response.user.getIdToken(true);
 
-        context.commit("setUserToken", token);
-        context.commit("setState", response.user);
-
-        console.log(context.state.token);
-      } else {
-        throw new Error("login failed");
+          context.commit("setUserToken", token);
+          context.commit("setState", response.user);
+          return;
+        } else {
+          throw new Error("login failed");
+        }
+      } catch {
+        throw new Error();
       }
     },
 

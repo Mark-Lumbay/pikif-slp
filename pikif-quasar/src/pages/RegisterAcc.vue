@@ -1,5 +1,33 @@
 <template>
-  <div class="w-full h-[100vh] grid grid-cols-12">
+  <div
+    class="w-screen h-screen bg-slate-300 bg-opacity-10 flex flex-row justify-center items-center"
+    v-if="confirmModal"
+  >
+    <div
+      class="w-[65vh] h-[45vh] flex flex-col justify-center items-center bg-white rounded shadow p-4"
+    >
+      <div class="mb-4">
+        <q-icon
+          name="las la-check-circle"
+          size="64px"
+          class="text-green-500"
+        ></q-icon>
+      </div>
+
+      <div class="mb-6 flex flex-col items-center justify-center space-y-2">
+        <p class="text-xl font-bold">Success!</p>
+        <p class="text-lg">Account has been created!</p>
+      </div>
+
+      <button
+        class="rounded p-4 bg-green-500 text-white text-lg font-semibold hover:bg-green-400 transition-colors ease-in-out"
+        @click.prevent="router.push('/login')"
+      >
+        Go to Login
+      </button>
+    </div>
+  </div>
+  <div class="w-full h-[100vh] grid grid-cols-12" v-if="!confirmModal">
     <div class="col-span-4 h-full">
       <div
         class="w-[35%] h-full bg-[url('src/assets/bg.png')] bg-center bg-no-repeat bg-cover fixed"
@@ -114,6 +142,7 @@
 
               <button
                 class="bg-primaryBtn mb-2 hover:bg-primaryHovBtn text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full h-14 transition-all ease-in-out"
+                @click.prevent="router.push('/login')"
               >
                 Login
               </button>
@@ -145,6 +174,7 @@ export default {
     const confirmPass = ref("");
 
     const passErr = ref(false);
+    const confirmModal = ref(false);
 
     const fieldsErr = ref(false);
     const err = ref(false);
@@ -185,6 +215,7 @@ export default {
       const regReq = await register(creds);
       if (regReq.success) {
         console.log("Success");
+        confirmModal.value = true;
       } else {
         console.log(`Internal Server Error ${regReq.message}`);
       }
@@ -213,6 +244,8 @@ export default {
       err,
       clearErr,
       passModal,
+      router,
+      confirmModal,
     };
   },
 };

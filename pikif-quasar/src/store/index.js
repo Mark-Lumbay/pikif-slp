@@ -1,7 +1,14 @@
 import { createStore } from "vuex";
 import { auth } from "../firebase.js";
-import { signInWithEmailAndPassword, signOut } from "firebase/auth";
+import { ref } from "vue";
+import {
+  signInWithEmailAndPassword,
+  signOut,
+  setPersistence,
+  browserSessionPersistence,
+} from "firebase/auth";
 import { testCall } from "src/services/services.js";
+
 const store = createStore({
   state: {
     user: null,
@@ -15,13 +22,16 @@ const store = createStore({
     },
 
     getState: (state) => {
-      return state.loggedIn;
+      return state.user;
     },
   },
 
   mutations: {
+    setUser(state, user) {
+      state.user = user;
+    },
     setState(state, payload) {
-      state.user = payload;
+      // state.user = payload;
       state.loggedIn = true;
     },
 
@@ -32,6 +42,10 @@ const store = createStore({
   actions: {
     async login(context, { email, password }) {
       try {
+        auth.onAuthStateChanged((newUser) => {
+          context.commit("setUser", newUser);
+          console.log("New User Logged In!");
+        });
         const response = await signInWithEmailAndPassword(
           auth,
           email,
@@ -42,6 +56,7 @@ const store = createStore({
 
           context.commit("setUserToken", token);
           context.commit("setState", response.user);
+
           return;
         } else {
           throw new Error("login failed");

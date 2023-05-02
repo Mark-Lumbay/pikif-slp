@@ -3,18 +3,13 @@
 </template>
 
 <script setup>
-import { onMounted } from "vue";
-import { useRouter } from "vue-router";
+import { getAuth } from "firebase/auth";
 import store from "./store";
 
-const router = useRouter();
-const loggedIn = store.getters.getState;
+const auth = getAuth();
 
-onMounted(() => {
-  if (loggedIn) {
-    router.push("/home");
-  } else {
-    router.push("/login");
-  }
-});
+// auth.onAuthStateChanged((newUser) => {
+//   console.log(newUser);
+//   store.commit("setUser", newUser);
+// });
 </script>

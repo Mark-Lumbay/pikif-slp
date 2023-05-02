@@ -4,14 +4,18 @@ import { auth } from "../firebase.js";
 let user = store.getters.getState;
 auth.onAuthStateChanged((newUser) => {
   user = newUser;
-  console.log("New User Logged In!");
 });
 
+function delay() {
+  return new Promise((resolve) => setTimeout(resolve, 3000));
+}
+
 export default async function middleware(to, from, next) {
+  await delay();
+
   if (to.meta.requiresAuth && !user) {
     return next("/login");
   } else {
-    console.log("YAWA KA");
     return next();
   }
 }

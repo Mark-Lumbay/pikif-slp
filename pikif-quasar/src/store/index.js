@@ -12,8 +12,9 @@ import { testCall } from "src/services/services.js";
 const store = createStore({
   state: {
     user: null,
+    fName: null,
+    lName: null,
     token: null,
-    loggedIn: false,
   },
 
   getters: {
@@ -27,12 +28,10 @@ const store = createStore({
   },
 
   mutations: {
-    setUser(state, user) {
+    setUser(state, user, firstName, lastName) {
       state.user = user;
-    },
-    setState(state, payload) {
-      // state.user = payload;
-      state.loggedIn = true;
+      state.fName = firstName;
+      state.lName = lastName;
     },
 
     setUserToken(state, token) {
@@ -42,10 +41,6 @@ const store = createStore({
   actions: {
     async login(context, { email, password }) {
       try {
-        auth.onAuthStateChanged((newUser) => {
-          context.commit("setUser", newUser);
-          console.log("New User Logged In!");
-        });
         const response = await signInWithEmailAndPassword(
           auth,
           email,
@@ -72,18 +67,14 @@ const store = createStore({
 
       context.commit("setUser", null);
     },
-
-    async checkToken({ state }) {
-      try {
-        const token = state.token;
-        const result = await testCall(token);
-
-        console.log(`Verified! ${result}`);
-      } catch {
-        console.log("Token Verification failure");
-      }
-    },
   },
+});
+
+auth.onAuthStateChanged(async (newUser) => {
+  const user = await newUser.getIdTokenResult();
+  const fName = user.claims.firstName;
+  const lName = user.claims.lastName;
+  store.commit("setUser", newUser, fName, lName);
 });
 
 export default store;

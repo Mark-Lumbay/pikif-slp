@@ -76,12 +76,14 @@
 <script>
 import { ref, computed } from "vue";
 import { useRoute } from "vue-router";
+import store from "../store";
 
 export default {
   setup() {
     const width = ref("w-[30vh]");
     const leftDrawerOpen = ref(true);
     const route = useRoute();
+    const name = store.getters.getState;
 
     const drawerState = () => {
       leftDrawerOpen.value = !leftDrawerOpen.value;

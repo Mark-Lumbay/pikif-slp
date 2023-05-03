@@ -5,7 +5,9 @@ const routes = [
       requiresAuth: true,
     },
     component: () => import("layouts/NavBar.vue"),
-    children: [{ path: "", component: () => import("pages/HomePage.vue") }],
+    children: [
+      { path: "", name: "Home", component: () => import("pages/HomePage.vue") },
+    ],
   },
 
   {

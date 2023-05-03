@@ -94,7 +94,7 @@ export default {
           email: email.value,
           password: password.value,
         });
-        router.push("/home");
+        router.push("/");
       } catch (err) {
         incorrect.value = true;
       }

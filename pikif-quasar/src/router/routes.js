@@ -1,7 +1,11 @@
 const routes = [
   {
     path: "/",
-    children: [{ path: "", component: () => import("../App.vue") }],
+    meta: {
+      requiresAuth: true,
+    },
+    component: () => import("layouts/NavBar.vue"),
+    children: [{ path: "", component: () => import("pages/HomePage.vue") }],
   },
 
   {
@@ -15,15 +19,16 @@ const routes = [
     children: [{ path: "", component: () => import("pages/RegisterAcc.vue") }],
   },
 
-  {
-    path: "/home",
-    name: "home",
-    meta: {
-      requiresAuth: true,
-    },
-    component: () => import("layouts/NavBar.vue"),
-    children: [{ path: "", component: () => import("pages/HomePage.vue") }],
-  },
+  // Removed path since base path will be loading home page
+  // {
+  //   path: "/home",
+  //   name: "home",
+  //   meta: {
+  //     requiresAuth: true,
+  //   },
+  //   component: () => import("layouts/NavBar.vue"),
+  //   children: [{ path: "", component: () => import("pages/HomePage.vue") }],
+  // },
 
   // Always leave this as last one,
   // but you can also remove it

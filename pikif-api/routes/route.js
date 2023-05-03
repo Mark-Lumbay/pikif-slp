@@ -49,6 +49,7 @@ router.post("/register", async (req, res) => {
   }
 });
 
+// Completed
 router.post("/setInactive/toggle/:id", async (req, res) => {
   const id = req.params.id;
   try {

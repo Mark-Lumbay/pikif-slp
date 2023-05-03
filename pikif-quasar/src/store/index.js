@@ -25,13 +25,17 @@ const store = createStore({
     getState: (state) => {
       return state.user;
     },
+
+    getFirstName: (state) => {
+      return state.fName;
+    },
   },
 
   mutations: {
-    setUser(state, user, firstName, lastName) {
-      state.user = user;
-      state.fName = firstName;
-      state.lName = lastName;
+    setUser(state, details) {
+      state.user = details.newUser;
+      state.fName = details.fName;
+      state.lName = details.lName;
     },
 
     setUserToken(state, token) {
@@ -74,7 +78,14 @@ auth.onAuthStateChanged(async (newUser) => {
   const user = await newUser.getIdTokenResult();
   const fName = user.claims.firstName;
   const lName = user.claims.lastName;
-  store.commit("setUser", newUser, fName, lName);
+
+  const details = {
+    newUser,
+    fName,
+    lName,
+  };
+
+  store.commit("setUser", details);
 });
 
 export default store;

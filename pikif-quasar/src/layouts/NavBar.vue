@@ -7,12 +7,25 @@
         <q-toolbar-title class="text-white">
           {{ route.name }}
         </q-toolbar-title>
+        <q-btn v-bind:label="userName">
+          <q-menu>
+            <q-list style="min-width: 100px">
+              <q-item clickable v-close-popup>
+                <q-item-section>Settings</q-item-section>
+              </q-item>
+              <q-item clickable v-close-popup>
+                <q-item-section>Log Out</q-item-section>
+              </q-item>
+              <q-separator />
+            </q-list>
+          </q-menu>
+        </q-btn>
       </q-toolbar>
     </q-header>
 
     <div class="flex flex-row mt-12 w-[30vh]">
       <div class="flex flex-col h-screen bg-secondaryBlue" :class="classWidth">
-        <a href="/home">
+        <a href="/">
           <div
             class="hover:bg-secondaryDarker p-4 px-6 transition-all ease-in-out cursor-pointer"
           >
@@ -83,7 +96,7 @@ export default {
     const width = ref("w-[30vh]");
     const leftDrawerOpen = ref(true);
     const route = useRoute();
-    const name = store.getters.getState;
+    const name = ref(store.getters.getFirstName);
 
     const drawerState = () => {
       leftDrawerOpen.value = !leftDrawerOpen.value;
@@ -94,6 +107,10 @@ export default {
       }
     };
 
+    const userName = computed(() => {
+      return name.value;
+    });
+
     const classWidth = computed(() => {
       return width.value;
     });
@@ -103,6 +120,7 @@ export default {
       drawerState,
       classWidth,
       route,
+      userName,
     };
   },
 };

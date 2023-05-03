@@ -9,6 +9,7 @@ class userModel {
       firstName: Joi.string().required(),
       lastName: Joi.string().required(),
       password: Joi.string().required(),
+      authorization: Joi.string().required(),
     });
 
     const validate = userSchema.validate(credentials, {
@@ -16,14 +17,31 @@ class userModel {
     });
 
     if (validate.error) return false;
-    const { email, password, firstName, lastName } = credentials;
+    const { email, password, firstName, lastName, authorization } = credentials;
     try {
-      await auth().createUser({
+      const user = await auth().createUser({
         email,
         password,
-        firstName,
-        lastName,
       });
+
+      const uid = user.uid;
+      const creds = {
+        firstName: firstName,
+        lastName: lastName,
+        auth: authorization,
+      };
+
+      await this.addUserCreds(creds, uid);
+      return true;
+    } catch {
+      return false;
+    }
+  }
+
+  async addUserCreds(creds, uid) {
+    try {
+      await firestore().collection("users").doc(uid).set(creds);
+
       return true;
     } catch {
       return false;

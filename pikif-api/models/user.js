@@ -25,13 +25,11 @@ class userModel {
       });
 
       const uid = user.uid;
-      const creds = {
+      await auth().setCustomUserClaims(uid, {
         firstName: firstName,
         lastName: lastName,
-        auth: authorization,
-      };
-
-      await this.addUserCreds(creds, uid);
+        authorization: authorization,
+      });
       return true;
     } catch {
       return false;

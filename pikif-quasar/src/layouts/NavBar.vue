@@ -1,5 +1,5 @@
 <template>
-  <q-layout view="hHh lpR fFf">
+  <q-layout view="hHh lpR fFf" class="w-[100vh]">
     <q-header class="bg-primaryBlue text-white" height-hint="108">
       <q-toolbar>
         <q-btn dense flat round icon="menu" @click="drawerState" />
@@ -23,64 +23,72 @@
       </q-toolbar>
     </q-header>
 
-    <div class="flex flex-row mt-12 w-[30vh]">
-      <div class="flex flex-col h-screen bg-secondaryBlue" :class="classWidth">
-        <a href="/">
-          <div
-            class="hover:bg-secondaryDarker p-4 px-6 transition-all ease-in-out cursor-pointer"
-          >
-            <div class="flex flex-row items-center space-x-4">
-              <q-icon
-                name="las la-home"
-                size="35px"
-                class="text-white"
-              ></q-icon>
-              <span
-                class="text-lg font-semibold text-white"
-                v-if="leftDrawerOpen"
-                >Home</span
-              >
+    <div class="flex flex-row w-full">
+      <div class="flex flex-row mt-12" :class="classWidth">
+        <div
+          class="flex flex-col h-screen bg-secondaryBlue"
+          :class="classWidth"
+        >
+          <a href="/">
+            <div
+              class="hover:bg-secondaryDarker p-4 px-6 transition-all ease-in-out cursor-pointer"
+            >
+              <div class="flex flex-row items-center space-x-4">
+                <q-icon
+                  name="las la-home"
+                  size="35px"
+                  class="text-white"
+                ></q-icon>
+                <span
+                  class="text-lg font-semibold text-white"
+                  v-if="leftDrawerOpen"
+                  >Home</span
+                >
+              </div>
             </div>
-          </div>
-        </a>
+          </a>
 
-        <a href="/addStudent">
-          <div
-            class="hover:bg-secondaryDarker p-4 px-6 transition-all ease-in-out cursor-pointer"
-          >
-            <div class="flex flex-row items-center space-x-4">
-              <q-icon
-                name="las la-user-plus"
-                size="35px"
-                class="text-white"
-              ></q-icon>
-              <span
-                class="text-lg font-semibold text-white"
-                v-if="leftDrawerOpen"
-                >Add Student</span
-              >
+          <a href="/addStudent">
+            <div
+              class="hover:bg-secondaryDarker p-4 px-6 transition-all ease-in-out cursor-pointer"
+            >
+              <div class="flex flex-row items-center space-x-4">
+                <q-icon
+                  name="las la-user-plus"
+                  size="35px"
+                  class="text-white"
+                ></q-icon>
+                <span
+                  class="text-lg font-semibold text-white"
+                  v-if="leftDrawerOpen"
+                  >Add Student</span
+                >
+              </div>
             </div>
-          </div>
-        </a>
+          </a>
 
-        <a href="/genReport">
-          <div
-            class="hover:bg-secondaryDarker p-4 px-6 transition-all ease-in-out cursor-pointer"
-          >
-            <div class="flex flex-row items-center space-x-4">
-              <q-icon
-                name="las la-clipboard-list"
-                size="35px"
-                class="text-white"
-              ></q-icon>
-              <span
-                class="text-lg font-semibold text-white"
-                v-if="leftDrawerOpen"
-                >Generate Report</span
-              >
+          <a href="/genReport">
+            <div
+              class="hover:bg-secondaryDarker p-4 px-6 transition-all ease-in-out cursor-pointer"
+            >
+              <div class="flex flex-row items-center space-x-4">
+                <q-icon
+                  name="las la-clipboard-list"
+                  size="35px"
+                  class="text-white"
+                ></q-icon>
+                <span
+                  class="text-lg font-semibold text-white"
+                  v-if="leftDrawerOpen"
+                  >Generate Report</span
+                >
+              </div>
             </div>
-          </div>
-        </a>
+          </a>
+        </div>
+      </div>
+      <div class="flex w-[70vh] mt-12">
+        <router-view></router-view>
       </div>
     </div>
   </q-layout>

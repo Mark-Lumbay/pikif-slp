@@ -6,7 +6,11 @@ const routes = [
     },
     component: () => import("layouts/NavBar.vue"),
     children: [
-      { path: "", name: "Home", component: () => import("pages/HomePage.vue") },
+      {
+        path: "/",
+        name: "Home",
+        component: () => import("pages/HomePage.vue"),
+      },
     ],
   },
 

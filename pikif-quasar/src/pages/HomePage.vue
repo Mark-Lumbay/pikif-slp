@@ -1,10 +1,53 @@
 <template>
-  <div class="flex flex-row p-6 w-full items-center justify-center">
-    <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
-      <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-        <thead
-          class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
-        >
+  <div class="flex w-full space-y-4">
+    <div
+      class="flex w-full h-[10vh] bg-white shadow-md sm:rounded-lg items-center px-6"
+    >
+      <div class="flex w-[50%]">
+        <p class="font-semibold text-2xl">
+          Welcome back, {{ props.userName }}!
+        </p>
+      </div>
+      <div class="flex w-[50%] justify-end">
+        <p class="text-xl">Monday, May 8, 2023</p>
+      </div>
+
+      <div class="flex"></div>
+    </div>
+
+    <div
+      class="relative overflow-x-auto shadow-md sm:rounded-lg w-[55vw] h-[70vh] p-6 bg-white"
+    >
+      <div class="flex w-full h-[5vh] items-center mb-4">
+        <div class="w-[50%] flex">
+          <p class="font-semibold text-lg">Dashboard</p>
+        </div>
+
+        <div class="w-[50%] flex justify-end">
+          <form>
+            <div class="border-b-2">
+              <input
+                type="text"
+                placeholder="Search student"
+                class="w-80 h-10 p-3 rounded-l text-gray-700 focus:outline-none focus:shadow-outline"
+              />
+
+              <button
+                class="w-12 h-10 rounded-r focus:outline-none focus:shadow-outline"
+              >
+                <q-icon
+                  class="las la-search text-btnGreen"
+                  size="32px"
+                ></q-icon>
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+      <table
+        class="sm:rounded-lg w-full text-sm text-left text-gray-500 dark:text-gray-400"
+      >
+        <thead class="text-xs text-white uppercase bg-primaryRed">
           <tr>
             <th scope="col" class="px-6 py-3">Product name</th>
             <th scope="col" class="px-6 py-3">Color</th>
@@ -14,9 +57,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr
-            class="border-b bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
-          >
+          <tr class="border-b bg-gray-500">
             <th
               scope="row"
               class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
@@ -170,7 +211,25 @@
         </ul>
       </nav>
     </div>
+
+    <div
+      class="shadow-md sm:rounded-lg flex-1 h-[40vh] p-6 bg-white ml-4"
+    ></div>
   </div>
 </template>
 
-<script></script>
+<script>
+export default {
+  props: {
+    userName: {
+      type: String,
+    },
+  },
+
+  setup(props) {
+    return {
+      props,
+    };
+  },
+};
+</script>

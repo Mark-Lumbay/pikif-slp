@@ -1,5 +1,5 @@
 <template>
-  <q-layout view="hHh lpR fFf" class="w-[100vh]">
+  <q-layout view="hHh lpR fFf" class="w-[100vw] bg-slate-100">
     <q-header class="bg-primaryBlue text-white" height-hint="108">
       <q-toolbar>
         <q-btn dense flat round icon="menu" @click="drawerState" />
@@ -7,7 +7,7 @@
         <q-toolbar-title class="text-white">
           {{ route.name }}
         </q-toolbar-title>
-        <q-btn v-bind:label="userName">
+        <button class="inline-flex">
           <q-menu>
             <q-list style="min-width: 100px">
               <q-item clickable v-close-popup>
@@ -19,11 +19,25 @@
               <q-separator />
             </q-list>
           </q-menu>
-        </q-btn>
+          {{ userName }}
+          <svg
+            class="w-5 h-5 ml-1"
+            aria-hidden="true"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+        </button>
       </q-toolbar>
     </q-header>
 
-    <div class="flex flex-row w-full">
+    <div class="flex flex-row w-full h-full">
       <div class="flex flex-row mt-12" :class="classWidth">
         <div
           class="flex flex-col h-screen bg-secondaryBlue"
@@ -87,8 +101,9 @@
           </a>
         </div>
       </div>
-      <div class="flex w-[70vh] mt-12">
-        <router-view></router-view>
+
+      <div class="flex flex-col mt-12 p-6 items-center" :class="contentWidth">
+        <router-view :userName="userName"></router-view>
       </div>
     </div>
   </q-layout>
@@ -101,7 +116,8 @@ import store from "../store";
 
 export default {
   setup() {
-    const width = ref("w-[30vh]");
+    const width = ref("w-[15vw]");
+    const contentWidth = ref("w-[85vw]");
     const leftDrawerOpen = ref(true);
     const route = useRoute();
     const name = ref(store.getters.getFirstName);
@@ -109,9 +125,11 @@ export default {
     const drawerState = () => {
       leftDrawerOpen.value = !leftDrawerOpen.value;
       if (leftDrawerOpen.value) {
-        width.value = "w-[30vh]";
+        width.value = "w-[15vw]";
+        contentWidth.value = "w-[85vw]";
       } else {
         width.value = "";
+        contentWidth.value = "w-[95vw]";
       }
     };
 
@@ -129,6 +147,7 @@ export default {
       classWidth,
       route,
       userName,
+      contentWidth,
     };
   },
 };

@@ -27,7 +27,7 @@
                 type="text"
                 placeholder="Search student"
                 class="w-80 h-10 bg-slate-200 p-3 rounded-l text-gray-700 focus:outline-none focus:shadow-outline"
-                :bind="search"
+                v-model="search"
               />
             </div>
           </form>
@@ -152,11 +152,9 @@
           flat
           bordered
           title="Students"
-          :rows="rows"
+          :rows="returnFiltered"
           :columns="columns"
           row-key="name"
-          :filter="filterStr"
-          :filter-method="filterTable"
           :pagination="initialPagination"
           class="flex-1"
         />
@@ -183,10 +181,12 @@ export default {
     const rows = ref([]);
     onMounted(async () => {
       rows.value = await getData();
+      filterTable();
     });
 
     const showSortMenu = ref(false);
     const filterOption = ref("None");
+    const filteredArr = ref([]);
     const search = ref("");
 
     const options = [
@@ -249,7 +249,7 @@ export default {
     ];
 
     function searchStudent() {
-      console.log(search.value);
+      filterTable(true);
     }
 
     async function getData() {
@@ -263,20 +263,41 @@ export default {
 
     function changeFilter(filter) {
       filterOption.value = filter;
+      filterTable();
       toggleDropDown();
     }
 
-    function filterTable() {
-      for (const option of options) {
-        if (filterStr.value === "None") {
-          return rows.value;
+    function filterTable(isSearch = false) {
+      if (isSearch == true) {
+        const tempResults = [];
+        for (const row of rows.value) {
+          if (row.fullName.includes(search.value)) {
+            tempResults.push(row);
+          }
         }
+        filteredArr.value = tempResults;
 
-        if (filterStr.value === option) {
-          return rows.value.filter((row) => row.category == filterStr.value);
+        return filteredArr;
+      } else {
+        for (const option of options) {
+          if (filterStr.value === "None") {
+            filteredArr.value = rows.value;
+            return filteredArr.value;
+          }
+
+          if (filterStr.value === option) {
+            filteredArr.value = rows.value.filter(
+              (row) => row.category == filterStr.value
+            );
+            return filteredArr.value;
+          }
         }
       }
     }
+
+    const returnFiltered = computed(() => {
+      return filteredArr.value;
+    });
 
     const sortState = computed(() => {
       return showSortMenu.value;
@@ -305,6 +326,7 @@ export default {
       filterStr,
       search,
       searchStudent,
+      returnFiltered,
     };
   },
 };

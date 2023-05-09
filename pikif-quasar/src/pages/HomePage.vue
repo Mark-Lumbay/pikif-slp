@@ -136,189 +136,22 @@
                   id="menu-item-2"
                   >WEDC
                 </a>
-
-                <form method="POST" action="#" role="none">
-                  <button
-                    type="submit"
-                    class="text-gray-700 block w-full px-4 py-2 text-left text-sm"
-                    role="menuitem"
-                    tabindex="-1"
-                    id="menu-item-3"
-                  >
-                    Sign out
-                  </button>
-                </form>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <table
-        class="sm:rounded-lg w-full text-sm text-left text-gray-500 dark:text-gray-400"
-      >
-        <thead class="text-xs text-white uppercase bg-primaryRed">
-          <tr>
-            <th scope="col" class="px-6 py-3">Product name</th>
-            <th scope="col" class="px-6 py-3">Color</th>
-            <th scope="col" class="px-6 py-3">Category</th>
-            <th scope="col" class="px-6 py-3">Price</th>
-            <th scope="col" class="px-6 py-3">Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr class="border-b bg-gray-500">
-            <th
-              scope="row"
-              class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-            >
-              Apple MacBook Pro 17"
-            </th>
-            <td class="px-6 py-4">Silver</td>
-            <td class="px-6 py-4">Laptop</td>
-            <td class="px-6 py-4">$2999</td>
-            <td class="px-6 py-4">
-              <a
-                href="#"
-                class="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-                >Edit</a
-              >
-            </td>
-          </tr>
-          <tr
-            class="border-b bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
-          >
-            <th
-              scope="row"
-              class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-            >
-              Microsoft Surface Pro
-            </th>
-            <td class="px-6 py-4">White</td>
-            <td class="px-6 py-4">Laptop PC</td>
-            <td class="px-6 py-4">$1999</td>
-            <td class="px-6 py-4">
-              <a
-                href="#"
-                class="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-                >Edit</a
-              >
-            </td>
-          </tr>
-          <tr
-            class="border-b bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
-          >
-            <th
-              scope="row"
-              class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-            >
-              Magic Mouse 2
-            </th>
-            <td class="px-6 py-4">Black</td>
-            <td class="px-6 py-4">Accessories</td>
-            <td class="px-6 py-4">$99</td>
-            <td class="px-6 py-4">
-              <a
-                href="#"
-                class="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-                >Edit</a
-              >
-            </td>
-          </tr>
-        </tbody>
-      </table>
-      <nav
-        class="flex items-center justify-between pt-4 bg-gray-700"
-        aria-label="Table navigation"
-      >
-        <span class="text-sm font-normal text-gray-500 dark:text-gray-400"
-          >Showing
-          <span class="font-semibold text-gray-900 dark:text-white">1-10</span>
-          of
-          <span class="font-semibold text-gray-900 dark:text-white"
-            >1000</span
-          ></span
-        >
-        <ul class="inline-flex items-center -space-x-px">
-          <li>
-            <a
-              href="#"
-              class="block px-3 py-2 ml-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-l-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-            >
-              <span class="sr-only">Previous</span>
-              <svg
-                class="w-5 h-5"
-                aria-hidden="true"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  fill-rule="evenodd"
-                  d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
-                  clip-rule="evenodd"
-                ></path>
-              </svg>
-            </a>
-          </li>
-          <li>
-            <a
-              href="#"
-              class="px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-              >1</a
-            >
-          </li>
-          <li>
-            <a
-              href="#"
-              class="px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-              >2</a
-            >
-          </li>
-          <li>
-            <a
-              href="#"
-              aria-current="page"
-              class="z-10 px-3 py-2 leading-tight text-blue-600 border border-blue-300 bg-blue-50 hover:bg-blue-100 hover:text-blue-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white"
-              >3</a
-            >
-          </li>
-          <li>
-            <a
-              href="#"
-              class="px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-              >...</a
-            >
-          </li>
-          <li>
-            <a
-              href="#"
-              class="px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-              >100</a
-            >
-          </li>
-          <li>
-            <a
-              href="#"
-              class="block px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300 rounded-r-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-            >
-              <span class="sr-only">Next</span>
-              <svg
-                class="w-5 h-5"
-                aria-hidden="true"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  fill-rule="evenodd"
-                  d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-                  clip-rule="evenodd"
-                ></path>
-              </svg>
-            </a>
-          </li>
-        </ul>
-      </nav>
+      <div class="q-pa-md">
+        <q-table
+          flat
+          bordered
+          title="Treats"
+          :rows="rows"
+          :columns="columns"
+          row-key="name"
+          :pagination="initialPagination"
+        />
+      </div>
     </div>
 
     <div
@@ -338,6 +171,116 @@ export default {
 
   setup(props) {
     const showSortMenu = ref(false);
+    const columns = [
+      // {
+      //   name: "desc",
+      //   required: true,
+      //   label: "Dessert (100g serving)",
+      //   align: "left",
+      //   field: (row) => row.name,
+      //   format: (val) => `${val}`,
+      //   sortable: true,
+      // },
+
+      {
+        name: "name",
+        label: "Name",
+        field: "name",
+        align: "left",
+        sortable: true,
+      },
+      { name: "age", label: "Age", field: "age" },
+      {
+        name: "sex",
+        label: "Sex",
+        field: "sex",
+
+        sortable: true,
+      },
+      { name: "category", label: "Category", field: "category" },
+      {
+        name: "educ",
+        label: "Educational Attainment",
+        field: "educ",
+
+        sortable: true,
+      },
+      {
+        name: "status",
+        label: "Status",
+        field: "status",
+
+        sortable: true,
+        sort: (a, b) => parseInt(a, 10) - parseInt(b, 10),
+      },
+    ];
+
+    const rows = [
+      {
+        name: "Jan Hakeem Sangkula",
+        age: 69,
+        sex: "Male",
+        category: "Survivor",
+        educ: "College",
+        status: "Active",
+      },
+      {
+        name: "Montano Kiseo",
+        age: 18,
+        sex: "Male",
+        category: "Needly Youth",
+        educ: "High School",
+        status: "Active",
+      },
+      {
+        name: "Kit Francis Sajulga",
+        age: 420,
+        sex: "Male",
+        category: "Needly Adult",
+        educ: "College",
+        status: "Inactive",
+      },
+      {
+        name: "Eric Canete",
+        age: 16,
+        sex: "Male",
+        category: "C/PWD",
+        educ: "College",
+        status: "Inactive",
+      },
+      {
+        name: "Lex Allena",
+        age: 40,
+        sex: "Male",
+        category: "Survivor",
+        educ: "College",
+        status: "Active",
+      },
+      {
+        name: "Renee Rimando",
+        age: 80,
+        sex: "Female",
+        category: "WEDC",
+        educ: "High School",
+        status: "Inactive",
+      },
+      {
+        name: "Brean Walag",
+        age: 69,
+        sex: "Female",
+        category: "WEDC",
+        educ: "College",
+        status: "Active",
+      },
+      {
+        name: "Abdul Jan Ismael",
+        age: 10,
+        sex: "Male",
+        category: "WEDC",
+        educ: "Elementary",
+        status: "Inactive",
+      },
+    ];
 
     function toggleDropDown() {
       showSortMenu.value = !showSortMenu.value;
@@ -348,9 +291,18 @@ export default {
     });
 
     return {
+      initialPagination: {
+        sortBy: "name",
+        descending: false,
+        page: 1,
+        rowsPerPage: 5,
+        // rowsNumber: xx if getting data from a server
+      },
       props,
       toggleDropDown,
       sortState,
+      rows,
+      columns,
     };
   },
 };

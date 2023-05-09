@@ -44,7 +44,7 @@ class ClientModel {
         active: Joi.boolean().required(),
         interviewDate: Joi.string().required(),
         firstName: Joi.string().required(),
-        middleName: Joi.string().required(),
+        middleName: Joi.string(),
         lastName: Joi.string().required(),
         status: Joi.string().required(),
         age: Joi.number().required(),
@@ -55,7 +55,7 @@ class ClientModel {
         religion: Joi.string().required(),
         contactNum: Joi.string().required(),
         educAttn: Joi.string().required(),
-        categoryObj: Joi.array().required(),
+        category: Joi.string().required(),
         condition: Joi.string().required(),
         materials: Joi.object({
           roof: Joi.string().required(),
@@ -150,11 +150,10 @@ class ClientModel {
       const documents = [];
       snapshot.forEach((doc) => {
         const data = doc.data();
+        const name = `${data.clientInfo.firstName} ${data.clientInfo.lastName}`;
         documents.push({
           id: doc.id,
-          firstName: data.clientInfo.firstName,
-          middleName: data.clientInfo.middleName,
-          lastName: data.clientInfo.lastName,
+          fullName: name,
           age: data.clientInfo.age,
           sex: data.clientInfo.sex,
           category: data.clientInfo.category,

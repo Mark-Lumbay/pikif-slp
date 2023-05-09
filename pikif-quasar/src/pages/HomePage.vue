@@ -43,19 +43,7 @@
                 aria-haspopup="true"
                 @click="toggleDropDown"
               >
-                Sort
-                <svg
-                  class="-mr-1 h-5 w-5 text-gray-400"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                  aria-hidden="true"
-                >
-                  <path
-                    fill-rule="evenodd"
-                    d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
-                    clip-rule="evenodd"
-                  />
-                </svg>
+                Filter: {{ filterOption }}
               </button>
             </div>
 
@@ -75,6 +63,7 @@
                   role="menuitem"
                   tabindex="-1"
                   id="menu-item-0"
+                  @click="changeFilter('Needly Adult')"
                   >Needly Adult
                 </a>
                 <a
@@ -83,6 +72,7 @@
                   role="menuitem"
                   tabindex="-1"
                   id="menu-item-1"
+                  @click="changeFilter('Survivor')"
                   >Survivor
                 </a>
                 <a
@@ -91,6 +81,7 @@
                   role="menuitem"
                   tabindex="-1"
                   id="menu-item-2"
+                  @click="changeFilter('Needly Youth')"
                   >Needly Youth
                 </a>
                 <a
@@ -99,6 +90,7 @@
                   role="menuitem"
                   tabindex="-1"
                   id="menu-item-2"
+                  @click="changeFilter('Needly Senior Citizen')"
                   >Needly Senior Citizen
                 </a>
                 <a
@@ -107,6 +99,7 @@
                   role="menuitem"
                   tabindex="-1"
                   id="menu-item-2"
+                  @click="changeFilter('CICL')"
                   >CICL
                 </a>
 
@@ -116,6 +109,7 @@
                   role="menuitem"
                   tabindex="-1"
                   id="menu-item-2"
+                  @click="changeFilter('CEDC')"
                   >CEDC
                 </a>
 
@@ -125,6 +119,7 @@
                   role="menuitem"
                   tabindex="-1"
                   id="menu-item-2"
+                  @click="changeFilter('C/PWD')"
                   >C/PWD
                 </a>
 
@@ -134,22 +129,35 @@
                   role="menuitem"
                   tabindex="-1"
                   id="menu-item-2"
+                  @click="changeFilter('WEDC')"
                   >WEDC
+                </a>
+                <a
+                  href="#"
+                  class="text-gray-700 block px-4 py-2 text-sm"
+                  role="menuitem"
+                  tabindex="-1"
+                  id="menu-item-2"
+                  @click="changeFilter('None')"
+                  >None
                 </a>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <div class="q-pa-md">
+      <div class="flex">
         <q-table
           flat
           bordered
-          title="Treats"
+          title="Students"
           :rows="rows"
           :columns="columns"
           row-key="name"
+          :filter="filterStr"
+          :filter-method="filterTable"
           :pagination="initialPagination"
+          class="flex-1"
         />
       </div>
     </div>
@@ -171,47 +179,62 @@ export default {
 
   setup(props) {
     const showSortMenu = ref(false);
+    const filterOption = ref("None");
+    const options = [
+      "Survivor",
+      "Needly Youth",
+      "Needly Adult",
+      "Needly Senior Citizen",
+      "CICL",
+      "CEDC",
+      "WEDC",
+      "C/PWD",
+      "None",
+    ];
     const columns = [
-      // {
-      //   name: "desc",
-      //   required: true,
-      //   label: "Dessert (100g serving)",
-      //   align: "left",
-      //   field: (row) => row.name,
-      //   format: (val) => `${val}`,
-      //   sortable: true,
-      // },
-
       {
         name: "name",
         label: "Name",
-        field: "name",
+        field: (row) => row.name,
+        format: (val) => `${val}`,
         align: "left",
-        sortable: true,
-      },
-      { name: "age", label: "Age", field: "age" },
-      {
-        name: "sex",
-        label: "Sex",
-        field: "sex",
 
         sortable: true,
       },
-      { name: "category", label: "Category", field: "category" },
+      {
+        name: "age",
+        label: "Age",
+        field: "age",
+        sortable: true,
+      },
+      {
+        name: "sex",
+        label: "Sex",
+        field: (row) => row.sex,
+        format: (val) => `${val}`,
+
+        sortable: true,
+      },
+      {
+        name: "category",
+        label: "Category",
+        field: (row) => row.category,
+        format: (val) => `${val}`,
+      },
       {
         name: "educ",
         label: "Educational Attainment",
-        field: "educ",
+        field: (row) => row.educ,
+        format: (val) => `${val}`,
 
         sortable: true,
       },
       {
         name: "status",
         label: "Status",
-        field: "status",
-
+        field: (row) => row.status,
+        format: (val) => `${val}`,
         sortable: true,
-        sort: (a, b) => parseInt(a, 10) - parseInt(b, 10),
       },
     ];
 
@@ -286,8 +309,33 @@ export default {
       showSortMenu.value = !showSortMenu.value;
     }
 
+    function changeFilter(filter) {
+      filterOption.value = filter;
+      toggleDropDown();
+    }
+
+    function filterTable() {
+      for (const option of options) {
+        if (filterStr.value === "None") {
+          return rows;
+        }
+
+        if (filterStr.value === option) {
+          return rows.filter((row) => row.category == filterStr.value);
+        }
+      }
+    }
+
     const sortState = computed(() => {
       return showSortMenu.value;
+    });
+
+    const filterStr = computed(() => {
+      return filterOption.value;
+    });
+
+    const returnFilter = computed(() => {
+      return filterTable;
     });
 
     return {
@@ -303,6 +351,10 @@ export default {
       sortState,
       rows,
       columns,
+      filterOption,
+      changeFilter,
+      filterTable,
+      filterStr,
     };
   },
 };

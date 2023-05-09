@@ -20,13 +20,14 @@
     >
       <div class="flex w-full h-[5vh] items-center mb-4">
         <div class="w-[50%] flex">
-          <form>
+          <form @submit.prevent="searchStudent">
             <div class="border bg-slate-200 px-2 rounded">
               <q-icon class="las la-search text-gray-500" size="32px"></q-icon>
               <input
                 type="text"
                 placeholder="Search student"
                 class="w-80 h-10 bg-slate-200 p-3 rounded-l text-gray-700 focus:outline-none focus:shadow-outline"
+                :bind="search"
               />
             </div>
           </form>
@@ -146,7 +147,7 @@
           </div>
         </div>
       </div>
-      <div class="flex">
+      <div class="flex h-[88%]">
         <q-table
           flat
           bordered
@@ -186,6 +187,7 @@ export default {
 
     const showSortMenu = ref(false);
     const filterOption = ref("None");
+    const search = ref("");
 
     const options = [
       "Survivor",
@@ -246,72 +248,9 @@ export default {
       },
     ];
 
-    // const rows = [
-    //   {
-    //     name: "Jan Hakeem Sangkula",
-    //     age: 69,
-    //     sex: "Male",
-    //     category: "Survivor",
-    //     educ: "College",
-    //     status: "Active",
-    //   },
-    //   {
-    //     name: "Montano Kiseo",
-    //     age: 18,
-    //     sex: "Male",
-    //     category: "Needly Youth",
-    //     educ: "High School",
-    //     status: "Active",
-    //   },
-    //   {
-    //     name: "Kit Francis Sajulga",
-    //     age: 420,
-    //     sex: "Male",
-    //     category: "Needly Adult",
-    //     educ: "College",
-    //     status: "Inactive",
-    //   },
-    //   {
-    //     name: "Eric Canete",
-    //     age: 16,
-    //     sex: "Male",
-    //     category: "C/PWD",
-    //     educ: "College",
-    //     status: "Inactive",
-    //   },
-    //   {
-    //     name: "Lex Allena",
-    //     age: 40,
-    //     sex: "Male",
-    //     category: "Survivor",
-    //     educ: "College",
-    //     status: "Active",
-    //   },
-    //   {
-    //     name: "Renee Rimando",
-    //     age: 80,
-    //     sex: "Female",
-    //     category: "WEDC",
-    //     educ: "High School",
-    //     status: "Inactive",
-    //   },
-    //   {
-    //     name: "Brean Walag",
-    //     age: 69,
-    //     sex: "Female",
-    //     category: "WEDC",
-    //     educ: "College",
-    //     status: "Active",
-    //   },
-    //   {
-    //     name: "Abdul Jan Ismael",
-    //     age: 10,
-    //     sex: "Male",
-    //     category: "WEDC",
-    //     educ: "Elementary",
-    //     status: "Inactive",
-    //   },
-    // ];
+    function searchStudent() {
+      console.log(search.value);
+    }
 
     async function getData() {
       const data = await loadDashboard();
@@ -364,6 +303,8 @@ export default {
       changeFilter,
       filterTable,
       filterStr,
+      search,
+      searchStudent,
     };
   },
 };

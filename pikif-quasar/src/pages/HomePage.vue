@@ -169,7 +169,8 @@
 </template>
 
 <script>
-import { computed, ref } from "vue";
+import { computed, ref, onMounted } from "vue";
+import { loadDashboard } from "../services/services";
 export default {
   props: {
     userName: {
@@ -178,8 +179,14 @@ export default {
   },
 
   setup(props) {
+    const rows = ref([]);
+    onMounted(async () => {
+      rows.value = await getData();
+    });
+
     const showSortMenu = ref(false);
     const filterOption = ref("None");
+
     const options = [
       "Survivor",
       "Needly Youth",
@@ -191,11 +198,12 @@ export default {
       "C/PWD",
       "None",
     ];
+
     const columns = [
       {
-        name: "name",
+        name: "fullName",
         label: "Name",
-        field: (row) => row.name,
+        field: (row) => row.fullName,
         format: (val) => `${val}`,
         align: "left",
 
@@ -222,9 +230,9 @@ export default {
         format: (val) => `${val}`,
       },
       {
-        name: "educ",
+        name: "educAttn",
         label: "Educational Attainment",
-        field: (row) => row.educ,
+        field: (row) => row.educAttn,
         format: (val) => `${val}`,
 
         sortable: true,
@@ -238,72 +246,77 @@ export default {
       },
     ];
 
-    const rows = [
-      {
-        name: "Jan Hakeem Sangkula",
-        age: 69,
-        sex: "Male",
-        category: "Survivor",
-        educ: "College",
-        status: "Active",
-      },
-      {
-        name: "Montano Kiseo",
-        age: 18,
-        sex: "Male",
-        category: "Needly Youth",
-        educ: "High School",
-        status: "Active",
-      },
-      {
-        name: "Kit Francis Sajulga",
-        age: 420,
-        sex: "Male",
-        category: "Needly Adult",
-        educ: "College",
-        status: "Inactive",
-      },
-      {
-        name: "Eric Canete",
-        age: 16,
-        sex: "Male",
-        category: "C/PWD",
-        educ: "College",
-        status: "Inactive",
-      },
-      {
-        name: "Lex Allena",
-        age: 40,
-        sex: "Male",
-        category: "Survivor",
-        educ: "College",
-        status: "Active",
-      },
-      {
-        name: "Renee Rimando",
-        age: 80,
-        sex: "Female",
-        category: "WEDC",
-        educ: "High School",
-        status: "Inactive",
-      },
-      {
-        name: "Brean Walag",
-        age: 69,
-        sex: "Female",
-        category: "WEDC",
-        educ: "College",
-        status: "Active",
-      },
-      {
-        name: "Abdul Jan Ismael",
-        age: 10,
-        sex: "Male",
-        category: "WEDC",
-        educ: "Elementary",
-        status: "Inactive",
-      },
-    ];
+    // const rows = [
+    //   {
+    //     name: "Jan Hakeem Sangkula",
+    //     age: 69,
+    //     sex: "Male",
+    //     category: "Survivor",
+    //     educ: "College",
+    //     status: "Active",
+    //   },
+    //   {
+    //     name: "Montano Kiseo",
+    //     age: 18,
+    //     sex: "Male",
+    //     category: "Needly Youth",
+    //     educ: "High School",
+    //     status: "Active",
+    //   },
+    //   {
+    //     name: "Kit Francis Sajulga",
+    //     age: 420,
+    //     sex: "Male",
+    //     category: "Needly Adult",
+    //     educ: "College",
+    //     status: "Inactive",
+    //   },
+    //   {
+    //     name: "Eric Canete",
+    //     age: 16,
+    //     sex: "Male",
+    //     category: "C/PWD",
+    //     educ: "College",
+    //     status: "Inactive",
+    //   },
+    //   {
+    //     name: "Lex Allena",
+    //     age: 40,
+    //     sex: "Male",
+    //     category: "Survivor",
+    //     educ: "College",
+    //     status: "Active",
+    //   },
+    //   {
+    //     name: "Renee Rimando",
+    //     age: 80,
+    //     sex: "Female",
+    //     category: "WEDC",
+    //     educ: "High School",
+    //     status: "Inactive",
+    //   },
+    //   {
+    //     name: "Brean Walag",
+    //     age: 69,
+    //     sex: "Female",
+    //     category: "WEDC",
+    //     educ: "College",
+    //     status: "Active",
+    //   },
+    //   {
+    //     name: "Abdul Jan Ismael",
+    //     age: 10,
+    //     sex: "Male",
+    //     category: "WEDC",
+    //     educ: "Elementary",
+    //     status: "Inactive",
+    //   },
+    // ];
+
+    async function getData() {
+      const data = await loadDashboard();
+      return data;
+    }
 
     function toggleDropDown() {
       showSortMenu.value = !showSortMenu.value;
@@ -317,11 +330,11 @@ export default {
     function filterTable() {
       for (const option of options) {
         if (filterStr.value === "None") {
-          return rows;
+          return rows.value;
         }
 
         if (filterStr.value === option) {
-          return rows.filter((row) => row.category == filterStr.value);
+          return rows.value.filter((row) => row.category == filterStr.value);
         }
       }
     }
@@ -332,10 +345,6 @@ export default {
 
     const filterStr = computed(() => {
       return filterOption.value;
-    });
-
-    const returnFilter = computed(() => {
-      return filterTable;
     });
 
     return {

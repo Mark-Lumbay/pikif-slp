@@ -8,7 +8,6 @@ const apiClient = axios.create({
 const store = useStore();
 
 export async function testCall(token) {
-  console.log(token);
   const response = await apiClient.get("/test", {
     headers: {
       Authorization: `Bearer ${token}`,
@@ -18,11 +17,18 @@ export async function testCall(token) {
 }
 
 export async function register(data) {
-  console.log(data);
-
   try {
     await apiClient.post("/register", data);
     return { success: true };
+  } catch (err) {
+    return { success: false, message: err.message };
+  }
+}
+
+export async function loadDashboard() {
+  try {
+    const result = await apiClient.get("/loadDashboard");
+    return result.data.data;
   } catch (err) {
     return { success: false, message: err.message };
   }

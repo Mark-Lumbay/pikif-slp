@@ -153,6 +153,7 @@ class ClientModel {
         const name = `${data.clientInfo.firstName} ${data.clientInfo.lastName}`;
         documents.push({
           id: doc.id,
+          status: data.clientInfo.active,
           fullName: name,
           age: data.clientInfo.age,
           sex: data.clientInfo.sex,

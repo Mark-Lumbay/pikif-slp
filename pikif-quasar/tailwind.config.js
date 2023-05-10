@@ -10,6 +10,7 @@ module.exports = {
         secondaryBlue: "#397485",
         secondaryDarker: "#1c505f",
         btnGreen: "#7cad3e",
+        btnGreenHover: "##96bd65",
         primaryRed: "#ef777f",
       },
     },

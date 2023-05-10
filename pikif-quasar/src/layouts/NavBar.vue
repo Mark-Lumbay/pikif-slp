@@ -43,14 +43,14 @@
           class="flex flex-col h-screen bg-secondaryBlue"
           :class="classWidth"
         >
-          <a href="/">
+          <a @click="router.push('/')">
             <div
               class="hover:bg-secondaryDarker p-4 px-6 transition-all ease-in-out cursor-pointer"
             >
               <div class="flex flex-row items-center space-x-4">
                 <q-icon
                   name="las la-home"
-                  size="35px"
+                  size="32px"
                   class="text-white"
                 ></q-icon>
                 <span
@@ -62,14 +62,14 @@
             </div>
           </a>
 
-          <a href="/addStudent">
+          <a @click="router.push('/addStudent')">
             <div
               class="hover:bg-secondaryDarker p-4 px-6 transition-all ease-in-out cursor-pointer"
             >
               <div class="flex flex-row items-center space-x-4">
                 <q-icon
                   name="las la-user-plus"
-                  size="35px"
+                  size="32px"
                   class="text-white"
                 ></q-icon>
                 <span
@@ -88,7 +88,7 @@
               <div class="flex flex-row items-center space-x-4">
                 <q-icon
                   name="las la-clipboard-list"
-                  size="35px"
+                  size="32px"
                   class="text-white"
                 ></q-icon>
                 <span
@@ -111,7 +111,7 @@
 
 <script>
 import { ref, computed } from "vue";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import store from "../store";
 
 export default {
@@ -121,6 +121,7 @@ export default {
     const leftDrawerOpen = ref(true);
     const route = useRoute();
     const name = ref(store.getters.getFirstName);
+    const router = useRouter();
 
     const drawerState = () => {
       leftDrawerOpen.value = !leftDrawerOpen.value;
@@ -129,7 +130,7 @@ export default {
         contentWidth.value = "w-[85vw]";
       } else {
         width.value = "";
-        contentWidth.value = "w-[95vw]";
+        contentWidth.value = "flex-1";
       }
     };
 
@@ -148,6 +149,7 @@ export default {
       route,
       userName,
       contentWidth,
+      router,
     };
   },
 };

@@ -15,6 +15,21 @@ const routes = [
   },
 
   {
+    path: "/addStudent",
+    meta: {
+      requiresAuth: true,
+    },
+    component: () => import("layouts/NavBar.vue"),
+    children: [
+      {
+        path: "/addStudent",
+        name: "Add Student",
+        component: () => import("pages/AddStudent.vue"),
+      },
+    ],
+  },
+
+  {
     path: "/login",
     children: [{ path: "", component: () => import("pages/LogIn.vue") }],
   },

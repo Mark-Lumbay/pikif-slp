@@ -1,24 +1,34 @@
 <template>
   <div
     class="w-full h-[80%] flex flex-col shadow-md rounded-xl p-4 space-x-4 bg-white"
-    v-if="currPage === 0"
   >
-    <AddClient></AddClient>
+    <q-toolbar>
+      <q-breadcrumbs active-color="black" style="font-size: 16px">
+        <q-breadcrumbs-el label="Personal Information" icon="home" />
+        <q-breadcrumbs-el label="Informant Information" icon="widgets" />
+        <q-breadcrumbs-el label="Findings" />
+      </q-breadcrumbs>
+    </q-toolbar>
+    <div v-if="currPage === 0">
+      <AddClient></AddClient>
+    </div>
+
+    <div v-if="currPage === 1">
+      <AddInformant></AddInformant>
+    </div>
+
+    <div v-if="currPage === 2">
+      <AddHousing></AddHousing>
+    </div>
+
     <div class="flex justify-end">
       <button
         class="bg-btnGreen mb-2 w-[10vw] hover:bg-btnGreenHover text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline h-14 transition-all ease-in-out"
+        @click.prevent="nextPage"
       >
         Next
       </button>
     </div>
-  </div>
-
-  <div v-if="currPage === 1">
-    <AddInformant></AddInformant>
-  </div>
-
-  <div v-if="currPage === 2">
-    <AddHousing></AddHousing>
   </div>
 </template>
 

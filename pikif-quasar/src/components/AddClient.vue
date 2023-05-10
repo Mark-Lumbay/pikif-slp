@@ -1,13 +1,5 @@
 <template>
-  <div class="flex w-full mb-6">
-    <q-toolbar>
-      <q-breadcrumbs active-color="black" style="font-size: 16px">
-        <q-breadcrumbs-el label="Personal Information" icon="home" />
-        <q-breadcrumbs-el label="Informant Information" icon="widgets" />
-        <q-breadcrumbs-el label="Findings" />
-      </q-breadcrumbs>
-    </q-toolbar>
-  </div>
+  <div class="flex w-full mb-6"></div>
   <div class="flex flex-row">
     <div class="w-full">
       <form>

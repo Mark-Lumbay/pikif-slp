@@ -1,7 +1,5 @@
 <template>
-  <div
-    class="w-full h-[95%] flex flex-col shadow-md rounded-xl p-4 space-x-4 bg-white"
-  >
+  <div class="w-full flex flex-col shadow-md rounded-xl p-4 space-x-4 bg-white">
     <q-toolbar>
       <q-breadcrumbs active-color="black" style="font-size: 16px">
         <q-breadcrumbs-el label="Personal Information" icon="home" />

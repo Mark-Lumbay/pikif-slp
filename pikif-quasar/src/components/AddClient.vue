@@ -337,7 +337,7 @@
               <select
                 class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                 id="grid-housing"
-                v-model="clientInfo.condition"
+                v-model="housingCond"
               >
                 <option value="Squater's Shanty">Squater's Shanty</option>
                 <option value="Dilapidated House">Dilapidated House</option>
@@ -375,6 +375,7 @@
               type="text"
               placeholder="Other options"
               :disabled="clientInfo.condition != 'Others'"
+              v-model="housingOthers"
             />
           </div>
         </div>
@@ -398,7 +399,7 @@
               <select
                 class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                 id="grid-roof"
-                v-model="clientInfo.materials.roof"
+                v-model="roofMats"
               >
                 <option value="Nipa">Nipa</option>
                 <option value="Bamboo">Bamboo</option>
@@ -432,7 +433,7 @@
               id="grid-roof-others"
               type="text"
               placeholder="Other options"
-              :disabled="clientInfo.materials.roof != 'Others'"
+              :disabled="roofMats != 'Others'"
               v-model="roofOthers"
             />
           </div>
@@ -448,7 +449,7 @@
               <select
                 class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                 id="grid-wall"
-                v-model="clientInfo.materials.walls"
+                v-model="wallMats"
               >
                 <option value="Nipa">Nipa</option>
                 <option value="Bamboo">Bamboo</option>
@@ -483,7 +484,7 @@
               id="grid-roof-others"
               type="text"
               placeholder="Other options"
-              :disabled="clientInfo.materials.walls != 'Others'"
+              :disabled="wallMats != 'Others'"
               v-model="wallOthers"
             />
           </div>
@@ -499,7 +500,7 @@
               <select
                 class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                 id="grid-wall"
-                v-model="clientInfo.materials.floor"
+                v-model="floorMats"
               >
                 <option value="Soil">Soil</option>
                 <option value="Bamboo">Bamboo</option>
@@ -534,7 +535,7 @@
               id="grid-roof-others"
               type="text"
               placeholder="Other options"
-              :disabled="clientInfo.materials.floor != 'Others'"
+              :disabled="floorMats != 'Others'"
               v-model="floorOthers"
             />
           </div>
@@ -553,11 +554,23 @@
 </template>
 
 <script>
-import { ref, defineEmits } from "vue";
+import { ref, defineEmits, computed } from "vue";
 export default {
   emits: ["clientInfoSubmit"],
 
   setup(_, { emit }) {
+    const housingCond = ref("Squater's Shanty");
+    const housingOthers = ref("");
+
+    const roofMats = ref("Nipa");
+    const roofOthers = ref("");
+
+    const wallMats = ref("Nipa");
+    const wallOthers = ref("");
+
+    const floorMats = ref("Soil");
+    const floorOthers = ref("");
+
     const clientInfo = ref({
       active: "",
       interviewDate: "",
@@ -574,29 +587,31 @@ export default {
       contactNum: "",
       educAttn: "Pre-school",
       category: "Survivor",
-      condition: "Squater's Shanty",
+      condition: computed(() => {
+        return housingCond.value === "Others"
+          ? housingOthers.value
+          : housingCond.value;
+      }),
       materials: {
-        roof: "Nipa",
-        walls: "Nipa",
-        floor: "Soil",
+        roof: computed(() => {
+          return roofMats.value == "Others" ? roofOthers.value : roofMats.value;
+        }),
+        walls: computed(() => {
+          return wallMats.value == "Others" ? wallOthers.value : wallMats.value;
+        }),
+        floor: computed(() => {
+          return floorMats.value == "Others"
+            ? floorOthers.value
+            : floorMats.value;
+        }),
       },
       appliances: "",
     });
 
-    const housingOthers = ref("");
-    const housingCond = ref("Squater's Shanty");
-
-    const roofMats = ref("Nipa");
-    const roofOthers = ref("");
-
-    const wallMats = ref("Nipa");
-    const wallOthers = ref("");
-
-    const floorMats = ref("Soil");
-    const floorOthers = ref("");
-
     // Functions
     const submitPersonInfo = () => {
+      const test = clientInfo.value;
+      console.log(test);
       emit("clientInfoSubmit", clientInfo.value);
     };
 

@@ -16,6 +16,7 @@
               id="grid-first-name"
               type="text"
               placeholder="First Name"
+              v-model="clientInfo.firstName"
             />
             <!-- <p class="text-red-500 text-xs italic">
               Please fill out this field.
@@ -33,6 +34,7 @@
               id="grid-middle-name"
               type="text"
               placeholder="Middle Name"
+              v-model="clientInfo.middleName"
             />
           </div>
           <div class="w-full md:w-1/3 px-3">
@@ -47,6 +49,7 @@
               id="grid-last-name"
               type="text"
               placeholder="Last Name"
+              v-model="clientInfo.lastName"
             />
           </div>
         </div>
@@ -64,6 +67,7 @@
               id="grid-address"
               type="text"
               placeholder="Address"
+              v-model="clientInfo.address"
             />
             <!-- <p class="text-red-500 text-xs italic">
               Please fill out this field.
@@ -81,6 +85,7 @@
               id="grid-age"
               type="text"
               placeholder="Age"
+              v-model="clientInfo.age"
             />
           </div>
           <div class="w-full md:w-1/6 px-3">
@@ -107,15 +112,18 @@
               <select
                 class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                 id="grid-category"
+                v-model="clientInfo.category"
               >
-                <option>Survivor</option>
-                <option>Needly Youth</option>
-                <option>Needly Adult</option>
-                <option>Needly Senior Citizen</option>
-                <option>CICL</option>
-                <option>CEDC</option>
-                <option>C/PWD</option>
-                <option>WEDC</option>
+                <option value="Survivor">Survivor</option>
+                <option value="Needly Youth">Needly Youth</option>
+                <option value="Needly Adult">Needly Adult</option>
+                <option value="Needly Senior Citizen">
+                  Needly Senior Citizen
+                </option>
+                <option value="CICL">CICL</option>
+                <option value="CEDC">CEDC</option>
+                <option value="C/PWD">C/PWD</option>
+                <option value="WEDC">WEDC</option>
               </select>
               <div
                 class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700"
@@ -147,6 +155,7 @@
               id="grid-birth-place"
               type="text"
               placeholder="Birth Place"
+              v-model="clientInfo.birthPlace"
             />
           </div>
           <div class="w-full md:w-1/6 px-3">
@@ -174,10 +183,11 @@
               <select
                 class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                 id="grid-status"
+                v-model="clientInfo.status"
               >
-                <option>Single</option>
-                <option>Married</option>
-                <option>Widowed</option>
+                <option value="Single">Single</option>
+                <option value="Married">Married</option>
+                <option value="Widowed">Widowed</option>
               </select>
               <div
                 class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700"
@@ -206,10 +216,11 @@
               <select
                 class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                 id="grid-sex"
+                v-model="clientInfo.sex"
               >
-                <option>Male</option>
-                <option>Female</option>
-                <option>Other</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Other">Other</option>
               </select>
               <div
                 class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700"
@@ -239,6 +250,7 @@
               id="grid-appliance"
               type="text"
               placeholder="Appliances"
+              v-model="clientInfo.appliances"
             />
           </div>
         </div>
@@ -255,13 +267,14 @@
               <select
                 class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                 id="grid-educ"
+                v-model="clientInfo.educAttn"
               >
-                <option>Pre-school</option>
-                <option>Elementary</option>
-                <option>High School</option>
-                <option>Senior High School</option>
-                <option>College</option>
-                <option>None</option>
+                <option value="Pre-school">Pre-school</option>
+                <option value="Elementary">Elementary</option>
+                <option value="High School">High School</option>
+                <option value="Senior High School">Senior High School</option>
+                <option value="College">College</option>
+                <option value="None">None</option>
               </select>
               <div
                 class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700"
@@ -291,6 +304,7 @@
               id="grid-religion"
               type="text"
               placeholder="Religion"
+              v-model="clientInfo.religion"
             />
           </div>
 
@@ -306,6 +320,7 @@
               id="grid-contact"
               type="text"
               placeholder="Contact Number"
+              v-model="clientInfo.contactNum"
             />
           </div>
 
@@ -320,7 +335,7 @@
               <select
                 class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                 id="grid-housing"
-                v-model="housingCond"
+                v-model="clientInfo.condition"
               >
                 <option value="Squater's Shanty">Squater's Shanty</option>
                 <option value="Dilapidated House">Dilapidated House</option>
@@ -357,13 +372,13 @@
               id="grid-other"
               type="text"
               placeholder="Other options"
-              :disabled="housingCond != 'Others'"
+              :disabled="clientInfo.condition != 'Others'"
             />
           </div>
         </div>
         <div class="flex flex-wrap -mx-3 mb-4 w-full justify-center mt-6">
           <p
-            class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+            class="block uppercase tracking-wide text-gray-700 font-bold mb-2 text-lg"
           >
             House Materials
           </p>
@@ -381,7 +396,7 @@
               <select
                 class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                 id="grid-roof"
-                v-model="roofMats"
+                v-model="clientInfo.materials.roof"
               >
                 <option value="Nipa">Nipa</option>
                 <option value="Bamboo">Bamboo</option>
@@ -415,7 +430,7 @@
               id="grid-roof-others"
               type="text"
               placeholder="Other options"
-              :disabled="roofMats != 'Others'"
+              :disabled="clientInfo.materials.roof != 'Others'"
               v-model="roofOthers"
             />
           </div>
@@ -431,7 +446,7 @@
               <select
                 class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                 id="grid-wall"
-                v-model="wallMats"
+                v-model="clientInfo.materials.walls"
               >
                 <option value="Nipa">Nipa</option>
                 <option value="Bamboo">Bamboo</option>
@@ -466,7 +481,7 @@
               id="grid-roof-others"
               type="text"
               placeholder="Other options"
-              :disabled="wallMats != 'Others'"
+              :disabled="clientInfo.materials.walls != 'Others'"
               v-model="wallOthers"
             />
           </div>
@@ -482,7 +497,7 @@
               <select
                 class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                 id="grid-wall"
-                v-model="floorMats"
+                v-model="clientInfo.materials.floor"
               >
                 <option value="Soil">Soil</option>
                 <option value="Bamboo">Bamboo</option>
@@ -517,7 +532,7 @@
               id="grid-roof-others"
               type="text"
               placeholder="Other options"
-              :disabled="floorMats != 'Others'"
+              :disabled="clientInfo.materials.floor != 'Others'"
               v-model="floorOthers"
             />
           </div>
@@ -531,12 +546,30 @@
 import { ref, computed } from "vue";
 export default {
   setup() {
-    const clientInfo = {
-      fName: "",
-      mName: "",
-      lName: "",
+    const clientInfo = ref({
+      active: "",
+      interviewDate: "",
+      firstName: "",
+      middleName: "",
+      lastName: "",
+      status: "Single",
+      age: 0,
+      sex: "Female",
       address: "",
-    };
+      birthDate: "",
+      birthPlace: "",
+      religion: "",
+      contactNum: "",
+      educAttn: "Pre-school",
+      category: "Survivor",
+      condition: "Squater's Shanty",
+      materials: {
+        roof: "Nipa",
+        walls: "Nipa",
+        floor: "Soil",
+      },
+      appliances: "",
+    });
 
     const housingOthers = ref("");
     const housingCond = ref("Squater's Shanty");
@@ -559,6 +592,7 @@ export default {
       wallOthers,
       floorMats,
       floorOthers,
+      clientInfo,
     };
   },
 };

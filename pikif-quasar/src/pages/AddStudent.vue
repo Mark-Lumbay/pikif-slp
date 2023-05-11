@@ -21,7 +21,7 @@
 
     <div class="flex justify-end">
       <button
-        class="bg-btnGreen mb-2 w-[10vw] hover:bg-btnGreenHover text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline h-14 transition-all ease-in-out"
+        class="bg-btnGreen mb-2 w-[12vw] hover:bg-btnGreenHover text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline h-14 transition-all ease-in-out"
         @click.prevent="nextPage"
       >
         Next

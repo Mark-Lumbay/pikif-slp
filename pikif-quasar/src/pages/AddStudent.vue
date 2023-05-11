@@ -44,7 +44,7 @@ export default {
   },
   setup() {
     // Variables
-    const currPage = ref(0);
+    const currPage = ref(1);
     const data = ref({});
 
     // Functions

@@ -83,7 +83,7 @@
             <input
               class="appearance-none block w-full bg-gray-200 text-gray-700 border focus:border-gray-500 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
               id="grid-age"
-              type="text"
+              type="number"
               placeholder="Age"
               v-model="clientInfo.age"
             />
@@ -523,7 +523,7 @@
               </div>
             </div>
           </div>
-          <div class="w-full md:w-1/6 px-3 mb-6 md:mb-0 border-r-2">
+          <div class="w-full md:w-1/6 px-3 mb-6 md:mb-0">
             <label
               class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
               for="grid-roof-others"
@@ -542,6 +542,13 @@
         </div>
       </form>
     </div>
+    <div
+      class="mb-5 w-full bg-red-500 p-2 text-white font-semibold rounded"
+      @click.prevent="clearErr"
+      v-if="lackingErr"
+    >
+      <h3 class="text-sm">Please fill all the fields</h3>
+    </div>
     <div class="flex w-full justify-end">
       <button
         class="bg-btnGreen mb-2 w-[12vw] hover:bg-btnGreenHover text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline h-14 transition-all ease-in-out"
@@ -559,6 +566,8 @@ export default {
   emits: ["clientInfoSubmit"],
 
   setup(_, { emit }) {
+    const lackingErr = ref(false);
+
     const housingCond = ref("Squater's Shanty");
     const housingOthers = ref("");
 
@@ -572,7 +581,7 @@ export default {
     const floorOthers = ref("");
 
     const clientInfo = ref({
-      active: "",
+      active: true,
       interviewDate: "",
       firstName: "",
       middleName: "",
@@ -609,13 +618,41 @@ export default {
     });
 
     // Functions
+    const clearErr = () => {
+      lackingErr.value = false;
+    };
+
+    const validate = () => {
+      for (const field in clientInfo.value) {
+        if (field == "age") {
+          if (clientInfo.value[field] <= 0) {
+            return false;
+          } else {
+            continue;
+          }
+        } else {
+          if (
+            clientInfo.value[field] === "" ||
+            typeof clientInfo.value[field] === "number"
+          ) {
+            return false;
+          }
+        }
+      }
+      return true;
+    };
+
     const submitPersonInfo = () => {
-      const test = clientInfo.value;
-      console.log(test);
-      emit("clientInfoSubmit", clientInfo.value);
+      if (validate()) {
+        emit("clientInfoSubmit", clientInfo.value);
+      } else {
+        lackingErr.value = true;
+      }
     };
 
     return {
+      lackingErr,
+      clearErr,
       housingOthers,
       housingCond,
       roofMats,

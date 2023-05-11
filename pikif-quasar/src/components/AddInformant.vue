@@ -3,6 +3,13 @@
   <div class="flex flex-row">
     <div class="w-full">
       <form>
+        <div class="flex flex-wrap -mx-3 mb-4 w-full justify-center mt-6">
+          <p
+            class="block uppercase tracking-wide text-gray-700 font-bold mb-2 text-lg"
+          >
+            Personal Information
+          </p>
+        </div>
         <div class="flex flex-wrap -mx-3 mb-4">
           <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
             <label
@@ -257,7 +264,7 @@
           </div>
         </div>
 
-        <div class="flex flex-wrap -mx-3 mb-4">
+        <div class="flex flex-wrap w-full justify-center -mx-3 mb-4">
           <div class="w-full md:w-1/5 px-3 mb-6 md:mb-0">
             <label
               class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
@@ -327,7 +334,7 @@
           </div>
         </div>
 
-        <div class="flex flex-wrap -mx-3 mb-4 w-full justify-center mt-6">
+        <div class="flex flex-wrap -mx-3 mb-4 w-full justify-center mt-8">
           <p
             class="block uppercase tracking-wide text-gray-700 font-bold mb-2 text-lg"
           >
@@ -488,7 +495,7 @@
         </div>
 
         <div class="flex flex-wrap -mx-3 mb-4 justify-center">
-          <div class="w-full md:w-1/5 px-3 mb-6 md:mb-0 border-r-2">
+          <div class="w-full md:w-1/5 px-3 mb-6 md:mb-0">
             <label
               class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
               for="grid-roof"
@@ -594,19 +601,47 @@
           </div>
         </div>
 
-        <div class="flex flex-wrap -mx-3 mb-4">
+        <div class="flex flex-wrap -mx-3 mb-4 w-full justify-center mt-8">
+          <p
+            class="block uppercase tracking-wide text-gray-700 font-bold mb-2 text-lg"
+          >
+            Problems Presented
+          </p>
+        </div>
+
+        <div class="flex flex-wrap w-full justify-center -mx-3 mb-4">
           <div class="inline-flex px-3 mb-6 md:mb-0">
-            <input
-              class="w-36 py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-              id="grid-overall"
-              type="checkbox"
-            />
-            <label
-              class="uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-              for="grid-roof"
-            >
-              Educational Assistance
-            </label>
+            <q-checkbox v-model="educAss">Educational Assistance</q-checkbox>
+          </div>
+
+          <div class="inline-flex px-3 mb-6 md:mb-0">
+            <q-checkbox v-model="educAss">Capital Assistance</q-checkbox>
+          </div>
+
+          <div class="inline-flex px-3 mb-6 md:mb-0">
+            <q-checkbox v-model="educAss">Food Assistance</q-checkbox>
+          </div>
+
+          <div class="inline-flex px-3 mb-6 md:mb-0">
+            <q-checkbox v-model="educAss">Medical Assistance</q-checkbox>
+          </div>
+        </div>
+
+        <div class="flex flex-wrap w-full justify-center -mx-3 mb-4">
+          <div class="inline-flex px-3 mb-6 md:mb-0">
+            <q-checkbox v-model="educAss">Temporary Shelter</q-checkbox>
+          </div>
+
+          <div class="inline-flex px-3 mb-6 md:mb-0">
+            <q-checkbox v-model="educAss">Hospital Bills</q-checkbox>
+          </div>
+
+          <div class="inline-flex px-3 mb-6 md:mb-0">
+            <q-checkbox v-model="educAss">Financial Aid</q-checkbox>
+          </div>
+
+          <div class="inline-flex px-3 mb-6 md:mb-0">
+            <q-checkbox v-model="educAss">Others</q-checkbox>
           </div>
         </div>
       </form>
@@ -648,6 +683,8 @@ export default {
 
     const floorMats = ref("Soil");
     const floorOthers = ref("");
+
+    const educAss = ref(true);
 
     const clientPersonalInfo = ref({
       clientInfo: {
@@ -726,6 +763,7 @@ export default {
     };
 
     return {
+      educAss,
       lackingErr,
       clearErr,
       housingOthers,

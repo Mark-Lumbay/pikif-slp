@@ -3,6 +3,13 @@
   <div class="flex flex-row">
     <div class="w-full">
       <form>
+        <div class="flex flex-wrap -mx-3 mb-4 w-full justify-center mt-6">
+          <p
+            class="block uppercase tracking-wide text-gray-700 font-bold mb-2 text-lg"
+          >
+            Personal Information
+          </p>
+        </div>
         <div class="flex flex-wrap -mx-3 mb-4">
           <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
             <label

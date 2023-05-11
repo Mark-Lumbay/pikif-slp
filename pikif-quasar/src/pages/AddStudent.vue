@@ -45,6 +45,7 @@ export default {
   setup() {
     // Variables
     const currPage = ref(0);
+    const data = ref({});
 
     // Functions
     const nextPage = () => {
@@ -56,7 +57,12 @@ export default {
     };
 
     const submit = (info) => {
-      console.log(info);
+      data.value = {
+        ...data.value,
+        info,
+      };
+
+      console.log(data.value);
     };
 
     return {

@@ -16,7 +16,7 @@
               id="grid-first-name"
               type="text"
               placeholder="First Name"
-              v-model="clientInfo.firstName"
+              v-model="clientPersonalInfo.clientInfo.firstName"
             />
             <!-- <p class="text-red-500 text-xs italic">
               Please fill out this field.
@@ -34,7 +34,7 @@
               id="grid-middle-name"
               type="text"
               placeholder="Middle Name"
-              v-model="clientInfo.middleName"
+              v-model="clientPersonalInfo.clientInfo.middleName"
             />
           </div>
           <div class="w-full md:w-1/3 px-3">
@@ -49,7 +49,7 @@
               id="grid-last-name"
               type="text"
               placeholder="Last Name"
-              v-model="clientInfo.lastName"
+              v-model="clientPersonalInfo.clientInfo.lastName"
             />
           </div>
         </div>
@@ -67,7 +67,7 @@
               id="grid-address"
               type="text"
               placeholder="Address"
-              v-model="clientInfo.address"
+              v-model="clientPersonalInfo.clientInfo.address"
             />
             <!-- <p class="text-red-500 text-xs italic">
               Please fill out this field.
@@ -85,7 +85,7 @@
               id="grid-age"
               type="number"
               placeholder="Age"
-              v-model="clientInfo.age"
+              v-model="clientPersonalInfo.clientInfo.age"
             />
           </div>
           <div class="w-full md:w-1/6 px-3">
@@ -99,7 +99,7 @@
               class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
               id="grid-int"
               type="date"
-              v-model="clientInfo.interviewDate"
+              v-model="clientPersonalInfo.clientInfo.interviewDate"
             />
           </div>
           <div class="w-full md:w-1/6 px-3 mb-6 md:mb-0">
@@ -113,7 +113,7 @@
               <select
                 class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                 id="grid-category"
-                v-model="clientInfo.category"
+                v-model="clientPersonalInfo.clientInfo.category"
               >
                 <option value="Survivor">Survivor</option>
                 <option value="Needly Youth">Needly Youth</option>
@@ -156,7 +156,7 @@
               id="grid-birth-place"
               type="text"
               placeholder="Birth Place"
-              v-model="clientInfo.birthPlace"
+              v-model="clientPersonalInfo.clientInfo.birthPlace"
             />
           </div>
           <div class="w-full md:w-1/6 px-3">
@@ -170,7 +170,7 @@
               class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
               id="grid-bday"
               type="date"
-              v-model="clientInfo.birthDate"
+              v-model="clientPersonalInfo.clientInfo.birthDate"
             />
           </div>
 
@@ -185,7 +185,7 @@
               <select
                 class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                 id="grid-status"
-                v-model="clientInfo.status"
+                v-model="clientPersonalInfo.clientInfo.status"
               >
                 <option value="Single">Single</option>
                 <option value="Married">Married</option>
@@ -218,7 +218,7 @@
               <select
                 class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                 id="grid-sex"
-                v-model="clientInfo.sex"
+                v-model="clientPersonalInfo.clientInfo.sex"
               >
                 <option value="Male">Male</option>
                 <option value="Female">Female</option>
@@ -252,7 +252,7 @@
               id="grid-appliance"
               type="text"
               placeholder="Appliances"
-              v-model="clientInfo.appliances"
+              v-model="clientPersonalInfo.clientInfo.appliances"
             />
           </div>
         </div>
@@ -269,7 +269,7 @@
               <select
                 class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                 id="grid-educ"
-                v-model="clientInfo.educAttn"
+                v-model="clientPersonalInfo.clientInfo.educAttn"
               >
                 <option value="Pre-school">Pre-school</option>
                 <option value="Elementary">Elementary</option>
@@ -306,7 +306,7 @@
               id="grid-religion"
               type="text"
               placeholder="Religion"
-              v-model="clientInfo.religion"
+              v-model="clientPersonalInfo.clientInfo.religion"
             />
           </div>
 
@@ -322,7 +322,7 @@
               id="grid-contact"
               type="text"
               placeholder="Contact Number"
-              v-model="clientInfo.contactNum"
+              v-model="clientPersonalInfo.clientInfo.contactNum"
             />
           </div>
 
@@ -374,7 +374,7 @@
               id="grid-other"
               type="text"
               placeholder="Other options"
-              :disabled="clientInfo.condition != 'Others'"
+              :disabled="clientPersonalInfo.clientInfo.condition != 'Others'"
               v-model="housingOthers"
             />
           </div>
@@ -580,41 +580,47 @@ export default {
     const floorMats = ref("Soil");
     const floorOthers = ref("");
 
-    const clientInfo = ref({
-      active: true,
-      interviewDate: "",
-      firstName: "",
-      middleName: "",
-      lastName: "",
-      status: "Single",
-      age: 0,
-      sex: "Female",
-      address: "",
-      birthDate: "",
-      birthPlace: "",
-      religion: "",
-      contactNum: "",
-      educAttn: "Pre-school",
-      category: "Survivor",
-      condition: computed(() => {
-        return housingCond.value === "Others"
-          ? housingOthers.value
-          : housingCond.value;
-      }),
-      materials: {
-        roof: computed(() => {
-          return roofMats.value == "Others" ? roofOthers.value : roofMats.value;
+    const clientPersonalInfo = ref({
+      clientInfo: {
+        active: true,
+        interviewDate: "",
+        firstName: "",
+        middleName: "",
+        lastName: "",
+        status: "Single",
+        age: 0,
+        sex: "Female",
+        address: "",
+        birthDate: "",
+        birthPlace: "",
+        religion: "",
+        contactNum: "",
+        educAttn: "Pre-school",
+        category: "Survivor",
+        condition: computed(() => {
+          return housingCond.value === "Others"
+            ? housingOthers.value
+            : housingCond.value;
         }),
-        walls: computed(() => {
-          return wallMats.value == "Others" ? wallOthers.value : wallMats.value;
-        }),
-        floor: computed(() => {
-          return floorMats.value == "Others"
-            ? floorOthers.value
-            : floorMats.value;
-        }),
+        materials: {
+          roof: computed(() => {
+            return roofMats.value == "Others"
+              ? roofOthers.value
+              : roofMats.value;
+          }),
+          walls: computed(() => {
+            return wallMats.value == "Others"
+              ? wallOthers.value
+              : wallMats.value;
+          }),
+          floor: computed(() => {
+            return floorMats.value == "Others"
+              ? floorOthers.value
+              : floorMats.value;
+          }),
+        },
+        appliances: "",
       },
-      appliances: "",
     });
 
     // Functions
@@ -623,17 +629,17 @@ export default {
     };
 
     const validate = () => {
-      for (const field in clientInfo.value) {
+      for (const field in clientPersonalInfo.value) {
         if (field == "age") {
-          if (clientInfo.value[field] <= 0) {
+          if (clientPersonalInfo.value[field] <= 0) {
             return false;
           } else {
             continue;
           }
         } else {
           if (
-            clientInfo.value[field] === "" ||
-            typeof clientInfo.value[field] === "number"
+            clientPersonalInfo.value[field] === "" ||
+            typeof clientPersonalInfo.value[field] === "number"
           ) {
             return false;
           }
@@ -644,7 +650,7 @@ export default {
 
     const submitPersonInfo = () => {
       if (validate()) {
-        emit("clientInfoSubmit", clientInfo.value);
+        emit("clientInfoSubmit", clientPersonalInfo.value);
       } else {
         lackingErr.value = true;
       }
@@ -661,7 +667,7 @@ export default {
       wallOthers,
       floorMats,
       floorOthers,
-      clientInfo,
+      clientPersonalInfo,
       submitPersonInfo,
     };
   },

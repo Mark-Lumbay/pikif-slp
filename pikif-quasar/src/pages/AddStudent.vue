@@ -8,7 +8,7 @@
       </q-breadcrumbs>
     </q-toolbar>
     <div v-if="currPage === 0">
-      <AddClient></AddClient>
+      <AddClient @client-info-submit="submit"></AddClient>
     </div>
 
     <div v-if="currPage === 1">
@@ -19,14 +19,14 @@
       <AddHousing></AddHousing>
     </div>
 
-    <div class="flex justify-end">
+    <!-- <div class="flex justify-end">
       <button
         class="bg-btnGreen mb-2 w-[12vw] hover:bg-btnGreenHover text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline h-14 transition-all ease-in-out"
         @click.prevent="nextPage"
       >
         Next
       </button>
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -34,7 +34,7 @@
 import AddClient from "src/components/AddClient.vue";
 import AddHousing from "src/components/AddHousing.vue";
 import AddInformant from "src/components/AddInformant.vue";
-import { ref } from "vue";
+import { ref, inject } from "vue";
 
 export default {
   components: {
@@ -55,10 +55,15 @@ export default {
       currPage.value--;
     };
 
+    const submit = (info) => {
+      console.log(info);
+    };
+
     return {
       currPage,
       nextPage,
       prevPage,
+      submit,
     };
   },
 };

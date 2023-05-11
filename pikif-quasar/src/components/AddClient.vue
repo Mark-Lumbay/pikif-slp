@@ -99,6 +99,7 @@
               class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
               id="grid-int"
               type="date"
+              v-model="clientInfo.interviewDate"
             />
           </div>
           <div class="w-full md:w-1/6 px-3 mb-6 md:mb-0">
@@ -169,6 +170,7 @@
               class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
               id="grid-bday"
               type="date"
+              v-model="clientInfo.birthDate"
             />
           </div>
 
@@ -539,13 +541,23 @@
         </div>
       </form>
     </div>
+    <div class="flex w-full justify-end">
+      <button
+        class="bg-btnGreen mb-2 w-[12vw] hover:bg-btnGreenHover text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline h-14 transition-all ease-in-out"
+        @click.prevent="submitPersonInfo"
+      >
+        Next
+      </button>
+    </div>
   </div>
 </template>
 
 <script>
-import { ref, computed } from "vue";
+import { ref, defineEmits } from "vue";
 export default {
-  setup() {
+  emits: ["clientInfoSubmit"],
+
+  setup(_, { emit }) {
     const clientInfo = ref({
       active: "",
       interviewDate: "",
@@ -583,6 +595,11 @@ export default {
     const floorMats = ref("Soil");
     const floorOthers = ref("");
 
+    // Functions
+    const submitPersonInfo = () => {
+      emit("clientInfoSubmit", clientInfo.value);
+    };
+
     return {
       housingOthers,
       housingCond,
@@ -593,6 +610,7 @@ export default {
       floorMats,
       floorOthers,
       clientInfo,
+      submitPersonInfo,
     };
   },
 };

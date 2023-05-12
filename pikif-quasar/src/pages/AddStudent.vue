@@ -8,19 +8,19 @@
       </q-breadcrumbs>
     </q-toolbar>
     <div v-if="currPage === 0">
-      <AddClient @client-info-submit="next"></AddClient>
+      <AddClient @client-info-submit="saveClientInfo"></AddClient>
     </div>
 
     <div v-if="currPage === 1">
       <AddInformant
-        @informant-info-submit="next"
+        @informant-info-submit="saveInformantInfo"
         @go-back="prevPage"
       ></AddInformant>
     </div>
 
     <div v-if="currPage === 2">
       <AddFindings
-        @client-findings-submit="submit"
+        @client-findings-submit="saveClientFindings"
         @go-back="prevPage"
       ></AddFindings>
     </div>
@@ -40,7 +40,7 @@
 import AddClient from "src/components/AddClient.vue";
 import AddFindings from "src/components/AddFindings.vue";
 import AddInformant from "src/components/AddInformant.vue";
-import { ref, inject } from "vue";
+import { ref, reactive } from "vue";
 
 export default {
   components: {
@@ -50,8 +50,12 @@ export default {
   },
   setup() {
     // Variables
-    const currPage = ref(2);
-    const data = ref({});
+    const currPage = ref(0);
+    const data = reactive({
+      clientInfo: null,
+      informantInfo: null,
+      clientFindings: null,
+    });
 
     // Functions
     const nextPage = () => {
@@ -62,20 +66,33 @@ export default {
       currPage.value--;
     };
 
-    const next = (info) => {
-      data.value = {
-        ...data.value,
-        info,
-      };
+    const saveClientInfo = (info) => {
+      data.clientInfo = info;
+      console.log(data);
+      nextPage();
+    };
 
-      console.log(data.value);
+    const saveInformantInfo = (info) => {
+      data.informantInfo = info;
+      console.log(data);
+
+      nextPage();
+    };
+
+    const saveClientFindings = (info) => {
+      data.clientFindings = info;
+      console.log(data);
+
+      nextPage();
     };
 
     return {
       currPage,
       nextPage,
       prevPage,
-      next,
+      saveClientInfo,
+      saveInformantInfo,
+      saveClientFindings,
     };
   },
 };

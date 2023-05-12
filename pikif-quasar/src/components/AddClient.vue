@@ -636,17 +636,17 @@ export default {
     };
 
     const validate = () => {
-      for (const field in clientPersonalInfo.value) {
+      for (const field in clientPersonalInfo.value.clientInfo) {
         if (field == "age") {
-          if (clientPersonalInfo.value[field] <= 0) {
+          if (clientPersonalInfo.value.clientInfo[field] <= 0) {
             return false;
           } else {
             continue;
           }
         } else {
           if (
-            clientPersonalInfo.value[field] === "" ||
-            typeof clientPersonalInfo.value[field] === "number"
+            clientPersonalInfo.value.clientInfo[field] === "" ||
+            typeof clientPersonalInfo.value.clientInfo[field] === "number"
           ) {
             return false;
           }
@@ -657,7 +657,7 @@ export default {
 
     const submitPersonInfo = () => {
       if (validate()) {
-        emit("clientInfoSubmit", clientPersonalInfo.value);
+        emit("clientInfoSubmit", clientPersonalInfo.value.clientInfo);
       } else {
         lackingErr.value = true;
       }

@@ -632,7 +632,7 @@
     <div class="flex w-full justify-end">
       <button
         class="bg-btnGreen mb-2 w-[12vw] hover:bg-btnGreenHover text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline h-14 transition-all ease-in-out"
-        @click.prevent="submitPersonInfo"
+        @click.prevent="submitInformantInfo"
       >
         Next
       </button>
@@ -643,7 +643,7 @@
 <script>
 import { ref, defineEmits, computed } from "vue";
 export default {
-  emits: ["clientInfoSubmit"],
+  emits: ["informantInfoSubmit"],
 
   setup(_, { emit }) {
     const lackingErr = ref(false);
@@ -702,7 +702,6 @@ export default {
         religion: "",
         contactNum: "",
         educAttn: "Pre-school",
-        category: "Survivor",
         occupation: "Laborer",
         employment: "Employed",
         employmentStat: "Permanent",
@@ -715,6 +714,15 @@ export default {
         assistance: "4P's",
         otherInc: "Laborer",
         monthlyInc: "",
+        probs: computed(() => {
+          return checkBoxes.value
+            .filter((checkbox) => {
+              checkbox.checked;
+            })
+            .map((val) => {
+              val.text;
+            });
+        }),
       },
     });
 
@@ -724,17 +732,17 @@ export default {
     };
 
     const validate = () => {
-      for (const field in informantPersonalInfo.value) {
-        if (field == "age") {
-          if (informantPersonalInfo.value[field] <= 0) {
+      for (const field in informantPersonalInfo.value.informantInfo) {
+        if (field == "age" || field == "monthlyInc" || field == "amount") {
+          if (informantPersonalInfo.value.informantInfo[field] <= 0) {
             return false;
           } else {
             continue;
           }
         } else {
           if (
-            informantPersonalInfo.value[field] === "" ||
-            typeof informantPersonalInfo.value[field] === "number"
+            informantPersonalInfo.value.informantInfo[field] === "" ||
+            typeof informantPersonalInfo.value.informantInfo[field] === "number"
           ) {
             return false;
           }
@@ -743,9 +751,9 @@ export default {
       return true;
     };
 
-    const submitPersonInfo = () => {
+    const submitInformantInfo = () => {
       if (validate()) {
-        emit("clientInfoSubmit", informantPersonalInfo.value);
+        emit("informantInfoSubmit", informantPersonalInfo.value.informantInfo);
       } else {
         lackingErr.value = true;
       }
@@ -764,7 +772,7 @@ export default {
       floorMats,
       floorOthers,
       informantPersonalInfo,
-      submitPersonInfo,
+      submitInformantInfo,
       occupation,
       occupationOthers,
       otherInc,

@@ -12,7 +12,7 @@
     </div>
 
     <div v-if="currPage === 1">
-      <AddInformant></AddInformant>
+      <AddInformant @informant-info-submit="submit"></AddInformant>
     </div>
 
     <div v-if="currPage === 2">

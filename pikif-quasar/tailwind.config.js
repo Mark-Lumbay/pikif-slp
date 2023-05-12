@@ -12,6 +12,7 @@ module.exports = {
         btnGreen: "#7cad3e",
         btnGreenHover: "#96bd65",
         primaryRed: "#ef777f",
+        primaryRedHover: "#f1858c",
       },
     },
   },

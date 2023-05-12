@@ -629,7 +629,13 @@
     >
       <h3 class="text-sm">Please fill all the fields</h3>
     </div>
-    <div class="flex w-full justify-end">
+    <div class="flex w-full justify-end space-x-4">
+      <button
+        class="bg-primaryRed mb-2 w-[12vw] hover:bg-primaryRedHover text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline h-14 transition-all ease-in-out"
+        @click.prevent="backBtn"
+      >
+        Back
+      </button>
       <button
         class="bg-btnGreen mb-2 w-[12vw] hover:bg-btnGreenHover text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline h-14 transition-all ease-in-out"
         @click.prevent="submitInformantInfo"
@@ -643,7 +649,7 @@
 <script>
 import { ref, defineEmits, computed } from "vue";
 export default {
-  emits: ["informantInfoSubmit"],
+  emits: ["informantInfoSubmit", "goBack"],
 
   setup(_, { emit }) {
     const lackingErr = ref(false);
@@ -759,6 +765,10 @@ export default {
       }
     };
 
+    const backBtn = () => {
+      emit("goBack");
+    };
+
     return {
       educAss,
       lackingErr,
@@ -778,6 +788,7 @@ export default {
       otherInc,
       otherIncOthers,
       checkBoxes,
+      backBtn,
     };
   },
 };

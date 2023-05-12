@@ -8,15 +8,21 @@
       </q-breadcrumbs>
     </q-toolbar>
     <div v-if="currPage === 0">
-      <AddClient @client-info-submit="submit"></AddClient>
+      <AddClient @client-info-submit="next"></AddClient>
     </div>
 
     <div v-if="currPage === 1">
-      <AddInformant @informant-info-submit="submit"></AddInformant>
+      <AddInformant
+        @informant-info-submit="next"
+        @go-back="prevPage"
+      ></AddInformant>
     </div>
 
     <div v-if="currPage === 2">
-      <AddFindings></AddFindings>
+      <AddFindings
+        @client-findings-submit="submit"
+        @go-back="prevPage"
+      ></AddFindings>
     </div>
 
     <!-- <div class="flex justify-end">
@@ -56,7 +62,7 @@ export default {
       currPage.value--;
     };
 
-    const submit = (info) => {
+    const next = (info) => {
       data.value = {
         ...data.value,
         info,
@@ -69,7 +75,7 @@ export default {
       currPage,
       nextPage,
       prevPage,
-      submit,
+      next,
     };
   },
 };

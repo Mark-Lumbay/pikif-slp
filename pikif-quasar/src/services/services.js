@@ -33,3 +33,12 @@ export async function loadDashboard() {
     return { success: false, message: err.message };
   }
 }
+
+export async function addStudent(data) {
+  try {
+    await apiClient.post("/addClientInfo", data);
+    return { success: true };
+  } catch (err) {
+    return { success: false, message: err.message };
+  }
+}

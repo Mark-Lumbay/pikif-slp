@@ -86,14 +86,14 @@ class ClientModel {
         employmentStat: Joi.string().required(),
         employerName: Joi.string().required(),
         workAdd: Joi.string().required(),
+        educAttn: Joi.string().required(),
         assistance: Joi.string().required(),
         otherInc: Joi.string().required(),
         monthlyInc: Joi.string().required(),
-        probs: Joi.string().required(),
+        probs: Joi.array().items(Joi.string()).required(),
       }).required(),
       initialFindings: Joi.object({
         findings: Joi.string().required(),
-        date: Joi.string().required(),
       }).required(),
     });
 

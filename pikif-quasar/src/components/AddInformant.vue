@@ -453,7 +453,7 @@
             <input
               class="appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
               id="grid-other"
-              type="number"
+              type="text"
               placeholder="Income Amount"
               v-model="informantPersonalInfo.informantInfo.income.amount"
             />
@@ -694,7 +694,6 @@ export default {
 
     const informantPersonalInfo = ref({
       informantInfo: {
-        active: true,
         interviewDate: "",
         firstName: "",
         middleName: "",
@@ -707,26 +706,26 @@ export default {
         birthPlace: "",
         religion: "",
         contactNum: "",
-        educAttn: "Pre-school",
         occupation: "Laborer",
+        income: {
+          type: "Fixed",
+          amount: "",
+        },
         employment: "Employed",
         employmentStat: "Permanent",
         employerName: "",
         workAdd: "",
-        income: {
-          amount: "",
-          type: "Fixed",
-        },
+        educAttn: "Pre-school",
         assistance: "4P's",
         otherInc: "Laborer",
         monthlyInc: "",
         probs: computed(() => {
           return checkBoxes.value
             .filter((checkbox) => {
-              checkbox.checked;
+              return checkbox.checked;
             })
             .map((val) => {
-              val.text;
+              return val.text;
             });
         }),
       },

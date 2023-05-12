@@ -41,6 +41,7 @@ import AddClient from "src/components/AddClient.vue";
 import AddFindings from "src/components/AddFindings.vue";
 import AddInformant from "src/components/AddInformant.vue";
 import { ref, reactive } from "vue";
+import { addStudent } from "../services/services";
 
 export default {
   components: {
@@ -54,7 +55,7 @@ export default {
     const data = reactive({
       clientInfo: null,
       informantInfo: null,
-      clientFindings: null,
+      initialFindings: null,
     });
 
     // Functions
@@ -80,10 +81,20 @@ export default {
     };
 
     const saveClientFindings = (info) => {
-      data.clientFindings = info;
+      data.initialFindings = info;
       console.log(data);
 
       nextPage();
+      addStudentInfo();
+    };
+
+    const addStudentInfo = async () => {
+      const res = await addStudent(data);
+      if (res.success) {
+        console.log("Added Data!");
+      } else {
+        console.log(`Something went wrong! ${res.message}`);
+      }
     };
 
     return {

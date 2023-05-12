@@ -23,7 +23,7 @@
               id="grid-first-name"
               type="text"
               placeholder="First Name"
-              v-model="clientPersonalInfo.clientInfo.firstName"
+              v-model="informantPersonalInfo.informantInfo.firstName"
             />
             <!-- <p class="text-red-500 text-xs italic">
               Please fill out this field.
@@ -41,7 +41,7 @@
               id="grid-middle-name"
               type="text"
               placeholder="Middle Name"
-              v-model="clientPersonalInfo.clientInfo.middleName"
+              v-model="informantPersonalInfo.informantInfo.middleName"
             />
           </div>
           <div class="w-full md:w-1/3 px-3">
@@ -56,13 +56,13 @@
               id="grid-last-name"
               type="text"
               placeholder="Last Name"
-              v-model="clientPersonalInfo.clientInfo.lastName"
+              v-model="informantPersonalInfo.informantInfo.lastName"
             />
           </div>
         </div>
 
         <div class="flex flex-wrap -mx-3 mb-4">
-          <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+          <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
             <label
               class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
               for="grid-address"
@@ -74,7 +74,7 @@
               id="grid-address"
               type="text"
               placeholder="Address"
-              v-model="clientPersonalInfo.clientInfo.address"
+              v-model="informantPersonalInfo.informantInfo.address"
             />
             <!-- <p class="text-red-500 text-xs italic">
               Please fill out this field.
@@ -92,7 +92,7 @@
               id="grid-age"
               type="number"
               placeholder="Age"
-              v-model="clientPersonalInfo.clientInfo.age"
+              v-model="informantPersonalInfo.informantInfo.age"
             />
           </div>
           <div class="w-full md:w-1/6 px-3">
@@ -106,7 +106,7 @@
               class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
               id="grid-int"
               type="date"
-              v-model="clientPersonalInfo.clientInfo.interviewDate"
+              v-model="informantPersonalInfo.informantInfo.interviewDate"
             />
           </div>
           <div class="w-full md:w-1/6 px-3 mb-6 md:mb-0">
@@ -120,7 +120,7 @@
               <select
                 class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                 id="grid-occupation"
-                v-model="clientPersonalInfo.clientInfo.category"
+                v-model="occupation"
               >
                 <option value="Laborer">Laborer</option>
                 <option value="Vendor">Vendor</option>
@@ -148,9 +148,26 @@
               </div>
             </div>
           </div>
+
+          <div class="w-full md:w-1/6 px-3 mb-6 md:mb-0">
+            <label
+              class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+              for="grid-birth-place"
+            >
+              Others:
+            </label>
+            <input
+              class="appearance-none block w-full bg-gray-200 text-gray-700 border focus:border-gray-500 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+              id="grid-birth-place"
+              type="text"
+              placeholder="Birth Place"
+              v-model="informantPersonalInfo.informantInfo.birthPlace"
+              :disabled="occupation != 'Others'"
+            />
+          </div>
         </div>
 
-        <div class="flex flex-wrap -mx-3 mb-4">
+        <div class="flex flex-wrap w-full justify-center -mx-3 mb-4">
           <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
             <label
               class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
@@ -163,7 +180,7 @@
               id="grid-birth-place"
               type="text"
               placeholder="Birth Place"
-              v-model="clientPersonalInfo.clientInfo.birthPlace"
+              v-model="informantPersonalInfo.informantInfo.birthPlace"
             />
           </div>
           <div class="w-full md:w-1/6 px-3">
@@ -177,7 +194,7 @@
               class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
               id="grid-bday"
               type="date"
-              v-model="clientPersonalInfo.clientInfo.birthDate"
+              v-model="informantPersonalInfo.informantInfo.birthDate"
             />
           </div>
 
@@ -192,7 +209,7 @@
               <select
                 class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                 id="grid-status"
-                v-model="clientPersonalInfo.clientInfo.status"
+                v-model="informantPersonalInfo.informantInfo.status"
               >
                 <option value="Single">Single</option>
                 <option value="Married">Married</option>
@@ -225,7 +242,7 @@
               <select
                 class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                 id="grid-sex"
-                v-model="clientPersonalInfo.clientInfo.sex"
+                v-model="informantPersonalInfo.informantInfo.sex"
               >
                 <option value="Male">Male</option>
                 <option value="Female">Female</option>
@@ -246,22 +263,6 @@
               </div>
             </div>
           </div>
-
-          <div class="w-full md:w-1/6 px-3 mb-6 md:mb-0">
-            <label
-              class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-              for="grid-appliance"
-            >
-              Appliances
-            </label>
-            <input
-              class="appearance-none block w-full bg-gray-200 text-gray-700 border focus:border-gray-500 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
-              id="grid-appliance"
-              type="text"
-              placeholder="Appliances"
-              v-model="clientPersonalInfo.clientInfo.appliances"
-            />
-          </div>
         </div>
 
         <div class="flex flex-wrap w-full justify-center -mx-3 mb-4">
@@ -276,7 +277,7 @@
               <select
                 class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                 id="grid-educ"
-                v-model="clientPersonalInfo.clientInfo.educAttn"
+                v-model="informantPersonalInfo.informantInfo.educAttn"
               >
                 <option value="Pre-school">Pre-school</option>
                 <option value="Elementary">Elementary</option>
@@ -313,7 +314,7 @@
               id="grid-religion"
               type="text"
               placeholder="Religion"
-              v-model="clientPersonalInfo.clientInfo.religion"
+              v-model="informantPersonalInfo.informantInfo.religion"
             />
           </div>
 
@@ -329,7 +330,7 @@
               id="grid-contact"
               type="text"
               placeholder="Contact Number"
-              v-model="clientPersonalInfo.clientInfo.contactNum"
+              v-model="informantPersonalInfo.informantInfo.contactNum"
             />
           </div>
         </div>
@@ -354,7 +355,7 @@
               <select
                 class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                 id="grid-roof"
-                v-model="roofMats"
+                v-model="informantPersonalInfo.informantInfo.employment"
               >
                 <option value="Employed">Employed</option>
                 <option value="Self-Employed">Self-Employed</option>
@@ -387,7 +388,7 @@
               <select
                 class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                 id="grid-wall"
-                v-model="wallMats"
+                v-model="informantPersonalInfo.informantInfo.employmentStat"
               >
                 <option value="Permanent">Permanent</option>
                 <option value="Casual">Casual</option>
@@ -422,7 +423,7 @@
               <select
                 class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                 id="grid-housing"
-                v-model="housingCond"
+                v-model="informantPersonalInfo.informantInfo.income.type"
               >
                 <option value="Fixed">Fixed</option>
                 <option value="Irregular">Irregular</option>
@@ -452,10 +453,9 @@
             <input
               class="appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
               id="grid-other"
-              type="text"
-              placeholder="Other options"
-              :disabled="clientPersonalInfo.clientInfo.condition != 'Others'"
-              v-model="housingOthers"
+              type="number"
+              placeholder="Income Amount"
+              v-model="informantPersonalInfo.informantInfo.income.amount"
             />
           </div>
         </div>
@@ -473,7 +473,7 @@
               id="grid-employer"
               type="text"
               placeholder="Employer/Agency Name"
-              v-model="clientPersonalInfo.clientInfo.religion"
+              v-model="informantPersonalInfo.informantInfo.employerName"
             />
           </div>
 
@@ -489,7 +489,7 @@
               id="grid-address-job"
               type="text"
               placeholder="Job Address"
-              v-model="clientPersonalInfo.clientInfo.contactNum"
+              v-model="informantPersonalInfo.informantInfo.workAdd"
             />
           </div>
         </div>
@@ -506,7 +506,7 @@
               <select
                 class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                 id="grid-roof"
-                v-model="roofMats"
+                v-model="informantPersonalInfo.informantInfo.assistance"
               >
                 <option value="4P's">4P's</option>
                 <option value="MCCT">MCCT</option>
@@ -539,7 +539,7 @@
               <select
                 class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                 id="grid-occupation"
-                v-model="clientPersonalInfo.clientInfo.category"
+                v-model="otherInc"
               >
                 <option value="Laborer">Laborer</option>
                 <option value="Vendor">Vendor</option>
@@ -579,8 +579,8 @@
               id="grid-roof-others"
               type="text"
               placeholder="Other options"
-              :disabled="wallMats != 'Others'"
-              v-model="wallOthers"
+              :disabled="otherInc != 'Others'"
+              v-model="otherIncOthers"
             />
           </div>
 
@@ -594,9 +594,9 @@
             <input
               class="appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
               id="grid-overall"
-              type="text"
+              type="number"
               placeholder="Job Address"
-              v-model="clientPersonalInfo.clientInfo.contactNum"
+              v-model="informantPersonalInfo.informantInfo.monthlyInc"
             />
           </div>
         </div>
@@ -609,39 +609,15 @@
           </p>
         </div>
 
-        <div class="flex flex-wrap w-full justify-center -mx-3 mb-4">
-          <div class="inline-flex px-3 mb-6 md:mb-0">
-            <q-checkbox v-model="educAss">Educational Assistance</q-checkbox>
-          </div>
-
-          <div class="inline-flex px-3 mb-6 md:mb-0">
-            <q-checkbox v-model="educAss">Capital Assistance</q-checkbox>
-          </div>
-
-          <div class="inline-flex px-3 mb-6 md:mb-0">
-            <q-checkbox v-model="educAss">Food Assistance</q-checkbox>
-          </div>
-
-          <div class="inline-flex px-3 mb-6 md:mb-0">
-            <q-checkbox v-model="educAss">Medical Assistance</q-checkbox>
-          </div>
-        </div>
-
-        <div class="flex flex-wrap w-full justify-center -mx-3 mb-4">
-          <div class="inline-flex px-3 mb-6 md:mb-0">
-            <q-checkbox v-model="educAss">Temporary Shelter</q-checkbox>
-          </div>
-
-          <div class="inline-flex px-3 mb-6 md:mb-0">
-            <q-checkbox v-model="educAss">Hospital Bills</q-checkbox>
-          </div>
-
-          <div class="inline-flex px-3 mb-6 md:mb-0">
-            <q-checkbox v-model="educAss">Financial Aid</q-checkbox>
-          </div>
-
-          <div class="inline-flex px-3 mb-6 md:mb-0">
-            <q-checkbox v-model="educAss">Others</q-checkbox>
+        <div class="flex flex-wrap justify-center -mx-3 mb-4">
+          <div class="px-3 mb-6 md:mb-0">
+            <q-checkbox
+              v-for="(checkbox, key) in checkBoxes"
+              :key="key"
+              v-model="checkbox.checked"
+            >
+              {{ checkbox.text }}
+            </q-checkbox>
           </div>
         </div>
       </form>
@@ -672,6 +648,12 @@ export default {
   setup(_, { emit }) {
     const lackingErr = ref(false);
 
+    const occupation = ref("Laborer");
+    const occupationOthers = ref("");
+
+    const otherInc = ref("Laborer");
+    const otherIncOthers = ref("");
+
     const housingCond = ref("Squater's Shanty");
     const housingOthers = ref("");
 
@@ -684,10 +666,28 @@ export default {
     const floorMats = ref("Soil");
     const floorOthers = ref("");
 
-    const educAss = ref(true);
+    const educAss = ref(false);
+    const capitalAss = ref(false);
+    const foodAss = ref(false);
+    const medAss = ref(false);
+    const tempShelter = ref(false);
+    const hosBill = ref(false);
+    const financialAid = ref(false);
+    const others = ref(false);
 
-    const clientPersonalInfo = ref({
-      clientInfo: {
+    const checkBoxes = ref([
+      { text: "Educational Assistance", checked: false },
+      { text: "Capital Assistance", checked: false },
+      { text: "Food Assistance", checked: false },
+      { text: "Medical Assistance", checked: false },
+      { text: "Temporary Shelter", checked: false },
+      { text: "Hospital Bills", checked: false },
+      { text: "Financial Aid", checked: false },
+      { text: "Others", checked: false },
+    ]);
+
+    const informantPersonalInfo = ref({
+      informantInfo: {
         active: true,
         interviewDate: "",
         firstName: "",
@@ -703,29 +703,18 @@ export default {
         contactNum: "",
         educAttn: "Pre-school",
         category: "Survivor",
-        condition: computed(() => {
-          return housingCond.value === "Others"
-            ? housingOthers.value
-            : housingCond.value;
-        }),
-        materials: {
-          roof: computed(() => {
-            return roofMats.value == "Others"
-              ? roofOthers.value
-              : roofMats.value;
-          }),
-          walls: computed(() => {
-            return wallMats.value == "Others"
-              ? wallOthers.value
-              : wallMats.value;
-          }),
-          floor: computed(() => {
-            return floorMats.value == "Others"
-              ? floorOthers.value
-              : floorMats.value;
-          }),
+        occupation: "Laborer",
+        employment: "Employed",
+        employmentStat: "Permanent",
+        employerName: "",
+        workAdd: "",
+        income: {
+          amount: "",
+          type: "Fixed",
         },
-        appliances: "",
+        assistance: "4P's",
+        otherInc: "Laborer",
+        monthlyInc: "",
       },
     });
 
@@ -735,17 +724,17 @@ export default {
     };
 
     const validate = () => {
-      for (const field in clientPersonalInfo.value) {
+      for (const field in informantPersonalInfo.value) {
         if (field == "age") {
-          if (clientPersonalInfo.value[field] <= 0) {
+          if (informantPersonalInfo.value[field] <= 0) {
             return false;
           } else {
             continue;
           }
         } else {
           if (
-            clientPersonalInfo.value[field] === "" ||
-            typeof clientPersonalInfo.value[field] === "number"
+            informantPersonalInfo.value[field] === "" ||
+            typeof informantPersonalInfo.value[field] === "number"
           ) {
             return false;
           }
@@ -756,7 +745,7 @@ export default {
 
     const submitPersonInfo = () => {
       if (validate()) {
-        emit("clientInfoSubmit", clientPersonalInfo.value);
+        emit("clientInfoSubmit", informantPersonalInfo.value);
       } else {
         lackingErr.value = true;
       }
@@ -774,8 +763,13 @@ export default {
       wallOthers,
       floorMats,
       floorOthers,
-      clientPersonalInfo,
+      informantPersonalInfo,
       submitPersonInfo,
+      occupation,
+      occupationOthers,
+      otherInc,
+      otherIncOthers,
+      checkBoxes,
     };
   },
 };

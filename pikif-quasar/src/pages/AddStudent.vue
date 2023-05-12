@@ -16,7 +16,7 @@
     </div>
 
     <div v-if="currPage === 2">
-      <AddHousing></AddHousing>
+      <AddFindings></AddFindings>
     </div>
 
     <!-- <div class="flex justify-end">
@@ -32,19 +32,19 @@
 
 <script>
 import AddClient from "src/components/AddClient.vue";
-import AddHousing from "src/components/AddHousing.vue";
+import AddFindings from "src/components/AddFindings.vue";
 import AddInformant from "src/components/AddInformant.vue";
 import { ref, inject } from "vue";
 
 export default {
   components: {
     AddClient,
-    AddHousing,
+    AddFindings,
     AddInformant,
   },
   setup() {
     // Variables
-    const currPage = ref(1);
+    const currPage = ref(2);
     const data = ref({});
 
     // Functions

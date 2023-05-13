@@ -571,7 +571,6 @@
 import { ref, defineEmits, computed } from "vue";
 export default {
   emits: ["clientInfoSubmit"],
-
   setup(_, { emit }) {
     const lackingErr = ref(false);
 

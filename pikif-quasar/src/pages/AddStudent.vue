@@ -7,32 +7,31 @@
         <q-breadcrumbs-el label="Findings" />
       </q-breadcrumbs>
     </q-toolbar>
-    <div v-if="currPage === 0">
-      <AddClient @client-info-submit="saveClientInfo"></AddClient>
-    </div>
+    <KeepAlive>
+      <component
+        :is="getCurrentComponent"
+        @client-info-submit="saveClientInfo"
+        v-if="currPage === 0"
+      ></component>
+    </KeepAlive>
 
-    <div v-if="currPage === 1">
-      <AddInformant
+    <KeepAlive>
+      <component
+        :is="getCurrentComponent"
         @informant-info-submit="saveInformantInfo"
         @go-back="prevPage"
-      ></AddInformant>
-    </div>
+        v-if="currPage === 1"
+      ></component>
+    </KeepAlive>
 
-    <div v-if="currPage === 2">
-      <AddFindings
+    <KeepAlive>
+      <component
+        :is="getCurrentComponent"
         @client-findings-submit="saveClientFindings"
         @go-back="prevPage"
-      ></AddFindings>
-    </div>
-
-    <!-- <div class="flex justify-end">
-      <button
-        class="bg-btnGreen mb-2 w-[12vw] hover:bg-btnGreenHover text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline h-14 transition-all ease-in-out"
-        @click.prevent="nextPage"
-      >
-        Next
-      </button>
-    </div> -->
+        v-if="currPage === 2"
+      ></component>
+    </KeepAlive>
   </div>
 </template>
 
@@ -40,7 +39,7 @@
 import AddClient from "src/components/AddClient.vue";
 import AddFindings from "src/components/AddFindings.vue";
 import AddInformant from "src/components/AddInformant.vue";
-import { ref, reactive } from "vue";
+import { ref, reactive, computed } from "vue";
 import { addStudent } from "../services/services";
 
 export default {
@@ -51,6 +50,10 @@ export default {
   },
   setup() {
     // Variables
+    const clientInfo = ref({});
+    const informantInfo = ref({});
+    const clientFindings = ref({});
+
     const currPage = ref(0);
     const data = reactive({
       clientInfo: null,
@@ -69,12 +72,14 @@ export default {
 
     const saveClientInfo = (info) => {
       data.clientInfo = info;
+      clientInfo.value = info;
       console.log(data);
       nextPage();
     };
 
     const saveInformantInfo = (info) => {
       data.informantInfo = info;
+      informantInfo.value = info;
       console.log(data);
 
       nextPage();
@@ -82,6 +87,7 @@ export default {
 
     const saveClientFindings = (info) => {
       data.initialFindings = info;
+      initialFindings.value = findings;
       console.log(data);
 
       nextPage();
@@ -97,6 +103,19 @@ export default {
       }
     };
 
+    const getCurrentComponent = computed(() => {
+      switch (currPage.value) {
+        case 0:
+          return "AddClient";
+        case 1:
+          return "AddInformant";
+        case 2:
+          return "AddFindings";
+        default:
+          return null;
+      }
+    });
+
     return {
       currPage,
       nextPage,
@@ -104,6 +123,10 @@ export default {
       saveClientInfo,
       saveInformantInfo,
       saveClientFindings,
+      clientInfo,
+      informantInfo,
+      clientFindings,
+      getCurrentComponent,
     };
   },
 };

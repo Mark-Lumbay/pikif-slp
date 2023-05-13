@@ -3,7 +3,7 @@
     <div
       class="w-full flex flex-col shadow-md rounded-xl p-4 space-x-4 bg-white"
     >
-      <q-toolbar>
+      <q-toolbar v-if="currPage != 3">
         <q-breadcrumbs
           style="font-size: 16px"
           class="outline outline-1 px-4 py-2 rounded-full bg-primaryDark"
@@ -84,6 +84,11 @@
           v-if="currPage === 2"
         ></component>
       </KeepAlive>
+      <MessagePage
+        :message="message"
+        v-if="currPage === 3"
+        @reset-page="resetPage"
+      ></MessagePage>
     </div>
   </div>
 </template>
@@ -92,20 +97,30 @@
 import AddClient from "src/components/AddClient.vue";
 import AddFindings from "src/components/AddFindings.vue";
 import AddInformant from "src/components/AddInformant.vue";
+import MessagePage from "src/components/MessagePage.vue";
+
 import { ref, reactive, computed } from "vue";
 import { addStudent } from "../services/services";
+import { useRouter } from "vue-router";
 
 export default {
   components: {
     AddClient,
     AddFindings,
     AddInformant,
+    MessagePage,
   },
   setup() {
     // Variables
     const clientInfo = ref({});
     const informantInfo = ref({});
     const clientFindings = ref({});
+    const router = useRouter();
+
+    const message = ref({
+      messageType: "",
+      messageBody: "",
+    });
 
     const currPage = ref(0);
     const data = reactive({
@@ -121,6 +136,10 @@ export default {
 
     const prevPage = () => {
       currPage.value--;
+    };
+
+    const resetPage = () => {
+      router.go();
     };
 
     const saveClientInfo = (info) => {
@@ -140,19 +159,21 @@ export default {
 
     const saveClientFindings = (info) => {
       data.initialFindings = info;
-      initialFindings.value = findings;
+      clientFindings.value = info;
       console.log(data);
 
-      nextPage();
       addStudentInfo();
     };
 
     const addStudentInfo = async () => {
       const res = await addStudent(data);
       if (res.success) {
-        console.log("Added Data!");
+        message.value.messageType = "success";
+        message.value.messageBody = "Successfully added a student!";
+        nextPage();
       } else {
-        console.log(`Something went wrong! ${res.message}`);
+        message.value.messageType = "failed";
+        message.value.messageBody = `Operation failed ${res.message}`;
       }
     };
 
@@ -180,6 +201,8 @@ export default {
       informantInfo,
       clientFindings,
       getCurrentComponent,
+      message,
+      resetPage,
     };
   },
 };

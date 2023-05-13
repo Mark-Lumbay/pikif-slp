@@ -1,658 +1,660 @@
 <template>
-  <div class="flex w-full mb-6"></div>
-  <div class="flex flex-row">
-    <div class="w-full">
-      <form>
-        <div class="flex flex-wrap -mx-3 mb-4 w-full justify-center mt-6">
-          <p
-            class="block uppercase tracking-wide text-gray-700 font-bold mb-2 text-lg"
-          >
-            Personal Information
-          </p>
-        </div>
-        <div class="flex flex-wrap -mx-3 mb-4">
-          <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
-            <label
-              class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-              for="grid-first-name"
+  <div>
+    <div class="flex w-full mb-6"></div>
+    <div class="flex flex-row">
+      <div class="w-full h-full">
+        <form>
+          <div class="flex flex-wrap -mx-3 mb-4 w-full justify-center mt-6">
+            <p
+              class="block uppercase tracking-wide text-gray-700 font-bold mb-2 text-lg"
             >
-              First Name
-            </label>
-            <input
-              class="appearance-none block w-full bg-gray-200 text-gray-700 border focus:border-gray-500 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
-              id="grid-first-name"
-              type="text"
-              placeholder="First Name"
-              v-model="informantPersonalInfo.informantInfo.firstName"
-            />
-            <!-- <p class="text-red-500 text-xs italic">
+              Personal Information
+            </p>
+          </div>
+          <div class="flex flex-wrap -mx-3 mb-4">
+            <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
+              <label
+                class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                for="grid-first-name"
+              >
+                First Name
+              </label>
+              <input
+                class="appearance-none block w-full bg-gray-200 text-gray-700 border focus:border-gray-500 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+                id="grid-first-name"
+                type="text"
+                placeholder="First Name"
+                v-model="informantPersonalInfo.informantInfo.firstName"
+              />
+              <!-- <p class="text-red-500 text-xs italic">
               Please fill out this field.
             </p> -->
+            </div>
+            <div class="w-full md:w-1/3 px-3">
+              <label
+                class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                for="grid-middle-name"
+              >
+                Middle Name
+              </label>
+              <input
+                class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                id="grid-middle-name"
+                type="text"
+                placeholder="Middle Name"
+                v-model="informantPersonalInfo.informantInfo.middleName"
+              />
+            </div>
+            <div class="w-full md:w-1/3 px-3">
+              <label
+                class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                for="grid-last-name"
+              >
+                Last Name
+              </label>
+              <input
+                class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                id="grid-last-name"
+                type="text"
+                placeholder="Last Name"
+                v-model="informantPersonalInfo.informantInfo.lastName"
+              />
+            </div>
           </div>
-          <div class="w-full md:w-1/3 px-3">
-            <label
-              class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-              for="grid-middle-name"
-            >
-              Middle Name
-            </label>
-            <input
-              class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-              id="grid-middle-name"
-              type="text"
-              placeholder="Middle Name"
-              v-model="informantPersonalInfo.informantInfo.middleName"
-            />
-          </div>
-          <div class="w-full md:w-1/3 px-3">
-            <label
-              class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-              for="grid-last-name"
-            >
-              Last Name
-            </label>
-            <input
-              class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-              id="grid-last-name"
-              type="text"
-              placeholder="Last Name"
-              v-model="informantPersonalInfo.informantInfo.lastName"
-            />
-          </div>
-        </div>
 
-        <div class="flex flex-wrap -mx-3 mb-4">
-          <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
-            <label
-              class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-              for="grid-address"
-            >
-              Address
-            </label>
-            <input
-              class="appearance-none block w-full bg-gray-200 text-gray-700 border focus:border-gray-500 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
-              id="grid-address"
-              type="text"
-              placeholder="Address"
-              v-model="informantPersonalInfo.informantInfo.address"
-            />
-            <!-- <p class="text-red-500 text-xs italic">
+          <div class="flex flex-wrap -mx-3 mb-4">
+            <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
+              <label
+                class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                for="grid-address"
+              >
+                Address
+              </label>
+              <input
+                class="appearance-none block w-full bg-gray-200 text-gray-700 border focus:border-gray-500 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+                id="grid-address"
+                type="text"
+                placeholder="Address"
+                v-model="informantPersonalInfo.informantInfo.address"
+              />
+              <!-- <p class="text-red-500 text-xs italic">
               Please fill out this field.
             </p> -->
-          </div>
-          <div class="w-full md:w-1/6 px-3 mb-6 md:mb-0">
-            <label
-              class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-              for="grid-age"
-            >
-              Age
-            </label>
-            <input
-              class="appearance-none block w-full bg-gray-200 text-gray-700 border focus:border-gray-500 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
-              id="grid-age"
-              type="number"
-              placeholder="Age"
-              v-model="informantPersonalInfo.informantInfo.age"
-            />
-          </div>
-          <div class="w-full md:w-1/6 px-3">
-            <label
-              class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-              for="grid-int"
-            >
-              Interview Date
-            </label>
-            <input
-              class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-              id="grid-int"
-              type="date"
-              v-model="informantPersonalInfo.informantInfo.interviewDate"
-            />
-          </div>
-          <div class="w-full md:w-1/6 px-3 mb-6 md:mb-0">
-            <label
-              class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-              for="grid-occupation"
-            >
-              Occupation
-            </label>
-            <div class="relative">
-              <select
-                class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                id="grid-occupation"
-                v-model="occupation"
+            </div>
+            <div class="w-full md:w-1/6 px-3 mb-6 md:mb-0">
+              <label
+                class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                for="grid-age"
               >
-                <option value="Laborer">Laborer</option>
-                <option value="Vendor">Vendor</option>
-                <option value="Driver">Driver</option>
-                <option value="Waste Picker">Waste Picker</option>
-                <option value="Housekeeper">Housekeeper</option>
-                <option value="Street Sweeper">Street Sweeper</option>
-                <option value="Carpenter">Carpenter</option>
-                <option value="Repairmen">Repairmen</option>
-                <option value="None">None</option>
-                <option value="Others">Others</option>
-              </select>
-              <div
-                class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700"
+                Age
+              </label>
+              <input
+                class="appearance-none block w-full bg-gray-200 text-gray-700 border focus:border-gray-500 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+                id="grid-age"
+                type="number"
+                placeholder="Age"
+                v-model="informantPersonalInfo.informantInfo.age"
+              />
+            </div>
+            <div class="w-full md:w-1/6 px-3">
+              <label
+                class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                for="grid-int"
               >
-                <svg
-                  class="fill-current h-4 w-4"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 20 20"
+                Interview Date
+              </label>
+              <input
+                class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                id="grid-int"
+                type="date"
+                v-model="informantPersonalInfo.informantInfo.interviewDate"
+              />
+            </div>
+            <div class="w-full md:w-1/6 px-3 mb-6 md:mb-0">
+              <label
+                class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                for="grid-occupation"
+              >
+                Occupation
+              </label>
+              <div class="relative">
+                <select
+                  class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                  id="grid-occupation"
+                  v-model="occupation"
                 >
-                  <path
-                    d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"
-                  />
-                </svg>
+                  <option value="Laborer">Laborer</option>
+                  <option value="Vendor">Vendor</option>
+                  <option value="Driver">Driver</option>
+                  <option value="Waste Picker">Waste Picker</option>
+                  <option value="Housekeeper">Housekeeper</option>
+                  <option value="Street Sweeper">Street Sweeper</option>
+                  <option value="Carpenter">Carpenter</option>
+                  <option value="Repairmen">Repairmen</option>
+                  <option value="None">None</option>
+                  <option value="Others">Others</option>
+                </select>
+                <div
+                  class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700"
+                >
+                  <svg
+                    class="fill-current h-4 w-4"
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 20 20"
+                  >
+                    <path
+                      d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"
+                    />
+                  </svg>
+                </div>
+              </div>
+            </div>
+
+            <div class="w-full md:w-1/6 px-3 mb-6 md:mb-0">
+              <label
+                class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                for="grid-birth-place"
+              >
+                Others:
+              </label>
+              <input
+                class="appearance-none block w-full bg-gray-200 text-gray-700 border focus:border-gray-500 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+                id="grid-birth-place"
+                type="text"
+                placeholder="Specify job"
+                v-model="occupationOthers"
+                :disabled="occupation != 'Others'"
+              />
+            </div>
+          </div>
+
+          <div class="flex flex-wrap w-full justify-center -mx-3 mb-4">
+            <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
+              <label
+                class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                for="grid-birth-place"
+              >
+                Birth Place
+              </label>
+              <input
+                class="appearance-none block w-full bg-gray-200 text-gray-700 border focus:border-gray-500 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+                id="grid-birth-place"
+                type="text"
+                placeholder="Birth Place"
+                v-model="informantPersonalInfo.informantInfo.birthPlace"
+              />
+            </div>
+            <div class="w-full md:w-1/6 px-3">
+              <label
+                class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                for="grid-bday"
+              >
+                Birth Date
+              </label>
+              <input
+                class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                id="grid-bday"
+                type="date"
+                v-model="informantPersonalInfo.informantInfo.birthDate"
+              />
+            </div>
+
+            <div class="w-full md:w-1/6 px-3 mb-6 md:mb-0">
+              <label
+                class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                for="grid-status"
+              >
+                Civil Status
+              </label>
+              <div class="relative">
+                <select
+                  class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                  id="grid-status"
+                  v-model="informantPersonalInfo.informantInfo.status"
+                >
+                  <option value="Single">Single</option>
+                  <option value="Married">Married</option>
+                  <option value="Widowed">Widowed</option>
+                </select>
+                <div
+                  class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700"
+                >
+                  <svg
+                    class="fill-current h-4 w-4"
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 20 20"
+                  >
+                    <path
+                      d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"
+                    />
+                  </svg>
+                </div>
+              </div>
+            </div>
+
+            <div class="w-full md:w-1/6 px-3 mb-6 md:mb-0">
+              <label
+                class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                for="grid-sex"
+              >
+                Sex
+              </label>
+              <div class="relative">
+                <select
+                  class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                  id="grid-sex"
+                  v-model="informantPersonalInfo.informantInfo.sex"
+                >
+                  <option value="Male">Male</option>
+                  <option value="Female">Female</option>
+                  <option value="Other">Other</option>
+                </select>
+                <div
+                  class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700"
+                >
+                  <svg
+                    class="fill-current h-4 w-4"
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 20 20"
+                  >
+                    <path
+                      d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"
+                    />
+                  </svg>
+                </div>
               </div>
             </div>
           </div>
 
-          <div class="w-full md:w-1/6 px-3 mb-6 md:mb-0">
-            <label
-              class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-              for="grid-birth-place"
-            >
-              Others:
-            </label>
-            <input
-              class="appearance-none block w-full bg-gray-200 text-gray-700 border focus:border-gray-500 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
-              id="grid-birth-place"
-              type="text"
-              placeholder="Specify job"
-              v-model="occupationOthers"
-              :disabled="occupation != 'Others'"
-            />
-          </div>
-        </div>
-
-        <div class="flex flex-wrap w-full justify-center -mx-3 mb-4">
-          <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
-            <label
-              class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-              for="grid-birth-place"
-            >
-              Birth Place
-            </label>
-            <input
-              class="appearance-none block w-full bg-gray-200 text-gray-700 border focus:border-gray-500 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
-              id="grid-birth-place"
-              type="text"
-              placeholder="Birth Place"
-              v-model="informantPersonalInfo.informantInfo.birthPlace"
-            />
-          </div>
-          <div class="w-full md:w-1/6 px-3">
-            <label
-              class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-              for="grid-bday"
-            >
-              Birth Date
-            </label>
-            <input
-              class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-              id="grid-bday"
-              type="date"
-              v-model="informantPersonalInfo.informantInfo.birthDate"
-            />
-          </div>
-
-          <div class="w-full md:w-1/6 px-3 mb-6 md:mb-0">
-            <label
-              class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-              for="grid-status"
-            >
-              Civil Status
-            </label>
-            <div class="relative">
-              <select
-                class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                id="grid-status"
-                v-model="informantPersonalInfo.informantInfo.status"
+          <div class="flex flex-wrap w-full justify-center -mx-3 mb-4">
+            <div class="w-full md:w-1/5 px-3 mb-6 md:mb-0">
+              <label
+                class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                for="grid-educ"
               >
-                <option value="Single">Single</option>
-                <option value="Married">Married</option>
-                <option value="Widowed">Widowed</option>
-              </select>
-              <div
-                class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700"
-              >
-                <svg
-                  class="fill-current h-4 w-4"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 20 20"
+                Educational Attainment
+              </label>
+              <div class="relative">
+                <select
+                  class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                  id="grid-educ"
+                  v-model="informantPersonalInfo.informantInfo.educAttn"
                 >
-                  <path
-                    d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"
-                  />
-                </svg>
+                  <option value="Pre-school">Pre-school</option>
+                  <option value="Elementary">Elementary</option>
+                  <option value="High School">High School</option>
+                  <option value="Senior High School">Senior High School</option>
+                  <option value="College">College</option>
+                  <option value="None">None</option>
+                </select>
+                <div
+                  class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700"
+                >
+                  <svg
+                    class="fill-current h-4 w-4"
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 20 20"
+                  >
+                    <path
+                      d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"
+                    />
+                  </svg>
+                </div>
               </div>
+            </div>
+
+            <div class="w-full md:w-1/5 px-3 mb-6 md:mb-0">
+              <label
+                class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                for="grid-religion"
+              >
+                Religion
+              </label>
+              <input
+                class="appearance-none block w-full bg-gray-200 text-gray-700 border focus:border-gray-500 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+                id="grid-religion"
+                type="text"
+                placeholder="Religion"
+                v-model="informantPersonalInfo.informantInfo.religion"
+              />
+            </div>
+
+            <div class="w-full md:w-1/5 px-3 mb-6 md:mb-0">
+              <label
+                class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                for="grid-contact"
+              >
+                Contact Number
+              </label>
+              <input
+                class="appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                id="grid-contact"
+                type="text"
+                placeholder="Contact Number"
+                v-model="informantPersonalInfo.informantInfo.contactNum"
+              />
             </div>
           </div>
 
-          <div class="w-full md:w-1/6 px-3 mb-6 md:mb-0">
-            <label
-              class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-              for="grid-sex"
+          <div class="flex flex-wrap -mx-3 mb-4 w-full justify-center mt-8">
+            <p
+              class="block uppercase tracking-wide text-gray-700 font-bold mb-2 text-lg"
             >
-              Sex
-            </label>
-            <div class="relative">
-              <select
-                class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                id="grid-sex"
-                v-model="informantPersonalInfo.informantInfo.sex"
+              Economic Background
+            </p>
+          </div>
+
+          <div class="flex flex-wrap -mx-3 mb-4 justify-center">
+            <div class="w-full md:w-1/4 px-3 mb-6 md:mb-0">
+              <label
+                class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                for="grid-roof"
               >
-                <option value="Male">Male</option>
-                <option value="Female">Female</option>
-                <option value="Other">Other</option>
-              </select>
-              <div
-                class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700"
-              >
-                <svg
-                  class="fill-current h-4 w-4"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 20 20"
+                Employment Type
+              </label>
+              <div class="relative">
+                <select
+                  class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                  id="grid-roof"
+                  v-model="informantPersonalInfo.informantInfo.employment"
                 >
-                  <path
-                    d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"
-                  />
-                </svg>
+                  <option value="Employed">Employed</option>
+                  <option value="Self-Employed">Self-Employed</option>
+                  <option value="Unemployed">Unemployed</option>
+                </select>
+                <div
+                  class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700"
+                >
+                  <svg
+                    class="fill-current h-4 w-4"
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 20 20"
+                  >
+                    <path
+                      d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"
+                    />
+                  </svg>
+                </div>
               </div>
             </div>
-          </div>
-        </div>
 
-        <div class="flex flex-wrap w-full justify-center -mx-3 mb-4">
-          <div class="w-full md:w-1/5 px-3 mb-6 md:mb-0">
-            <label
-              class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-              for="grid-educ"
-            >
-              Educational Attainment
-            </label>
-            <div class="relative">
-              <select
-                class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                id="grid-educ"
-                v-model="informantPersonalInfo.informantInfo.educAttn"
+            <div class="w-full md:w-1/4 px-3 mb-6 md:mb-0 border-r-2">
+              <label
+                class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                for="grid-wall"
               >
-                <option value="Pre-school">Pre-school</option>
-                <option value="Elementary">Elementary</option>
-                <option value="High School">High School</option>
-                <option value="Senior High School">Senior High School</option>
-                <option value="College">College</option>
-                <option value="None">None</option>
-              </select>
-              <div
-                class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700"
-              >
-                <svg
-                  class="fill-current h-4 w-4"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 20 20"
+                Employment Status
+              </label>
+              <div class="relative">
+                <select
+                  class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                  id="grid-wall"
+                  v-model="informantPersonalInfo.informantInfo.employmentStat"
                 >
-                  <path
-                    d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"
-                  />
-                </svg>
+                  <option value="Permanent">Permanent</option>
+                  <option value="Casual">Casual</option>
+                  <option value="Temporary">Temporary</option>
+                  <option value="Contractual">Contractual</option>
+                  <option value="On Call">On Call</option>
+                </select>
+                <div
+                  class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700"
+                >
+                  <svg
+                    class="fill-current h-4 w-4"
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 20 20"
+                  >
+                    <path
+                      d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"
+                    />
+                  </svg>
+                </div>
               </div>
             </div>
-          </div>
 
-          <div class="w-full md:w-1/5 px-3 mb-6 md:mb-0">
-            <label
-              class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-              for="grid-religion"
-            >
-              Religion
-            </label>
-            <input
-              class="appearance-none block w-full bg-gray-200 text-gray-700 border focus:border-gray-500 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
-              id="grid-religion"
-              type="text"
-              placeholder="Religion"
-              v-model="informantPersonalInfo.informantInfo.religion"
-            />
-          </div>
-
-          <div class="w-full md:w-1/5 px-3 mb-6 md:mb-0">
-            <label
-              class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-              for="grid-contact"
-            >
-              Contact Number
-            </label>
-            <input
-              class="appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-              id="grid-contact"
-              type="text"
-              placeholder="Contact Number"
-              v-model="informantPersonalInfo.informantInfo.contactNum"
-            />
-          </div>
-        </div>
-
-        <div class="flex flex-wrap -mx-3 mb-4 w-full justify-center mt-8">
-          <p
-            class="block uppercase tracking-wide text-gray-700 font-bold mb-2 text-lg"
-          >
-            Economic Background
-          </p>
-        </div>
-
-        <div class="flex flex-wrap -mx-3 mb-4 justify-center">
-          <div class="w-full md:w-1/4 px-3 mb-6 md:mb-0">
-            <label
-              class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-              for="grid-roof"
-            >
-              Employment Type
-            </label>
-            <div class="relative">
-              <select
-                class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                id="grid-roof"
-                v-model="informantPersonalInfo.informantInfo.employment"
+            <div class="w-full md:w-1/4 px-3 mb-6 md:mb-0">
+              <label
+                class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                for="grid-housing"
               >
-                <option value="Employed">Employed</option>
-                <option value="Self-Employed">Self-Employed</option>
-                <option value="Unemployed">Unemployed</option>
-              </select>
-              <div
-                class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700"
-              >
-                <svg
-                  class="fill-current h-4 w-4"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 20 20"
+                Income Type:
+              </label>
+              <div class="relative">
+                <select
+                  class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                  id="grid-housing"
+                  v-model="informantPersonalInfo.informantInfo.income.type"
                 >
-                  <path
-                    d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"
-                  />
-                </svg>
+                  <option value="Fixed">Fixed</option>
+                  <option value="Irregular">Irregular</option>
+                </select>
+                <div
+                  class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700"
+                >
+                  <svg
+                    class="fill-current h-4 w-4"
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 20 20"
+                  >
+                    <path
+                      d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"
+                    />
+                  </svg>
+                </div>
               </div>
+            </div>
+            <div class="w-full md:w-1/4 px-3 mb-6 md:mb-0">
+              <label
+                class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                for="grid-housing-others"
+              >
+                Amount:
+              </label>
+              <input
+                class="appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                id="grid-other"
+                type="text"
+                placeholder="Income Amount"
+                v-model="informantPersonalInfo.informantInfo.income.amount"
+              />
             </div>
           </div>
 
-          <div class="w-full md:w-1/4 px-3 mb-6 md:mb-0 border-r-2">
-            <label
-              class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-              for="grid-wall"
-            >
-              Employment Status
-            </label>
-            <div class="relative">
-              <select
-                class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                id="grid-wall"
-                v-model="informantPersonalInfo.informantInfo.employmentStat"
+          <div class="flex flex-wrap -mx-3 mb-4">
+            <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+              <label
+                class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                for="grid-employer"
               >
-                <option value="Permanent">Permanent</option>
-                <option value="Casual">Casual</option>
-                <option value="Temporary">Temporary</option>
-                <option value="Contractual">Contractual</option>
-                <option value="On Call">On Call</option>
-              </select>
-              <div
-                class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700"
+                Employer
+              </label>
+              <input
+                class="appearance-none block w-full bg-gray-200 text-gray-700 border focus:border-gray-500 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+                id="grid-employer"
+                type="text"
+                placeholder="Employer/Agency Name"
+                v-model="informantPersonalInfo.informantInfo.employerName"
+              />
+            </div>
+
+            <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+              <label
+                class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                for="grid-address-job"
               >
-                <svg
-                  class="fill-current h-4 w-4"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 20 20"
-                >
-                  <path
-                    d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"
-                  />
-                </svg>
-              </div>
+                Address of Job
+              </label>
+              <input
+                class="appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                id="grid-address-job"
+                type="text"
+                placeholder="Job Address"
+                v-model="informantPersonalInfo.informantInfo.workAdd"
+              />
             </div>
           </div>
 
-          <div class="w-full md:w-1/4 px-3 mb-6 md:mb-0">
-            <label
-              class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-              for="grid-housing"
-            >
-              Income Type:
-            </label>
-            <div class="relative">
-              <select
-                class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                id="grid-housing"
-                v-model="informantPersonalInfo.informantInfo.income.type"
+          <div class="flex flex-wrap -mx-3 mb-4 justify-center">
+            <div class="w-full md:w-1/5 px-3 mb-6 md:mb-0">
+              <label
+                class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                for="grid-roof"
               >
-                <option value="Fixed">Fixed</option>
-                <option value="Irregular">Irregular</option>
-              </select>
-              <div
-                class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700"
-              >
-                <svg
-                  class="fill-current h-4 w-4"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 20 20"
+                Government Assistance Received
+              </label>
+              <div class="relative">
+                <select
+                  class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                  id="grid-roof"
+                  v-model="informantPersonalInfo.informantInfo.assistance"
                 >
-                  <path
-                    d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"
-                  />
-                </svg>
+                  <option value="4P's">4P's</option>
+                  <option value="MCCT">MCCT</option>
+                  <option value="MDG">MDG</option>
+                </select>
+                <div
+                  class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700"
+                >
+                  <svg
+                    class="fill-current h-4 w-4"
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 20 20"
+                  >
+                    <path
+                      d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"
+                    />
+                  </svg>
+                </div>
               </div>
             </div>
-          </div>
-          <div class="w-full md:w-1/4 px-3 mb-6 md:mb-0">
-            <label
-              class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-              for="grid-housing-others"
-            >
-              Amount:
-            </label>
-            <input
-              class="appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-              id="grid-other"
-              type="text"
-              placeholder="Income Amount"
-              v-model="informantPersonalInfo.informantInfo.income.amount"
-            />
-          </div>
-        </div>
 
-        <div class="flex flex-wrap -mx-3 mb-4">
-          <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-            <label
-              class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-              for="grid-employer"
-            >
-              Employer
-            </label>
-            <input
-              class="appearance-none block w-full bg-gray-200 text-gray-700 border focus:border-gray-500 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
-              id="grid-employer"
-              type="text"
-              placeholder="Employer/Agency Name"
-              v-model="informantPersonalInfo.informantInfo.employerName"
-            />
-          </div>
-
-          <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-            <label
-              class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-              for="grid-address-job"
-            >
-              Address of Job
-            </label>
-            <input
-              class="appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-              id="grid-address-job"
-              type="text"
-              placeholder="Job Address"
-              v-model="informantPersonalInfo.informantInfo.workAdd"
-            />
-          </div>
-        </div>
-
-        <div class="flex flex-wrap -mx-3 mb-4 justify-center">
-          <div class="w-full md:w-1/5 px-3 mb-6 md:mb-0">
-            <label
-              class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-              for="grid-roof"
-            >
-              Government Assistance Received
-            </label>
-            <div class="relative">
-              <select
-                class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                id="grid-roof"
-                v-model="informantPersonalInfo.informantInfo.assistance"
+            <div class="w-full md:w-1/5 px-3 mb-6 md:mb-0">
+              <label
+                class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                for="grid-occupation"
               >
-                <option value="4P's">4P's</option>
-                <option value="MCCT">MCCT</option>
-                <option value="MDG">MDG</option>
-              </select>
-              <div
-                class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700"
-              >
-                <svg
-                  class="fill-current h-4 w-4"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 20 20"
+                Secondary Income Source
+              </label>
+              <div class="relative">
+                <select
+                  class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                  id="grid-occupation"
+                  v-model="otherInc"
                 >
-                  <path
-                    d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"
-                  />
-                </svg>
+                  <option value="Laborer">Laborer</option>
+                  <option value="Vendor">Vendor</option>
+                  <option value="Driver">Driver</option>
+                  <option value="Waste Picker">Waste Picker</option>
+                  <option value="Housekeeper">Housekeeper</option>
+                  <option value="Street Sweeper">Street Sweeper</option>
+                  <option value="Carpenter">Carpenter</option>
+                  <option value="Repairmen">Repairmen</option>
+                  <option value="None">None</option>
+                  <option value="Others">Others</option>
+                </select>
+                <div
+                  class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700"
+                >
+                  <svg
+                    class="fill-current h-4 w-4"
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 20 20"
+                  >
+                    <path
+                      d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"
+                    />
+                  </svg>
+                </div>
               </div>
+            </div>
+            <div class="w-full md:w-1/5 px-3 mb-6 md:mb-0">
+              <label
+                class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                for="grid-roof-others"
+              >
+                Others:
+              </label>
+              <input
+                class="appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                id="grid-roof-others"
+                type="text"
+                placeholder="Other options"
+                :disabled="otherInc != 'Others'"
+                v-model="otherIncOthers"
+              />
+            </div>
+
+            <div class="w-full md:w-1/5 px-3 mb-6 md:mb-0">
+              <label
+                class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                for="grid-overall"
+              >
+                Overall Monthly Family Income
+              </label>
+              <input
+                class="appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                id="grid-overall"
+                type="text"
+                placeholder="Job Address"
+                v-model="informantPersonalInfo.informantInfo.monthlyInc"
+              />
             </div>
           </div>
 
-          <div class="w-full md:w-1/5 px-3 mb-6 md:mb-0">
-            <label
-              class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-              for="grid-occupation"
+          <div class="flex flex-wrap -mx-3 mb-4 w-full justify-center mt-8">
+            <p
+              class="block uppercase tracking-wide text-gray-700 font-bold mb-2 text-lg"
             >
-              Secondary Income Source
-            </label>
-            <div class="relative">
-              <select
-                class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                id="grid-occupation"
-                v-model="otherInc"
+              Problems Presented
+            </p>
+          </div>
+
+          <div class="flex flex-wrap justify-center -mx-3 mb-4">
+            <div class="px-3 mb-6 md:mb-0">
+              <q-checkbox
+                v-for="(checkbox, key) in checkBoxes"
+                :key="key"
+                v-model="checkbox.checked"
               >
-                <option value="Laborer">Laborer</option>
-                <option value="Vendor">Vendor</option>
-                <option value="Driver">Driver</option>
-                <option value="Waste Picker">Waste Picker</option>
-                <option value="Housekeeper">Housekeeper</option>
-                <option value="Street Sweeper">Street Sweeper</option>
-                <option value="Carpenter">Carpenter</option>
-                <option value="Repairmen">Repairmen</option>
-                <option value="None">None</option>
-                <option value="Others">Others</option>
-              </select>
-              <div
-                class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700"
-              >
-                <svg
-                  class="fill-current h-4 w-4"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 20 20"
-                >
-                  <path
-                    d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"
-                  />
-                </svg>
-              </div>
+                {{ checkbox.text }}
+              </q-checkbox>
+            </div>
+
+            <div class="w-full md:w-1/5 mb-6 md:mb-0">
+              <input
+                class="appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                id="grid-overall"
+                type="text"
+                placeholder="Specify Other Problems:"
+                v-model="checkBoxesOthers"
+                :disabled="!checkBoxes[7].checked"
+              />
             </div>
           </div>
-          <div class="w-full md:w-1/5 px-3 mb-6 md:mb-0">
-            <label
-              class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-              for="grid-roof-others"
-            >
-              Others:
-            </label>
-            <input
-              class="appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-              id="grid-roof-others"
-              type="text"
-              placeholder="Other options"
-              :disabled="otherInc != 'Others'"
-              v-model="otherIncOthers"
-            />
-          </div>
-
-          <div class="w-full md:w-1/5 px-3 mb-6 md:mb-0">
-            <label
-              class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-              for="grid-overall"
-            >
-              Overall Monthly Family Income
-            </label>
-            <input
-              class="appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-              id="grid-overall"
-              type="text"
-              placeholder="Job Address"
-              v-model="informantPersonalInfo.informantInfo.monthlyInc"
-            />
-          </div>
-        </div>
-
-        <div class="flex flex-wrap -mx-3 mb-4 w-full justify-center mt-8">
-          <p
-            class="block uppercase tracking-wide text-gray-700 font-bold mb-2 text-lg"
-          >
-            Problems Presented
-          </p>
-        </div>
-
-        <div class="flex flex-wrap justify-center -mx-3 mb-4">
-          <div class="px-3 mb-6 md:mb-0">
-            <q-checkbox
-              v-for="(checkbox, key) in checkBoxes"
-              :key="key"
-              v-model="checkbox.checked"
-            >
-              {{ checkbox.text }}
-            </q-checkbox>
-          </div>
-
-          <div class="w-full md:w-1/5 mb-6 md:mb-0">
-            <input
-              class="appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-              id="grid-overall"
-              type="text"
-              placeholder="Specify Other Problems:"
-              v-model="checkBoxesOthers"
-              :disabled="!checkBoxes[7].checked"
-            />
-          </div>
-        </div>
-      </form>
-    </div>
-    <div
-      class="mb-5 w-full bg-red-500 p-2 text-white font-semibold rounded"
-      @click.prevent="clearErr"
-      v-if="lackingErr"
-    >
-      <h3 class="text-sm">Please fill all the fields</h3>
-    </div>
-    <div class="flex w-full justify-end space-x-4">
-      <button
-        class="bg-primaryRed mb-2 w-[12vw] hover:bg-primaryRedHover text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline h-14 transition-all ease-in-out"
-        @click.prevent="backBtn"
+        </form>
+      </div>
+      <div
+        class="mb-5 w-full bg-red-500 p-2 text-white font-semibold rounded"
+        @click.prevent="clearErr"
+        v-if="lackingErr"
       >
-        Back
-      </button>
-      <button
-        class="bg-btnGreen mb-2 w-[12vw] hover:bg-btnGreenHover text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline h-14 transition-all ease-in-out"
-        @click.prevent="submitInformantInfo"
-      >
-        Next
-      </button>
+        <h3 class="text-sm">Please fill all the fields</h3>
+      </div>
+      <div class="flex w-full justify-end space-x-4">
+        <button
+          class="bg-primaryRed mb-2 w-[12vw] hover:bg-primaryRedHover text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline h-14 transition-all ease-in-out"
+          @click.prevent="backBtn"
+        >
+          Back
+        </button>
+        <button
+          class="bg-btnGreen mb-2 w-[12vw] hover:bg-btnGreenHover text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline h-14 transition-all ease-in-out"
+          @click.prevent="submitInformantInfo"
+        >
+          Next
+        </button>
+      </div>
     </div>
   </div>
 </template>

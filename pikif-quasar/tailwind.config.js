@@ -13,6 +13,8 @@ module.exports = {
         btnGreenHover: "#96bd65",
         primaryRed: "#ef777f",
         primaryRedHover: "#f1858c",
+        primaryDark: "#163142",
+        lightGray: "#cedfdb",
       },
     },
   },

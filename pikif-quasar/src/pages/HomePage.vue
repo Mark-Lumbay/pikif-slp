@@ -154,8 +154,10 @@
           title="Students"
           :rows="returnFiltered"
           :columns="columns"
-          row-key="name"
+          row-key="id"
           :pagination="initialPagination"
+          selection="single"
+          v-model="selectedRow"
           class="flex-1"
         />
       </div>
@@ -188,6 +190,7 @@ export default {
     const filterOption = ref("None");
     const filteredArr = ref([]);
     const search = ref("");
+    const selectedRow = ref([]);
 
     const options = [
       "Survivor",
@@ -327,6 +330,7 @@ export default {
       search,
       searchStudent,
       returnFiltered,
+      selectedRow,
     };
   },
 };

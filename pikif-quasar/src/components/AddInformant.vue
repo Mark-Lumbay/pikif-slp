@@ -160,8 +160,8 @@
               class="appearance-none block w-full bg-gray-200 text-gray-700 border focus:border-gray-500 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
               id="grid-birth-place"
               type="text"
-              placeholder="Birth Place"
-              v-model="informantPersonalInfo.informantInfo.birthPlace"
+              placeholder="Specify job"
+              v-model="occupationOthers"
               :disabled="occupation != 'Others'"
             />
           </div>
@@ -619,6 +619,17 @@
               {{ checkbox.text }}
             </q-checkbox>
           </div>
+
+          <div class="w-full md:w-1/5 mb-6 md:mb-0">
+            <input
+              class="appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+              id="grid-overall"
+              type="text"
+              placeholder="Specify Other Problems:"
+              v-model="checkBoxesOthers"
+              :disabled="!checkBoxes[7].checked"
+            />
+          </div>
         </div>
       </form>
     </div>
@@ -673,13 +684,6 @@ export default {
     const floorOthers = ref("");
 
     const educAss = ref(false);
-    const capitalAss = ref(false);
-    const foodAss = ref(false);
-    const medAss = ref(false);
-    const tempShelter = ref(false);
-    const hosBill = ref(false);
-    const financialAid = ref(false);
-    const others = ref(false);
 
     const checkBoxes = ref([
       { text: "Educational Assistance", checked: false },
@@ -691,6 +695,7 @@ export default {
       { text: "Financial Aid", checked: false },
       { text: "Others", checked: false },
     ]);
+    const checkBoxesOthers = ref("");
 
     const informantPersonalInfo = ref({
       informantInfo: {
@@ -706,7 +711,11 @@ export default {
         birthPlace: "",
         religion: "",
         contactNum: "",
-        occupation: "Laborer",
+        occupation: computed(() => {
+          return occupation.value == "Others"
+            ? occupationOthers.value
+            : occupation.value;
+        }),
         income: {
           type: "Fixed",
           amount: "",
@@ -720,13 +729,48 @@ export default {
         otherInc: "Laborer",
         monthlyInc: "",
         probs: computed(() => {
+          // const othersCheckbox = checkBoxes.value.find(
+          //   (checkbox) => checkbox.text === "Others"
+          // );
+          // if (othersCheckbox && othersCheckbox.checked) {
+          //   checkBoxes.value = [
+          //     ...checkBoxes.value,
+          //     { text: checkBoxesOthers.value, checked: true },
+          //   ];
+          // }
+
+          // const probs = checkBoxes.value
+          //   .filter((checkbox) => {
+          //     return checkbox.text != "Others";
+          //   })
+          //   .filter((el) => {
+          //     return el.checked;
+          //   })
+          //   .map((val) => {
+          //     if (val.text != "Others") {
+          //       return val.text;
+          //     }
+          //   });
+
+          const othersCheckbox = checkBoxes.value.find(
+            (checkbox) => checkbox.text === "Others"
+          );
+          if (othersCheckbox && othersCheckbox.checked) {
+            return [
+              ...checkBoxes.value,
+              { text: checkBoxesOthers.value, checked: true },
+            ]
+              .filter(
+                (checkbox) => checkbox.checked && checkbox.text !== "Others"
+              )
+              .map((checkbox) => checkbox.text);
+          }
+
           return checkBoxes.value
-            .filter((checkbox) => {
-              return checkbox.checked;
-            })
-            .map((val) => {
-              return val.text;
-            });
+            .filter(
+              (checkbox) => checkbox.checked && checkbox.text !== "Others"
+            )
+            .map((checkbox) => checkbox.text);
         }),
       },
     });
@@ -807,6 +851,7 @@ export default {
       otherIncOthers,
       checkBoxes,
       backBtn,
+      checkBoxesOthers,
     };
   },
 };

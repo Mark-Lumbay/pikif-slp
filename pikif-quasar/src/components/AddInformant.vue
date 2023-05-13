@@ -594,7 +594,7 @@
             <input
               class="appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
               id="grid-overall"
-              type="number"
+              type="text"
               placeholder="Job Address"
               v-model="informantPersonalInfo.informantInfo.monthlyInc"
             />
@@ -736,6 +736,24 @@ export default {
       lackingErr.value = false;
     };
 
+    function toRawObject(reactiveObj) {
+      let rawObj = {};
+      for (let key in reactiveObj) {
+        let value = reactiveObj[key];
+        if (value?.value !== undefined) {
+          // If it's a ref or computed ref, use the value directly
+          rawObj[key] = value.value;
+        } else if (typeof value === "object" && value !== null) {
+          // If it's a nested object, call toRawObject recursively
+          rawObj[key] = toRawObject(value);
+        } else {
+          // Otherwise, just copy the value
+          rawObj[key] = value;
+        }
+      }
+      return rawObj;
+    }
+
     const validate = () => {
       for (const field in informantPersonalInfo.value.informantInfo) {
         if (field == "age" || field == "monthlyInc" || field == "amount") {
@@ -758,7 +776,8 @@ export default {
 
     const submitInformantInfo = () => {
       if (validate()) {
-        emit("informantInfoSubmit", informantPersonalInfo.value.informantInfo);
+        const plainObj = toRawObject(informantPersonalInfo.value.informantInfo);
+        emit("informantInfoSubmit", plainObj);
       } else {
         lackingErr.value = true;
       }

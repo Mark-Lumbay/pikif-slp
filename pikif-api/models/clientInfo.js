@@ -90,7 +90,9 @@ class ClientModel {
         assistance: Joi.string().required(),
         otherInc: Joi.string().required(),
         monthlyInc: Joi.string().required(),
-        probs: Joi.array().items(Joi.string()).required(),
+        probs: Joi.object()
+          .pattern(Joi.number().integer(), Joi.string())
+          .required(),
       }).required(),
       initialFindings: Joi.object({
         findings: Joi.string().required(),
@@ -101,7 +103,10 @@ class ClientModel {
       abortEarly: false,
     });
 
-    if (validate.error) return false;
+    if (validate.error) {
+      console.log(validate.error.details[0].message);
+      return false;
+    }
     return this.addClientInfo("clientInfo", data);
   }
 

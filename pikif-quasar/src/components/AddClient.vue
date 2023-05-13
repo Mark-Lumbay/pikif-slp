@@ -635,6 +635,24 @@ export default {
       lackingErr.value = false;
     };
 
+    function toRawObject(reactiveObj) {
+      let rawObj = {};
+      for (let key in reactiveObj) {
+        let value = reactiveObj[key];
+        if (value?.value !== undefined) {
+          // If it's a ref or computed ref, use the value directly
+          rawObj[key] = value.value;
+        } else if (typeof value === "object" && value !== null) {
+          // If it's a nested object, call toRawObject recursively
+          rawObj[key] = toRawObject(value);
+        } else {
+          // Otherwise, just copy the value
+          rawObj[key] = value;
+        }
+      }
+      return rawObj;
+    }
+
     const validate = () => {
       for (const field in clientPersonalInfo.value.clientInfo) {
         if (field == "age") {
@@ -657,7 +675,8 @@ export default {
 
     const submitPersonInfo = () => {
       if (validate()) {
-        emit("clientInfoSubmit", clientPersonalInfo.value.clientInfo);
+        const plainObj = toRawObject(clientPersonalInfo.value.clientInfo);
+        emit("clientInfoSubmit", plainObj);
       } else {
         lackingErr.value = true;
       }

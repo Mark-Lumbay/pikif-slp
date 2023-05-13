@@ -42,3 +42,17 @@ export async function addStudent(data) {
     return { success: false, message: err.message };
   }
 }
+
+export async function checkUserExists(data) {
+  try {
+    const searchRes = await apiClient.get("/search", {
+      params: {
+        firstName: data.firstName,
+        lastName: data.lastName,
+      },
+    });
+    return searchRes;
+  } catch (err) {
+    return { status: false };
+  }
+}

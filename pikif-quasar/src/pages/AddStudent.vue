@@ -102,6 +102,7 @@ import MessagePage from "src/components/MessagePage.vue";
 import { ref, reactive, computed } from "vue";
 import { addStudent } from "../services/services";
 import { useRouter } from "vue-router";
+import { checkUserExists } from "../services/services";
 
 export default {
   components: {
@@ -112,9 +113,6 @@ export default {
   },
   setup() {
     // Variables
-    const clientInfo = ref({});
-    const informantInfo = ref({});
-    const clientFindings = ref({});
     const router = useRouter();
 
     const message = ref({
@@ -142,16 +140,27 @@ export default {
       router.go();
     };
 
-    const saveClientInfo = (info) => {
+    const saveClientInfo = async (info) => {
       data.clientInfo = info;
-      clientInfo.value = info;
+      const userData = {
+        firstName: info.firstName,
+        lastName: info.lastName,
+      };
+
+      console.log(userData);
+
+      const result = await checkUserExists(userData);
+      if (result.status) {
+        console.log("user already exists");
+      } else {
+        console.log("user does not exist!");
+      }
       console.log(data);
       nextPage();
     };
 
     const saveInformantInfo = (info) => {
       data.informantInfo = info;
-      informantInfo.value = info;
       console.log(data);
 
       nextPage();
@@ -159,7 +168,6 @@ export default {
 
     const saveClientFindings = (info) => {
       data.initialFindings = info;
-      clientFindings.value = info;
       console.log(data);
 
       addStudentInfo();
@@ -197,9 +205,6 @@ export default {
       saveClientInfo,
       saveInformantInfo,
       saveClientFindings,
-      clientInfo,
-      informantInfo,
-      clientFindings,
       getCurrentComponent,
       message,
       resetPage,

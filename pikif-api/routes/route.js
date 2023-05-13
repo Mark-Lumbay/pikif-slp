@@ -187,12 +187,16 @@ router.put("/updateFindings", async (req, res) => {
 router.get("/search", async (req, res) => {
   const info = req.query;
 
-  const clientInfo = await ClientModel.getClientInfo(info);
+  try {
+    const clientInfo = await ClientModel.getClientInfo(info);
 
-  if (clientInfo.status) {
-    res.status(200).json({ success: true, result: clientInfo });
-  } else {
-    res.status(400).json({ success: false, message: clientInfo.message });
+    if (clientInfo.status) {
+      res.status(200).json({ success: true, result: clientInfo });
+    } else {
+      res.status(400).json({ success: false, message: clientInfo.message });
+    }
+  } catch (err) {
+    res.status(400).json({ success: false, message: err.message });
   }
 });
 export default router;

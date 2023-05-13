@@ -11,12 +11,11 @@ class ClientModel {
   async getInfo(collectionName, data) {
     const { firstName, lastName } = data;
 
-    const clientRef = firestore().collection(collectionName);
-    const query = clientRef
-      .where("clientInfo.firstName", "==", firstName)
-      .where("clientInfo.lastName", "==", lastName);
-
     try {
+      const clientRef = firestore().collection(collectionName);
+      const query = clientRef
+        .where("clientInfo.firstName", "==", firstName)
+        .where("clientInfo.lastName", "==", lastName);
       const snapshot = await query.get();
 
       if (snapshot.empty) {

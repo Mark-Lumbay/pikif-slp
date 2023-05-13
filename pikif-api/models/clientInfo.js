@@ -154,15 +154,16 @@ class ClientModel {
       const documents = [];
       snapshot.forEach((doc) => {
         const data = doc.data();
-        const name = `${data.clientInfo.firstName} ${data.clientInfo.lastName}`;
+        // const name = `${data.clientInfo.firstName} ${data.clientInfo.middleName} ${data.clientInfo.lastName}`;
         documents.push({
           id: doc.id,
-          status: data.clientInfo.active,
-          fullName: name,
-          age: data.clientInfo.age,
-          sex: data.clientInfo.sex,
-          category: data.clientInfo.category,
-          educAttn: data.clientInfo.educAttn,
+          ...data,
+          // status: data.clientInfo.active,
+          // fullName: name,
+          // age: data.clientInfo.age,
+          // sex: data.clientInfo.sex,
+          // category: data.clientInfo.category,
+          // educAttn: data.clientInfo.educAttn,
         });
       });
       return { status: true, data: documents };

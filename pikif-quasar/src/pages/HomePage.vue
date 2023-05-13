@@ -156,8 +156,6 @@
           :columns="columns"
           row-key="id"
           :pagination="initialPagination"
-          selection="single"
-          v-model="selectedRow"
           class="flex-1"
         />
       </div>

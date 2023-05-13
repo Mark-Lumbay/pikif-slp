@@ -17,6 +17,10 @@ const store = createStore({
     token: null,
   },
 
+  data: {
+    userData: [],
+  },
+
   getters: {
     getToken: (state) => {
       return state.token;
@@ -29,6 +33,10 @@ const store = createStore({
     getFirstName: (state) => {
       return state.fName;
     },
+
+    getData: (data) => {
+      return data;
+    },
   },
 
   mutations: {
@@ -40,6 +48,12 @@ const store = createStore({
 
     setUserToken(state, token) {
       state.token = token;
+    },
+
+    setUserData(data, info) {
+      console.log(info);
+      data.userData = [...info];
+      console.log(data.userData);
     },
   },
   actions: {
@@ -63,6 +77,10 @@ const store = createStore({
       } catch {
         throw new Error();
       }
+    },
+
+    storeData(context, data) {
+      context.commit("setUserData", data);
     },
 
     async logout(context) {

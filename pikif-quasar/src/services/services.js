@@ -5,8 +5,6 @@ const apiClient = axios.create({
   baseURL: "http://localhost:8080/island-kids", // Replace with your API endpoint
 });
 
-const store = useStore();
-
 export async function testCall(token) {
   const response = await apiClient.get("/test", {
     headers: {
@@ -26,9 +24,34 @@ export async function register(data) {
 }
 
 export async function loadDashboard() {
+  const store = useStore();
+
   try {
     const result = await apiClient.get("/loadDashboard");
-    return result.data.data;
+    const basicInfo = [];
+    const fullInfo = [];
+
+    for (const info of result.data.data) {
+      const name = `${info.clientInfo.firstName} ${info.clientInfo.middleName} ${info.clientInfo.lastName}`;
+      basicInfo.push({
+        id: info.id,
+        status: info.clientInfo.active,
+        fullName: name,
+        age: info.clientInfo.age,
+        sex: info.clientInfo.sex,
+        category: info.clientInfo.category,
+        educAttn: info.clientInfo.educAttn,
+      });
+    }
+
+    for (const info of result.data.data) {
+      fullInfo.push({
+        ...info,
+      });
+    }
+
+    store.dispatch("storeData", fullInfo);
+    return basicInfo;
   } catch (err) {
     return { success: false, message: err.message };
   }

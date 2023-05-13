@@ -1,5 +1,44 @@
 <template>
+  <div
+    class="fixed inset-0 left-0 top-0 z-[1055] bg-gray-600 bg-opacity-75 overflow-y-auto h-full w-full"
+    v-if="duplicate"
+  >
+    <div class="flex w-full h-full justify-center items-center">
+      <div
+        class="relative mx-auto p-5 border w-96 shadow-lg rounded-md bg-white"
+      >
+        <div class="mt-3 text-center">
+          <div
+            class="mx-auto flex items-center justify-center h-14 w-14 rounded-full bg-primaryRed"
+          >
+            <q-icon
+              name="las la-times-circle"
+              size="48px"
+              class="text-white"
+            ></q-icon>
+          </div>
+          <h3 class="text-lg leading-6 font-medium text-gray-900 mt-4">
+            Error
+          </h3>
+          <div class="px-7 py-3">
+            <p class="text-sm text-gray-500">User already exists</p>
+          </div>
+          <div class="items-center px-4 py-3">
+            <button
+              class="px-4 py-2 bg-primaryRed text-white text-base font-medium rounded-md w-full shadow-sm hover:bg-primaryRedHover focus:outline-none focus:ring-2 focus:ring-green-300"
+              @click="closeErr"
+            >
+              OK
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
   <div class="w-[90%] h-[90%] flex justify-center items-center">
+    <!-- Add here -->
+
+    <!-- Ends here -->
     <div
       class="w-full flex flex-col shadow-md rounded-xl p-4 space-x-4 bg-white"
     >
@@ -114,6 +153,7 @@ export default {
   setup() {
     // Variables
     const router = useRouter();
+    const duplicate = ref(false);
 
     const message = ref({
       messageType: "",
@@ -128,6 +168,10 @@ export default {
     });
 
     // Functions
+    const closeErr = () => {
+      duplicate.value = false;
+    };
+
     const nextPage = () => {
       currPage.value++;
     };
@@ -147,16 +191,13 @@ export default {
         lastName: info.lastName,
       };
 
-      console.log(userData);
-
       const result = await checkUserExists(userData);
       if (result.status) {
-        console.log("user already exists");
+        duplicate.value = true;
       } else {
-        console.log("user does not exist!");
+        nextPage();
       }
       console.log(data);
-      nextPage();
     };
 
     const saveInformantInfo = (info) => {
@@ -208,6 +249,8 @@ export default {
       getCurrentComponent,
       message,
       resetPage,
+      duplicate,
+      closeErr,
     };
   },
 };

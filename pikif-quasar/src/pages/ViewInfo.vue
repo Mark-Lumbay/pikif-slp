@@ -1,16 +1,16 @@
 <template>
-  <div>
-    <AddClient :clientInfo="clientInfo"></AddClient>
+  <div class="w-full flex flex-col shadow-md rounded-xl p-4 space-x-4 bg-white">
+    <div>
+      <AddClient :withProp="prop"></AddClient>
+    </div>
   </div>
 </template>
 
 <script>
 import AddClient from "src/components/AddClient.vue";
-
-// import store from "src/store/index";
 import { useStore } from "vuex";
-import { onMounted, ref, computed } from "vue";
-import { useRouter } from "vue-router";
+import { onBeforeMount, ref, computed } from "vue";
+import { useRoute } from "vue-router";
 
 export default {
   components: {
@@ -18,26 +18,16 @@ export default {
   },
 
   setup() {
-    // const data = store.getters.getData();
-    // for (const info of data) {
-    //   dataObj.value.clientInfo = info.clientInfo;
-    //   dataObj.value.informantInfo = info.informantInfo;
-    //   dataObj.value.initialFindings = info.initialFindings;
-    // }
-    const dataObj = ref({});
+    const prop = true;
     const store = useStore();
-    const router = useRouter();
+    const route = useRoute();
 
-    onMounted(async () => {
-      const data = await store.dispatch("getData", router.params.id);
-      dataObj.value = [...data];
-      console.log(dataObj.value);
-
-      console.log(router.params.id);
-    });
+    // onMounted(async () => {
+    //   data.value = await store.dispatch("getClientInfo", route.params.id);
+    // });
 
     return {
-      dataObj,
+      prop,
     };
   },
 };

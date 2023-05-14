@@ -570,10 +570,31 @@
 </template>
 
 <script>
-import { ref, defineEmits, computed } from "vue";
+import { ref, defineEmits, computed, onMounted } from "vue";
+import { useStore } from "vuex";
+import { useRoute } from "vue-router";
+
 export default {
   emits: ["clientInfoSubmit"],
-  setup(_, { emit }) {
+  props: {
+    withProp: {
+      type: Object,
+      required: false,
+    },
+  },
+  setup(props, { emit }) {
+    const store = useStore();
+    const route = useRoute();
+    onMounted(async () => {
+      if (props.withProp) {
+        const data = await store.dispatch("getClientInfo", route.params.id);
+        clientPersonalInfo.value.clientInfo = data.clientInfo;
+        console.log(clientPersonalInfo.value);
+      } else {
+        console.log("no props passed");
+      }
+    });
+
     const lackingErr = ref(false);
 
     const housingCond = ref("Squater's Shanty");

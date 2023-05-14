@@ -15,9 +15,6 @@ const store = createStore({
     fName: null,
     lName: null,
     token: null,
-  },
-
-  data: {
     userData: [],
   },
 
@@ -34,8 +31,14 @@ const store = createStore({
       return state.fName;
     },
 
-    getData: (data) => {
-      return data.userData;
+    getData: (state) => {
+      return state.userData;
+    },
+
+    getOneUser: (state) => {
+      const data = this.getters.getData;
+      const info = data.find((item) => item.id === id);
+      return info;
     },
   },
 
@@ -50,10 +53,8 @@ const store = createStore({
       state.token = token;
     },
 
-    setUserData(data, info) {
-      console.log(info);
-      data.userData = [...info];
-      console.log(data.userData);
+    setUserData(state, info) {
+      state.userData = info;
     },
   },
   actions: {
@@ -83,9 +84,10 @@ const store = createStore({
       context.commit("setUserData", data);
     },
 
-    getData(context, id) {
-      const userInfo = Object.keys(data).find((key) => data[key] === id);
-      return userInfo;
+    getClientInfo(context, id) {
+      const data = this.getters.getData;
+      const info = data.find((item) => item.id === id);
+      return info;
     },
 
     async logout(context) {

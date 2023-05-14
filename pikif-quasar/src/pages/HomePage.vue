@@ -171,7 +171,7 @@
 <script>
 import { computed, ref, onMounted } from "vue";
 import { loadDashboard } from "../services/services";
-import { useRouter } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 
 export default {
   props: {
@@ -182,6 +182,7 @@ export default {
 
   setup(props) {
     const rows = ref([]);
+    const route = useRoute();
     const router = useRouter();
     onMounted(async () => {
       rows.value = await getData();
@@ -274,11 +275,10 @@ export default {
 
     function viewRow(evt, row) {
       const id = row.id;
+      console.log(id);
       router.push({
         name: "View Student Info",
-        params: {
-          id: id,
-        },
+        params: { id: id },
       });
     }
 

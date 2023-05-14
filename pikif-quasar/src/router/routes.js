@@ -37,7 +37,7 @@ const routes = [
     component: () => import("layouts/NavBar.vue"),
     children: [
       {
-        path: "/viewInfo:/id",
+        path: "/viewInfo/:id",
         name: "View Student Info",
         component: () => import("pages/ViewInfo.vue"),
       },

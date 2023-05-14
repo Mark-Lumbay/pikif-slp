@@ -576,7 +576,7 @@
       >
         <h3 class="text-sm">Please fill all the fields</h3>
       </div>
-      <div class="flex w-full justify-end" v-if="readOnly">
+      <div class="flex w-full justify-end" v-if="!readOnly">
         <button
           class="bg-btnGreen mb-2 w-[12vw] hover:bg-btnGreenHover text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline h-14 transition-all ease-in-out"
           @click.prevent="submitPersonInfo"
@@ -585,12 +585,30 @@
         </button>
       </div>
 
-      <div class="flex w-full justify-end" v-if="!readOnly">
+      <div class="flex w-full justify-end" v-if="readOnly && !editMode">
+        <button
+          class="bg-btnGreen mb-2 w-[12vw] hover:bg-btnGreenHover text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline h-14 transition-all ease-in-out"
+          @click.prevent="setupEditMode"
+        >
+          Edit
+        </button>
+      </div>
+
+      <div class="flex w-full justify-end" v-if="editMode">
+        <button
+          class="bg-btnGreen mb-2 w-[12vw] hover:bg-btnGreenHover text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline h-14 transition-all ease-in-out"
+          @click.prevent="setupCancelEdit"
+        >
+          Cancel
+        </button>
+      </div>
+
+      <div class="flex w-full justify-end" v-if="editMode">
         <button
           class="bg-btnGreen mb-2 w-[12vw] hover:bg-btnGreenHover text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline h-14 transition-all ease-in-out"
           @click.prevent="submitPersonInfo"
         >
-          Edit
+          Update
         </button>
       </div>
     </div>
@@ -601,7 +619,6 @@
 import { ref, defineEmits, computed, onMounted } from "vue";
 import { useStore } from "vuex";
 import { useRoute } from "vue-router";
-import { loadDashboard } from "../services/services";
 import { getOneStudent } from "../services/services";
 
 export default {
@@ -636,6 +653,7 @@ export default {
     const lackingErr = ref(false);
     const readOnly = ref(false);
     const textField = ref(false);
+    const editMode = ref(false);
 
     const housingCond = ref("Squater's Shanty");
     const housingOthers = ref("");
@@ -699,6 +717,17 @@ export default {
 
     const setupViewOnly = () => {
       textField.value = true;
+      readOnly.value = true;
+    };
+
+    const setupEditMode = () => {
+      textField.value = false;
+      editMode.value = true;
+    };
+
+    const setupCancelEdit = () => {
+      textField.value = true;
+      editMode.value = false;
     };
 
     function toRawObject(reactiveObj) {
@@ -762,6 +791,10 @@ export default {
       clientPersonalInfo,
       submitPersonInfo,
       textField,
+      editMode,
+      readOnly,
+      setupEditMode,
+      setupCancelEdit,
     };
   },
 };

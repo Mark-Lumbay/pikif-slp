@@ -8,7 +8,7 @@
             <p
               class="block uppercase tracking-wide text-gray-700 font-bold mb-2 text-lg"
             >
-              Personal Information
+              Client Personal Information
             </p>
           </div>
           <div class="flex flex-wrap -mx-3 mb-4">

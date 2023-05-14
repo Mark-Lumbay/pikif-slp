@@ -19,6 +19,7 @@
               label="Enter Findings Here..."
               rows="4"
               v-model="clientFindingsInfo.findings"
+              :disable="textField"
             ></q-input>
           </div>
         </form>

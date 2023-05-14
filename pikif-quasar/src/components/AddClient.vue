@@ -587,23 +587,21 @@
 
       <div class="flex w-full justify-end" v-if="readOnly && !editMode">
         <button
-          class="bg-btnGreen mb-2 w-[12vw] hover:bg-btnGreenHover text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline h-14 transition-all ease-in-out"
+          class="bg-primaryBtn mb-2 w-[12vw] hover:bg-primaryHovBtn text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline h-14 transition-all ease-in-out"
           @click.prevent="setupEditMode"
         >
           Edit
         </button>
       </div>
 
-      <div class="flex w-full justify-end" v-if="editMode">
+      <div class="flex w-full justify-end space-x-4 mt-4" v-if="editMode">
         <button
-          class="bg-btnGreen mb-2 w-[12vw] hover:bg-btnGreenHover text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline h-14 transition-all ease-in-out"
+          class="bg-primaryRed mb-2 w-[12vw] hover:bg-primaryRedHover text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline h-14 transition-all ease-in-out"
           @click.prevent="setupCancelEdit"
         >
           Cancel
         </button>
-      </div>
 
-      <div class="flex w-full justify-end" v-if="editMode">
         <button
           class="bg-btnGreen mb-2 w-[12vw] hover:bg-btnGreenHover text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline h-14 transition-all ease-in-out"
           @click.prevent="submitPersonInfo"

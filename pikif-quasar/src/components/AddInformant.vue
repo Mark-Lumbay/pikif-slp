@@ -25,6 +25,7 @@
                 type="text"
                 placeholder="First Name"
                 v-model="informantPersonalInfo.informantInfo.firstName"
+                :disabled="textField"
               />
               <!-- <p class="text-red-500 text-xs italic">
               Please fill out this field.
@@ -43,6 +44,7 @@
                 type="text"
                 placeholder="Middle Name"
                 v-model="informantPersonalInfo.informantInfo.middleName"
+                :disabled="textField"
               />
             </div>
             <div class="w-full md:w-1/3 px-3">
@@ -58,6 +60,7 @@
                 type="text"
                 placeholder="Last Name"
                 v-model="informantPersonalInfo.informantInfo.lastName"
+                :disabled="textField"
               />
             </div>
           </div>
@@ -76,6 +79,7 @@
                 type="text"
                 placeholder="Address"
                 v-model="informantPersonalInfo.informantInfo.address"
+                :disabled="textField"
               />
               <!-- <p class="text-red-500 text-xs italic">
               Please fill out this field.
@@ -94,6 +98,7 @@
                 type="number"
                 placeholder="Age"
                 v-model="informantPersonalInfo.informantInfo.age"
+                :disabled="textField"
               />
             </div>
             <div class="w-full md:w-1/6 px-3">
@@ -108,6 +113,7 @@
                 id="grid-int"
                 type="date"
                 v-model="informantPersonalInfo.informantInfo.interviewDate"
+                :disabled="textField"
               />
             </div>
             <div class="w-full md:w-1/6 px-3 mb-6 md:mb-0">
@@ -122,6 +128,7 @@
                   class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                   id="grid-occupation"
                   v-model="occupation"
+                  :disabled="textField"
                 >
                   <option value="Laborer">Laborer</option>
                   <option value="Vendor">Vendor</option>
@@ -182,6 +189,7 @@
                 type="text"
                 placeholder="Birth Place"
                 v-model="informantPersonalInfo.informantInfo.birthPlace"
+                :disabled="textField"
               />
             </div>
             <div class="w-full md:w-1/6 px-3">
@@ -196,6 +204,7 @@
                 id="grid-bday"
                 type="date"
                 v-model="informantPersonalInfo.informantInfo.birthDate"
+                :disabled="textField"
               />
             </div>
 
@@ -211,6 +220,7 @@
                   class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                   id="grid-status"
                   v-model="informantPersonalInfo.informantInfo.status"
+                  :disabled="textField"
                 >
                   <option value="Single">Single</option>
                   <option value="Married">Married</option>
@@ -244,6 +254,7 @@
                   class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                   id="grid-sex"
                   v-model="informantPersonalInfo.informantInfo.sex"
+                  :disabled="textField"
                 >
                   <option value="Male">Male</option>
                   <option value="Female">Female</option>
@@ -279,6 +290,7 @@
                   class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                   id="grid-educ"
                   v-model="informantPersonalInfo.informantInfo.educAttn"
+                  :disabled="textField"
                 >
                   <option value="Pre-school">Pre-school</option>
                   <option value="Elementary">Elementary</option>
@@ -316,6 +328,7 @@
                 type="text"
                 placeholder="Religion"
                 v-model="informantPersonalInfo.informantInfo.religion"
+                :disabled="textField"
               />
             </div>
 
@@ -332,6 +345,7 @@
                 type="text"
                 placeholder="Contact Number"
                 v-model="informantPersonalInfo.informantInfo.contactNum"
+                :disabled="textField"
               />
             </div>
           </div>
@@ -357,6 +371,7 @@
                   class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                   id="grid-roof"
                   v-model="informantPersonalInfo.informantInfo.employment"
+                  :disabled="textField"
                 >
                   <option value="Employed">Employed</option>
                   <option value="Self-Employed">Self-Employed</option>
@@ -390,6 +405,7 @@
                   class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                   id="grid-wall"
                   v-model="informantPersonalInfo.informantInfo.employmentStat"
+                  :disabled="textField"
                 >
                   <option value="Permanent">Permanent</option>
                   <option value="Casual">Casual</option>
@@ -425,6 +441,7 @@
                   class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                   id="grid-housing"
                   v-model="informantPersonalInfo.informantInfo.income.type"
+                  :disabled="textField"
                 >
                   <option value="Fixed">Fixed</option>
                   <option value="Irregular">Irregular</option>
@@ -457,6 +474,7 @@
                 type="text"
                 placeholder="Income Amount"
                 v-model="informantPersonalInfo.informantInfo.income.amount"
+                :disabled="textField"
               />
             </div>
           </div>
@@ -475,6 +493,7 @@
                 type="text"
                 placeholder="Employer/Agency Name"
                 v-model="informantPersonalInfo.informantInfo.employerName"
+                :disabled="textField"
               />
             </div>
 
@@ -491,6 +510,7 @@
                 type="text"
                 placeholder="Job Address"
                 v-model="informantPersonalInfo.informantInfo.workAdd"
+                :disabled="textField"
               />
             </div>
           </div>
@@ -508,6 +528,7 @@
                   class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                   id="grid-roof"
                   v-model="informantPersonalInfo.informantInfo.assistance"
+                  :disabled="textField"
                 >
                   <option value="4P's">4P's</option>
                   <option value="MCCT">MCCT</option>
@@ -541,6 +562,7 @@
                   class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                   id="grid-occupation"
                   v-model="otherInc"
+                  :disabled="textField"
                 >
                   <option value="Laborer">Laborer</option>
                   <option value="Vendor">Vendor</option>
@@ -598,6 +620,7 @@
                 type="text"
                 placeholder="Job Address"
                 v-model="informantPersonalInfo.informantInfo.monthlyInc"
+                :disabled="textField"
               />
             </div>
           </div>
@@ -616,6 +639,7 @@
                 v-for="(checkbox, key) in checkBoxes"
                 :key="key"
                 v-model="checkbox.checked"
+                :disabled="textField"
               >
                 {{ checkbox.text }}
               </q-checkbox>
@@ -655,6 +679,31 @@
           Next
         </button>
       </div>
+
+      <div class="flex w-full justify-end" v-if="readOnly && !editMode">
+        <button
+          class="bg-primaryBtn mb-2 w-[12vw] hover:bg-primaryHovBtn text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline h-14 transition-all ease-in-out"
+          @click.prevent="setupEditMode"
+        >
+          Edit
+        </button>
+      </div>
+
+      <div class="flex w-full justify-end space-x-4 mt-4" v-if="editMode">
+        <button
+          class="bg-primaryRed mb-2 w-[12vw] hover:bg-primaryRedHover text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline h-14 transition-all ease-in-out"
+          @click.prevent="setupCancelEdit"
+        >
+          Cancel
+        </button>
+
+        <button
+          class="bg-btnGreen mb-2 w-[12vw] hover:bg-btnGreenHover text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline h-14 transition-all ease-in-out"
+          @click.prevent="submitPersonInfo"
+        >
+          Update
+        </button>
+      </div>
     </div>
   </div>
 </template>
@@ -663,9 +712,38 @@
 import { ref, defineEmits, computed } from "vue";
 export default {
   emits: ["informantInfoSubmit", "goBack"],
+  props: {
+    withProp: {
+      type: Object,
+      required: false,
+    },
+  },
 
   setup(_, { emit }) {
+    const store = useStore();
+    const route = useRoute();
+
+    onMounted(async () => {
+      if (props.withProp) {
+        let data = await store.dispatch("getClientInfo", route.params.id);
+
+        if (!data) {
+          const data = await getOneStudent(route.params.id);
+          informantPersonalInfo.value.id = route.params.id;
+          informantPersonalInfo.value.informantInfo = data.informantInfo;
+          setupViewOnly();
+        } else {
+          informantPersonalInfo.value.id = route.params.id;
+          informantPersonalInfo.value.informantInfo = data.informantInfo;
+          setupViewOnly();
+        }
+      }
+    });
+
     const lackingErr = ref(false);
+    const readOnly = ref(false);
+    const textField = ref(false);
+    const editMode = ref(false);
 
     const occupation = ref("Laborer");
     const occupationOthers = ref("");
@@ -782,6 +860,21 @@ export default {
       lackingErr.value = false;
     };
 
+    const setupViewOnly = () => {
+      textField.value = true;
+      readOnly.value = true;
+    };
+
+    const setupEditMode = () => {
+      textField.value = false;
+      editMode.value = true;
+    };
+
+    const setupCancelEdit = () => {
+      textField.value = true;
+      editMode.value = false;
+    };
+
     function toRawObject(reactiveObj) {
       let rawObj = {};
       for (let key in reactiveObj) {
@@ -854,6 +947,11 @@ export default {
       checkBoxes,
       backBtn,
       checkBoxesOthers,
+      readOnly,
+      textField,
+      editMode,
+      setupEditMode,
+      setupCancelEdit,
     };
   },
 };

@@ -276,7 +276,9 @@ export default {
       const id = row.id;
       router.push({
         name: "View Student Info",
-        params: id,
+        params: {
+          id: id,
+        },
       });
     }
 

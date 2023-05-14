@@ -83,6 +83,11 @@ const store = createStore({
       context.commit("setUserData", data);
     },
 
+    getData(context, id) {
+      const userInfo = Object.keys(data).find((key) => data[key] === id);
+      return userInfo;
+    },
+
     async logout(context) {
       const res = await signOut(auth);
       console.log(res);

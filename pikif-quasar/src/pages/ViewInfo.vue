@@ -7,7 +7,8 @@
 <script>
 import AddClient from "src/components/AddClient.vue";
 
-import store from "src/store/index";
+// import store from "src/store/index";
+import { useStore } from "vuex";
 import { onMounted, ref, computed } from "vue";
 import { useRouter } from "vue-router";
 
@@ -23,23 +24,16 @@ export default {
     //   dataObj.value.informantInfo = info.informantInfo;
     //   dataObj.value.initialFindings = info.initialFindings;
     // }
+    const dataObj = ref({});
+    const store = useStore();
+    const router = useRouter();
 
     onMounted(async () => {
-      const data = await store.getters.getData;
-      for (const info of data) {
-        dataObj.value.clientInfo = info.clientInfo;
-        dataObj.value.informantInfo = info.informantInfo;
-        dataObj.value.initialFindings = info.initialFindings;
-      }
-
+      const data = await store.dispatch("getData", router.params.id);
+      dataObj.value = [...data];
       console.log(dataObj.value);
-    });
 
-    const router = useRouter();
-    const dataObj = ref({
-      clientInfo: null,
-      informantInfo: null,
-      initialFindings: null,
+      console.log(router.params.id);
     });
 
     return {

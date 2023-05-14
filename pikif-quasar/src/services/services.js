@@ -57,6 +57,15 @@ export async function loadDashboard() {
   }
 }
 
+export async function getOneStudent(id) {
+  try {
+    const studentInfo = await apiClient.get(`/getClient/${id}`);
+    return studentInfo.data.data;
+  } catch (err) {
+    return { success: false, message: `Error ${err.message}` };
+  }
+}
+
 export async function addStudent(data) {
   try {
     await apiClient.post("/addClientInfo", data);

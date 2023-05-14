@@ -25,6 +25,7 @@
                 type="text"
                 placeholder="First Name"
                 v-model="clientPersonalInfo.clientInfo.firstName"
+                :disabled="textField"
               />
               <!-- <p class="text-red-500 text-xs italic">
               Please fill out this field.
@@ -43,6 +44,7 @@
                 type="text"
                 placeholder="Middle Name"
                 v-model="clientPersonalInfo.clientInfo.middleName"
+                :disabled="textField"
               />
             </div>
             <div class="w-full md:w-1/3 px-3">
@@ -58,6 +60,7 @@
                 type="text"
                 placeholder="Last Name"
                 v-model="clientPersonalInfo.clientInfo.lastName"
+                :disabled="textField"
               />
             </div>
           </div>
@@ -76,6 +79,7 @@
                 type="text"
                 placeholder="Address"
                 v-model="clientPersonalInfo.clientInfo.address"
+                :disabled="textField"
               />
               <!-- <p class="text-red-500 text-xs italic">
               Please fill out this field.
@@ -94,6 +98,7 @@
                 type="number"
                 placeholder="Age"
                 v-model="clientPersonalInfo.clientInfo.age"
+                :disabled="textField"
               />
             </div>
             <div class="w-full md:w-1/6 px-3">
@@ -108,6 +113,7 @@
                 id="grid-int"
                 type="date"
                 v-model="clientPersonalInfo.clientInfo.interviewDate"
+                :disabled="textField"
               />
             </div>
             <div class="w-full md:w-1/6 px-3 mb-6 md:mb-0">
@@ -122,6 +128,7 @@
                   class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                   id="grid-category"
                   v-model="clientPersonalInfo.clientInfo.category"
+                  :disabled="textField"
                 >
                   <option value="Survivor">Survivor</option>
                   <option value="Needly Youth">Needly Youth</option>
@@ -165,6 +172,7 @@
                 type="text"
                 placeholder="Birth Place"
                 v-model="clientPersonalInfo.clientInfo.birthPlace"
+                :disabled="textField"
               />
             </div>
             <div class="w-full md:w-1/6 px-3">
@@ -179,6 +187,7 @@
                 id="grid-bday"
                 type="date"
                 v-model="clientPersonalInfo.clientInfo.birthDate"
+                :disabled="textField"
               />
             </div>
 
@@ -194,6 +203,7 @@
                   class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                   id="grid-status"
                   v-model="clientPersonalInfo.clientInfo.status"
+                  :disabled="textField"
                 >
                   <option value="Single">Single</option>
                   <option value="Married">Married</option>
@@ -227,6 +237,7 @@
                   class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                   id="grid-sex"
                   v-model="clientPersonalInfo.clientInfo.sex"
+                  :disabled="textField"
                 >
                   <option value="Male">Male</option>
                   <option value="Female">Female</option>
@@ -261,6 +272,7 @@
                 type="text"
                 placeholder="Appliances"
                 v-model="clientPersonalInfo.clientInfo.appliances"
+                :disabled="textField"
               />
             </div>
           </div>
@@ -278,6 +290,7 @@
                   class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                   id="grid-educ"
                   v-model="clientPersonalInfo.clientInfo.educAttn"
+                  :disabled="textField"
                 >
                   <option value="Pre-school">Pre-school</option>
                   <option value="Elementary">Elementary</option>
@@ -315,6 +328,7 @@
                 type="text"
                 placeholder="Religion"
                 v-model="clientPersonalInfo.clientInfo.religion"
+                :disabled="textField"
               />
             </div>
 
@@ -331,6 +345,7 @@
                 type="text"
                 placeholder="Contact Number"
                 v-model="clientPersonalInfo.clientInfo.contactNum"
+                :disabled="textField"
               />
             </div>
 
@@ -346,6 +361,7 @@
                   class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                   id="grid-housing"
                   v-model="housingCond"
+                  :disabled="textField"
                 >
                   <option value="Squater's Shanty">Squater's Shanty</option>
                   <option value="Dilapidated House">Dilapidated House</option>
@@ -408,6 +424,7 @@
                   class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                   id="grid-roof"
                   v-model="roofMats"
+                  :disabled="textField"
                 >
                   <option value="Nipa">Nipa</option>
                   <option value="Bamboo">Bamboo</option>
@@ -458,6 +475,7 @@
                   class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                   id="grid-wall"
                   v-model="wallMats"
+                  :disabled="textField"
                 >
                   <option value="Nipa">Nipa</option>
                   <option value="Bamboo">Bamboo</option>
@@ -509,6 +527,7 @@
                   class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                   id="grid-wall"
                   v-model="floorMats"
+                  :disabled="textField"
                 >
                   <option value="Soil">Soil</option>
                   <option value="Bamboo">Bamboo</option>
@@ -557,12 +576,21 @@
       >
         <h3 class="text-sm">Please fill all the fields</h3>
       </div>
-      <div class="flex w-full justify-end">
+      <div class="flex w-full justify-end" v-if="readOnly">
         <button
           class="bg-btnGreen mb-2 w-[12vw] hover:bg-btnGreenHover text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline h-14 transition-all ease-in-out"
           @click.prevent="submitPersonInfo"
         >
           Next
+        </button>
+      </div>
+
+      <div class="flex w-full justify-end" v-if="!readOnly">
+        <button
+          class="bg-btnGreen mb-2 w-[12vw] hover:bg-btnGreenHover text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline h-14 transition-all ease-in-out"
+          @click.prevent="submitPersonInfo"
+        >
+          Edit
         </button>
       </div>
     </div>
@@ -573,6 +601,8 @@
 import { ref, defineEmits, computed, onMounted } from "vue";
 import { useStore } from "vuex";
 import { useRoute } from "vue-router";
+import { loadDashboard } from "../services/services";
+import { getOneStudent } from "../services/services";
 
 export default {
   emits: ["clientInfoSubmit"],
@@ -585,17 +615,27 @@ export default {
   setup(props, { emit }) {
     const store = useStore();
     const route = useRoute();
+
     onMounted(async () => {
       if (props.withProp) {
-        const data = await store.dispatch("getClientInfo", route.params.id);
-        clientPersonalInfo.value.clientInfo = data.clientInfo;
-        console.log(clientPersonalInfo.value);
-      } else {
-        console.log("no props passed");
+        let data = await store.dispatch("getClientInfo", route.params.id);
+
+        if (!data) {
+          const data = await getOneStudent(route.params.id);
+          clientPersonalInfo.value.id = route.params.id;
+          clientPersonalInfo.value.clientInfo = data.clientInfo;
+          setupViewOnly();
+        } else {
+          clientPersonalInfo.value.id = route.params.id;
+          clientPersonalInfo.value.clientInfo = data.clientInfo;
+          setupViewOnly();
+        }
       }
     });
 
     const lackingErr = ref(false);
+    const readOnly = ref(false);
+    const textField = ref(false);
 
     const housingCond = ref("Squater's Shanty");
     const housingOthers = ref("");
@@ -655,6 +695,10 @@ export default {
     // Functions
     const clearErr = () => {
       lackingErr.value = false;
+    };
+
+    const setupViewOnly = () => {
+      textField.value = true;
     };
 
     function toRawObject(reactiveObj) {
@@ -717,6 +761,7 @@ export default {
       floorOthers,
       clientPersonalInfo,
       submitPersonInfo,
+      textField,
     };
   },
 };

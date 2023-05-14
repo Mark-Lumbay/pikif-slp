@@ -15,7 +15,8 @@ const store = createStore({
     fName: null,
     lName: null,
     token: null,
-    userData: [],
+    studentData: [],
+    indivStudData: [],
   },
 
   getters: {
@@ -32,7 +33,7 @@ const store = createStore({
     },
 
     getData: (state) => {
-      return state.userData;
+      return state.studentData;
     },
 
     getOneUser: (state) => {
@@ -54,7 +55,11 @@ const store = createStore({
     },
 
     setUserData(state, info) {
-      state.userData = info;
+      state.studentData = info;
+    },
+
+    setIndivData(state, info) {
+      state.indivStudData = info;
     },
   },
   actions: {
@@ -82,6 +87,10 @@ const store = createStore({
 
     storeData(context, data) {
       context.commit("setUserData", data);
+    },
+
+    storeIndivData(context, data) {
+      context.commit("setIndivData", data);
     },
 
     getClientInfo(context, id) {

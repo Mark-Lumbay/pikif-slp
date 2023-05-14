@@ -726,6 +726,7 @@ export default {
   setup(props, { emit }) {
     const store = useStore();
     const route = useRoute();
+    const probs = [];
 
     onMounted(async () => {
       if (props.withProp) {
@@ -741,6 +742,20 @@ export default {
           informantPersonalInfo.value.informantInfo = data.informantInfo;
           setupViewOnly();
         }
+
+        // 1. Get probs from object and store in array
+        for (const key in informantPersonalInfo.value.informantInfo.probs) {
+          probs.push(informantPersonalInfo.value.informantInfo.probs[key]);
+        }
+
+        // 2. Find probs in the checkboxes array
+        probs.forEach((findText) => {
+          const entry = checkBoxes.value.find((item) => item.text === findText);
+          if (entry) {
+            // 3. Update the checked value accordingly
+            entry.checked = true;
+          }
+        });
       }
     });
 

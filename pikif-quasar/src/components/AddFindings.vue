@@ -32,7 +32,7 @@
         <h3 class="text-sm">Please fill all the fields</h3>
       </div>
 
-      <div class="flex w-full justify-end space-x-4">
+      <div class="flex w-full justify-end space-x-4" v-if="!readOnly">
         <button
           class="bg-primaryRed mb-2 w-[12vw] hover:bg-primaryRedHover text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline h-14 transition-all ease-in-out"
           @click.prevent="backBtn"
@@ -46,18 +46,74 @@
           Next
         </button>
       </div>
+
+      <div class="flex w-full justify-end" v-if="readOnly && !editMode">
+        <button
+          class="bg-primaryBtn mb-2 w-[12vw] hover:bg-primaryHovBtn text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline h-14 transition-all ease-in-out"
+          @click.prevent="setupEditMode"
+        >
+          Edit
+        </button>
+      </div>
+
+      <div class="flex w-full justify-end space-x-4 mt-4" v-if="editMode">
+        <button
+          class="bg-primaryRed mb-2 w-[12vw] hover:bg-primaryRedHover text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline h-14 transition-all ease-in-out"
+          @click.prevent="setupCancelEdit"
+        >
+          Cancel
+        </button>
+
+        <button
+          class="bg-btnGreen mb-2 w-[12vw] hover:bg-btnGreenHover text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline h-14 transition-all ease-in-out"
+          @click.prevent="submitPersonInfo"
+        >
+          Update
+        </button>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-import { ref, defineEmits } from "vue";
+import { ref, defineEmits, onMounted } from "vue";
+import { useStore } from "vuex";
+import { useRoute } from "vue-router";
+import { getOneStudent } from "../services/services";
 
 export default {
   emits: ["clientFindingsSubmit", "goBack"],
-
-  setup(_, { emit }) {
+  props: {
+    withProp: {
+      type: Object,
+      required: false,
+    },
+  },
+  setup(props, { emit }) {
+    const store = useStore();
+    const route = useRoute();
     const lackingErr = ref(false);
+    const readOnly = ref(false);
+    const textField = ref(false);
+    const editMode = ref(false);
+
+    onMounted(async () => {
+      if (props.withProp) {
+        let data = await store.dispatch("getClientInfo", route.params.id);
+
+        if (!data) {
+          const data = await getOneStudent(route.params.id);
+          clientFindingsInfo.value.id = route.params.id;
+          clientFindingsInfo.value.findings = data.initialFindings.findings;
+          setupViewOnly();
+        } else {
+          clientFindingsInfo.value.id = route.params.id;
+          clientFindingsInfo.value.findings = data.initialFindings.findings;
+          setupViewOnly();
+        }
+      }
+    });
+
     const clientFindingsInfo = ref({
       findings: "",
     });
@@ -78,12 +134,32 @@ export default {
       emit("goBack");
     };
 
+    const setupViewOnly = () => {
+      textField.value = true;
+      readOnly.value = true;
+    };
+
+    const setupEditMode = () => {
+      textField.value = false;
+      editMode.value = true;
+    };
+
+    const setupCancelEdit = () => {
+      textField.value = true;
+      editMode.value = false;
+    };
+
     return {
       clientFindingsInfo,
       submitClientFindings,
       lackingErr,
       clearErr,
       backBtn,
+      setupEditMode,
+      setupCancelEdit,
+      readOnly,
+      textField,
+      editMode,
     };
   },
 };

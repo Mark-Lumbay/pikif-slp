@@ -39,10 +39,7 @@
 
     <div class="flex flex-row w-full h-full">
       <div class="flex flex-row mt-12" :class="classWidth">
-        <div
-          class="flex flex-col h-screen bg-secondaryBlue"
-          :class="classWidth"
-        >
+        <div class="fixed h-screen bg-secondaryBlue" :class="classWidth">
           <a @click="router.push('/')">
             <div
               class="hover:bg-secondaryDarker p-4 px-6 transition-all ease-in-out cursor-pointer"

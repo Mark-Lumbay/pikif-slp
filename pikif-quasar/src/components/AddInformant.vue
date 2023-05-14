@@ -665,7 +665,7 @@
       >
         <h3 class="text-sm">Please fill all the fields</h3>
       </div>
-      <div class="flex w-full justify-end space-x-4">
+      <div class="flex w-full justify-end space-x-4" v-if="!readOnly">
         <button
           class="bg-primaryRed mb-2 w-[12vw] hover:bg-primaryRedHover text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline h-14 transition-all ease-in-out"
           @click.prevent="backBtn"
@@ -709,7 +709,11 @@
 </template>
 
 <script>
-import { ref, defineEmits, computed } from "vue";
+import { ref, defineEmits, computed, onMounted } from "vue";
+import { useStore } from "vuex";
+import { useRoute } from "vue-router";
+import { getOneStudent } from "../services/services";
+
 export default {
   emits: ["informantInfoSubmit", "goBack"],
   props: {
@@ -719,7 +723,7 @@ export default {
     },
   },
 
-  setup(_, { emit }) {
+  setup(props, { emit }) {
     const store = useStore();
     const route = useRoute();
 

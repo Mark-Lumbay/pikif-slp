@@ -639,7 +639,7 @@
                 v-for="(checkbox, key) in checkBoxes"
                 :key="key"
                 v-model="checkbox.checked"
-                :disabled="textField"
+                :disable="textField"
               >
                 {{ checkbox.text }}
               </q-checkbox>

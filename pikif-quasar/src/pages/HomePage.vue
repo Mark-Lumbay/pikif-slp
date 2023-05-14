@@ -275,7 +275,7 @@ export default {
     function viewRow(evt, row) {
       const id = row.id;
       router.push({
-        name: "Add Student",
+        name: "View Student Info",
         params: id,
       });
     }

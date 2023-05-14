@@ -144,16 +144,23 @@ import { useRouter } from "vue-router";
 import { checkUserExists } from "../services/services";
 
 export default {
+  props: {
+    clientInfo: {
+      type: Object,
+      required: false,
+    },
+  },
   components: {
     AddClient,
     AddFindings,
     AddInformant,
     MessagePage,
   },
-  setup() {
+  setup(props) {
     // Variables
     const router = useRouter();
     const duplicate = ref(false);
+    console.log(props.clientInfo);
 
     const message = ref({
       messageType: "",

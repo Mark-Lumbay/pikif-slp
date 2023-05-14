@@ -157,6 +157,7 @@
           row-key="id"
           :pagination="initialPagination"
           class="flex-1"
+          @row-click="viewRow"
         />
       </div>
     </div>
@@ -170,6 +171,8 @@
 <script>
 import { computed, ref, onMounted } from "vue";
 import { loadDashboard } from "../services/services";
+import { useRouter } from "vue-router";
+
 export default {
   props: {
     userName: {
@@ -179,6 +182,7 @@ export default {
 
   setup(props) {
     const rows = ref([]);
+    const router = useRouter();
     onMounted(async () => {
       rows.value = await getData();
       filterTable();
@@ -268,6 +272,14 @@ export default {
       toggleDropDown();
     }
 
+    function viewRow(evt, row) {
+      const id = row.id;
+      router.push({
+        name: "Add Student",
+        params: id,
+      });
+    }
+
     function filterTable(isSearch = false) {
       if (isSearch == true) {
         const tempResults = [];
@@ -329,6 +341,7 @@ export default {
       searchStudent,
       returnFiltered,
       selectedRow,
+      viewRow,
     };
   },
 };

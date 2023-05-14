@@ -30,6 +30,21 @@ const routes = [
   },
 
   {
+    path: "/viewInfo/:id",
+    meta: {
+      requiresAuth: true,
+    },
+    component: () => import("layouts/NavBar.vue"),
+    children: [
+      {
+        path: "/viewInfo:/id",
+        name: "View Student Information",
+        component: () => import("pages/ViewInfo.vue"),
+      },
+    ],
+  },
+
+  {
     path: "/login",
     children: [{ path: "", component: () => import("pages/LogIn.vue") }],
   },

@@ -35,7 +35,7 @@ const store = createStore({
     },
 
     getData: (data) => {
-      return data;
+      return data.userData;
     },
   },
 

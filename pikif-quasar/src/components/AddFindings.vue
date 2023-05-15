@@ -67,7 +67,7 @@
 
         <button
           class="bg-btnGreen mb-2 w-[12vw] hover:bg-btnGreenHover text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline h-14 transition-all ease-in-out"
-          @click.prevent="submitPersonInfo"
+          @click.prevent="submitClientFindings"
         >
           Update
         </button>
@@ -83,7 +83,7 @@ import { useRoute } from "vue-router";
 import { getOneStudent } from "../services/services";
 
 export default {
-  emits: ["clientFindingsSubmit", "goBack"],
+  emits: ["clientFindingsSubmit", "goBack", "clientFindingsUpdate"],
   props: {
     withProp: {
       type: Object,
@@ -97,6 +97,7 @@ export default {
     const readOnly = ref(false);
     const textField = ref(false);
     const editMode = ref(false);
+    const updateMode = ref(false);
 
     onMounted(async () => {
       if (props.withProp) {
@@ -123,7 +124,11 @@ export default {
       if (clientFindingsInfo.value.findings.trim() == "") {
         lackingErr.value = true;
       } else {
-        emit("clientFindingsSubmit", clientFindingsInfo.value);
+        if (updateMode.value == false) {
+          emit("clientFindingsSubmit", clientFindingsInfo.value);
+        } else {
+          emit("clientFindingsUpdate", clientFindingsInfo.value);
+        }
       }
     };
 
@@ -138,16 +143,20 @@ export default {
     const setupViewOnly = () => {
       textField.value = true;
       readOnly.value = true;
+      updateMode.value = false;
+      editMode.value = false;
     };
 
     const setupEditMode = () => {
       textField.value = false;
       editMode.value = true;
+      updateMode.value = true;
     };
 
     const setupCancelEdit = () => {
       textField.value = true;
       editMode.value = false;
+      updateMode.value = false;
     };
 
     return {

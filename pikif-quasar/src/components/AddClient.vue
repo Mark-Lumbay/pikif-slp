@@ -620,7 +620,7 @@ import { useRoute } from "vue-router";
 import { getOneStudent } from "../services/services";
 
 export default {
-  emits: ["clientInfoSubmit"],
+  emits: ["clientInfoSubmit", "clientInfoUpdate"],
   props: {
     withProp: {
       type: Object,
@@ -652,6 +652,7 @@ export default {
     const readOnly = ref(false);
     const textField = ref(false);
     const editMode = ref(false);
+    const updateMode = ref(false);
 
     const housingCond = ref("Squater's Shanty");
     const housingOthers = ref("");
@@ -716,16 +717,20 @@ export default {
     const setupViewOnly = () => {
       textField.value = true;
       readOnly.value = true;
+      updateMode.value = false;
+      editMode.value = false;
     };
 
     const setupEditMode = () => {
       textField.value = false;
       editMode.value = true;
+      updateMode.value = true;
     };
 
     const setupCancelEdit = () => {
       textField.value = true;
       editMode.value = false;
+      updateMode.value = false;
     };
 
     function toRawObject(reactiveObj) {
@@ -769,7 +774,12 @@ export default {
     const submitPersonInfo = () => {
       if (validate()) {
         const plainObj = toRawObject(clientPersonalInfo.value.clientInfo);
-        emit("clientInfoSubmit", plainObj);
+        if (updateMode.value == false) {
+          emit("clientInfoSubmit", plainObj);
+        } else {
+          setupViewOnly();
+          emit("clientInfoUpdate", plainObj);
+        }
       } else {
         lackingErr.value = true;
       }
@@ -791,6 +801,7 @@ export default {
       textField,
       editMode,
       readOnly,
+      updateMode,
       setupEditMode,
       setupCancelEdit,
     };

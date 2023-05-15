@@ -699,7 +699,7 @@
 
         <button
           class="bg-btnGreen mb-2 w-[12vw] hover:bg-btnGreenHover text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline h-14 transition-all ease-in-out"
-          @click.prevent="submitPersonInfo"
+          @click.prevent="submitInformantInfo"
         >
           Update
         </button>
@@ -715,7 +715,7 @@ import { useRoute } from "vue-router";
 import { getOneStudent } from "../services/services";
 
 export default {
-  emits: ["informantInfoSubmit", "goBack"],
+  emits: ["informantInfoSubmit", "goBack", "informantInfoUpdate"],
   props: {
     withProp: {
       type: Object,
@@ -756,6 +756,29 @@ export default {
             entry.checked = true;
           }
         });
+
+        // Changing informantInfo.props banck to being computed property
+        informantPersonalInfo.value.informantInfo.probs = computed(() => {
+          const othersCheckbox = checkBoxes.value.find(
+            (checkbox) => checkbox.text === "Others"
+          );
+          if (othersCheckbox && othersCheckbox.checked) {
+            return [
+              ...checkBoxes.value,
+              { text: checkBoxesOthers.value, checked: true },
+            ]
+              .filter(
+                (checkbox) => checkbox.checked && checkbox.text !== "Others"
+              )
+              .map((checkbox) => checkbox.text);
+          }
+
+          return checkBoxes.value
+            .filter(
+              (checkbox) => checkbox.checked && checkbox.text !== "Others"
+            )
+            .map((checkbox) => checkbox.text);
+        });
       }
     });
 
@@ -763,6 +786,7 @@ export default {
     const readOnly = ref(false);
     const textField = ref(false);
     const editMode = ref(false);
+    const updateMode = ref(false);
 
     const occupation = ref("Laborer");
     const occupationOthers = ref("");
@@ -828,29 +852,6 @@ export default {
         otherInc: "Laborer",
         monthlyInc: "",
         probs: computed(() => {
-          // const othersCheckbox = checkBoxes.value.find(
-          //   (checkbox) => checkbox.text === "Others"
-          // );
-          // if (othersCheckbox && othersCheckbox.checked) {
-          //   checkBoxes.value = [
-          //     ...checkBoxes.value,
-          //     { text: checkBoxesOthers.value, checked: true },
-          //   ];
-          // }
-
-          // const probs = checkBoxes.value
-          //   .filter((checkbox) => {
-          //     return checkbox.text != "Others";
-          //   })
-          //   .filter((el) => {
-          //     return el.checked;
-          //   })
-          //   .map((val) => {
-          //     if (val.text != "Others") {
-          //       return val.text;
-          //     }
-          //   });
-
           const othersCheckbox = checkBoxes.value.find(
             (checkbox) => checkbox.text === "Others"
           );
@@ -882,16 +883,20 @@ export default {
     const setupViewOnly = () => {
       textField.value = true;
       readOnly.value = true;
+      updateMode.value = false;
+      editMode.value = false;
     };
 
     const setupEditMode = () => {
       textField.value = false;
       editMode.value = true;
+      updateMode.value = true;
     };
 
     const setupCancelEdit = () => {
       textField.value = true;
       editMode.value = false;
+      updateMode.value = false;
     };
 
     function toRawObject(reactiveObj) {
@@ -935,7 +940,13 @@ export default {
     const submitInformantInfo = () => {
       if (validate()) {
         const plainObj = toRawObject(informantPersonalInfo.value.informantInfo);
-        emit("informantInfoSubmit", plainObj);
+        if (updateMode.value == false) {
+          emit("informantInfoSubmit", plainObj);
+        } else {
+          setupViewOnly();
+          console.log(typeof checkBoxes.value);
+          emit("informantInfoUpdate", plainObj);
+        }
       } else {
         lackingErr.value = true;
       }
@@ -969,6 +980,7 @@ export default {
       readOnly,
       textField,
       editMode,
+      updateMode,
       setupEditMode,
       setupCancelEdit,
     };

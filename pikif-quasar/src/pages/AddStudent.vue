@@ -171,7 +171,7 @@ export default {
     const data = reactive({
       clientInfo: null,
       informantInfo: null,
-      initialFindings: null,
+      initialFindings: [],
     });
 
     // Functions
@@ -215,7 +215,7 @@ export default {
     };
 
     const saveClientFindings = (info) => {
-      data.initialFindings = info;
+      data.initialFindings.push(info);
       console.log(data);
 
       addStudentInfo();

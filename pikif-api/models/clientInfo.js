@@ -93,9 +93,12 @@ class ClientModel {
           .pattern(Joi.number().integer(), Joi.string())
           .required(),
       }).required(),
-      initialFindings: Joi.object({
-        findings: Joi.string().required(),
-      }).required(),
+      initialFindings: Joi.array().items(
+        Joi.object({
+          date: Joi.string().required(),
+          findings: Joi.string().required(),
+        }).required()
+      ),
     });
 
     const validate = clientInfoSchema.validate(data, {
@@ -146,6 +149,34 @@ class ClientModel {
     }
   }
 
+  async updateClient(data, id) {
+    try {
+      const user = firestore().collection("clientInfo").doc(id);
+      const userData = await user.get();
+
+      const clientInfo = data.clientInfo || userData.data().clientInfo;
+      const informantInfo = data.informantInfo || userData.data().informantInfo;
+      const initialFindings =
+        data.initialFindings || userData.data().initialFindings;
+
+      if (
+        clientInfo !== userData.data().clientInfo ||
+        informantInfo !== userData.data().informantInfo ||
+        initialFindings !== userData.data().initialFindings
+      ) {
+        await user.update({
+          clientInfo,
+          informantInfo,
+          initialFindings,
+        });
+      }
+
+      return { success: true };
+    } catch (err) {
+      return { success: false, message: `Error occured: ${err}` };
+    }
+  }
+
   async loadDashboard() {
     const query = firestore().collection("clientInfo");
 
@@ -169,6 +200,27 @@ class ClientModel {
       return { status: true, data: documents };
     } catch (error) {
       return { status: false, message: "Internal Server Error" };
+    }
+  }
+
+  async addClientFindings(id, newFindings) {
+    const docId = id;
+    try {
+      const docRef = firestore().collection("clientInfo").doc(docId);
+      const clientDoc = await docRef.get();
+      const initialFindings = await clientDoc.data().initialFindings;
+
+      const updatedFindings = [];
+      updatedFindings.push(...initialFindings);
+      updatedFindings.push(newFindings);
+
+      await docRef.update({
+        initialFindings: updatedFindings,
+      });
+
+      return { success: true, message: "Data Added" };
+    } catch (err) {
+      return { success: false, message: "Error retrieving client info" };
     }
   }
 

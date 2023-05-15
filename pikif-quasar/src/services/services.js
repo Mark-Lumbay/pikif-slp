@@ -75,6 +75,28 @@ export async function addStudent(data) {
   }
 }
 
+export async function updateInfo(data, id) {
+  try {
+    const res = await apiClient.put(`/updateInfo/${id}`, data);
+    if (res.data.success) {
+      return true;
+    } else {
+      return false;
+    }
+  } catch (err) {}
+}
+
+export async function addFindings(findings, id) {
+  try {
+    const addRes = await apiClient.post(`/addFindings/${id}`, findings);
+
+    if (addRes) return true;
+    return false;
+  } catch (err) {
+    return false;
+  }
+}
+
 export async function checkUserExists(data) {
   try {
     const searchRes = await apiClient.get("/search", {

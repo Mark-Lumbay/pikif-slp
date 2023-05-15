@@ -14,7 +14,7 @@
                 <q-item-section>Settings</q-item-section>
               </q-item>
               <q-item clickable v-close-popup>
-                <q-item-section>Log Out</q-item-section>
+                <q-item-section @click="logout">Log Out</q-item-section>
               </q-item>
               <q-separator />
             </q-list>
@@ -38,7 +38,7 @@
     </q-header>
 
     <div class="flex flex-row w-full h-full">
-      <div class="flex flex-row mt-12" :class="classWidth">
+      <div class="flex-row mt-12" :class="classWidth">
         <div class="fixed h-screen bg-secondaryBlue" :class="classWidth">
           <a @click="router.push('/')">
             <div
@@ -109,6 +109,8 @@
 <script>
 import { ref, computed } from "vue";
 import { useRoute, useRouter } from "vue-router";
+import { useStore } from "vuex";
+
 import store from "../store";
 
 export default {
@@ -116,9 +118,12 @@ export default {
     const width = ref("w-[15vw]");
     const contentWidth = ref("w-[85vw]");
     const leftDrawerOpen = ref(true);
+
     const route = useRoute();
-    const name = ref(store.getters.getFirstName);
     const router = useRouter();
+    const store2 = useStore();
+
+    const name = ref(store.getters.getFirstName);
 
     const drawerState = () => {
       leftDrawerOpen.value = !leftDrawerOpen.value;
@@ -128,6 +133,15 @@ export default {
       } else {
         width.value = "";
         contentWidth.value = "flex-1";
+      }
+    };
+
+    const logout = async () => {
+      try {
+        await store2.dispatch("logout");
+        router.push("/login");
+      } catch (err) {
+        console.log(err);
       }
     };
 
@@ -147,6 +161,7 @@ export default {
       userName,
       contentWidth,
       router,
+      logout,
     };
   },
 };

@@ -2,7 +2,7 @@
   <div>
     <div class="flex w-full mb-6"></div>
     <div class="flex flex-row w-full h-full">
-      <div class="flex w-full mb-6">
+      <div class="flex w-full mb-6" v-if="!addNewFindingsMode">
         <form class="flex w-full">
           <div class="flex flex-wrap -mx-3 mb-4 w-full justify-center mt-6">
             <p
@@ -48,12 +48,75 @@
         </button>
       </div>
 
-      <div class="flex w-full justify-end" v-if="readOnly && !editMode">
+      <div
+        class="flex w-full justify-end"
+        v-if="readOnly && !editMode && !addNewFindingsMode"
+      >
         <button
           class="bg-primaryBtn mb-2 w-[12vw] hover:bg-primaryHovBtn text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline h-14 transition-all ease-in-out"
           @click.prevent="setupEditMode"
         >
           Edit
+        </button>
+      </div>
+
+      <div class="flex w-full mb-6" v-if="addNewFindingsMode">
+        <form class="flex w-full">
+          <div class="flex flex-wrap -mx-3 mb-4 w-full justify-center mt-6">
+            <p
+              class="block uppercase tracking-wide text-gray-700 font-bold mb-2 text-lg"
+            >
+              Add New Findings
+            </p>
+          </div>
+
+          <div
+            class="flex flex-row w-full -mx-3 mb-4 border-gray-300 rounded h-1/2"
+          >
+            <div class="w-full inline-block md:w-1/6 px-3">
+              <input
+                class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                id="grid-int"
+                type="date"
+                v-model="newClientFindings.date"
+              />
+            </div>
+
+            <q-input
+              class="flex-1 border py-2 px-4 text-lg"
+              type="textarea"
+              label="Enter New Findings Here..."
+              rows="4"
+              v-model="newClientFindings.findings"
+            ></q-input>
+          </div>
+        </form>
+      </div>
+
+      <div
+        class="flex w-full justify-end"
+        v-if="readOnly && !editMode && !addNewFindingsMode"
+      >
+        <button
+          class="bg-btnGreen mb-2 w-[12vw] hover:bg-btnGreenHover text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline h-14 transition-all ease-in-out"
+          @click.prevent="setupAddNewFindings"
+        >
+          Add New Findings
+        </button>
+      </div>
+
+      <div class="flex w-full justify-end space-x-4" v-if="addNewFindingsMode">
+        <button
+          class="bg-primaryRed mb-2 w-[12vw] hover:bg-primaryRedHover text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline h-14 transition-all ease-in-out"
+          @click.prevent="cancelNewFindings"
+        >
+          Cancel
+        </button>
+        <button
+          class="bg-btnGreen mb-2 w-[12vw] hover:bg-btnGreenHover text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline h-14 transition-all ease-in-out"
+          @click.prevent="setupEditMode"
+        >
+          Save New Findings
         </button>
       </div>
 
@@ -98,6 +161,7 @@ export default {
     const textField = ref(false);
     const editMode = ref(false);
     const updateMode = ref(false);
+    const addNewFindingsMode = ref(false);
 
     onMounted(async () => {
       if (props.withProp) {
@@ -120,6 +184,12 @@ export default {
       findings: "",
     });
 
+    const newClientFindings = ref({
+      id: null,
+      findings: "",
+      date: "",
+    });
+
     const submitClientFindings = () => {
       if (clientFindingsInfo.value.findings.trim() == "") {
         lackingErr.value = true;
@@ -129,6 +199,17 @@ export default {
         } else {
           emit("clientFindingsUpdate", clientFindingsInfo.value);
         }
+      }
+    };
+
+    const submitNewFindings = () => {
+      if (
+        newClientFindings.value.findings.trim() == "" ||
+        newClientFindings.value.findings === "" ||
+        newClientFindings.value.date === ""
+      ) {
+        lackingErr.value = true;
+      } else {
       }
     };
 
@@ -159,6 +240,14 @@ export default {
       updateMode.value = false;
     };
 
+    const setupAddNewFindings = () => {
+      addNewFindingsMode.value = true;
+    };
+
+    const cancelNewFindings = () => {
+      addNewFindingsMode.value = false;
+    };
+
     return {
       clientFindingsInfo,
       submitClientFindings,
@@ -170,6 +259,10 @@ export default {
       readOnly,
       textField,
       editMode,
+      addNewFindingsMode,
+      setupAddNewFindings,
+      newClientFindings,
+      cancelNewFindings,
     };
   },
 };

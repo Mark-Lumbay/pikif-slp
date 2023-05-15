@@ -58,6 +58,7 @@ export default {
       informantInfo: null,
       initialFindings: null,
     });
+    const id = route.params.id;
 
     // Methods:
     const saveUpdatedClientInfo = async (info) => {

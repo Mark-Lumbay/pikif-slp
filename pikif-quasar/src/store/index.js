@@ -45,9 +45,15 @@ const store = createStore({
 
   mutations: {
     setUser(state, details) {
-      state.user = details.newUser;
-      state.fName = details.fName;
-      state.lName = details.lName;
+      if (details) {
+        state.user = details.newUser;
+        state.fName = details.fName;
+        state.lName = details.lName;
+      } else {
+        state.user = details;
+        state.fName = details;
+        state.lName = details;
+      }
     },
 
     setUserToken(state, token) {
@@ -74,7 +80,6 @@ const store = createStore({
           const token = await response.user.getIdToken(true);
 
           context.commit("setUserToken", token);
-          context.commit("setState", response.user);
 
           return;
         } else {
@@ -100,26 +105,32 @@ const store = createStore({
     },
 
     async logout(context) {
-      const res = await signOut(auth);
-      console.log(res);
-
-      context.commit("setUser", null);
+      try {
+        const res = await signOut(auth);
+        context.commit("setUser", null);
+      } catch (err) {
+        return err;
+      }
     },
   },
 });
 
 auth.onAuthStateChanged(async (newUser) => {
-  const user = await newUser.getIdTokenResult();
-  const fName = user.claims.firstName;
-  const lName = user.claims.lastName;
+  try {
+    const user = await newUser.getIdTokenResult();
+    const fName = user.claims.firstName;
+    const lName = user.claims.lastName;
 
-  const details = {
-    newUser,
-    fName,
-    lName,
-  };
+    const details = {
+      newUser,
+      fName,
+      lName,
+    };
 
-  store.commit("setUser", details);
+    store.commit("setUser", details);
+  } catch (err) {
+    return err;
+  }
 });
 
 export default store;

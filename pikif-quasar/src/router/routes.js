@@ -45,6 +45,22 @@ const routes = [
   },
 
   {
+    path: "/account-settings",
+    meta: {
+      requiresAuth: true,
+    },
+
+    component: () => import("layouts/NavBar.vue"),
+    children: [
+      {
+        path: "/account-settings",
+        name: "Account Settings",
+        component: () => import("pages/AccSettings.vue"),
+      },
+    ],
+  },
+
+  {
     path: "/login",
     children: [{ path: "", component: () => import("pages/LogIn.vue") }],
   },

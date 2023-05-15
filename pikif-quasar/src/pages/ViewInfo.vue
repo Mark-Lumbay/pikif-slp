@@ -112,7 +112,6 @@ export default {
     const addNewFindings = async (info) => {
       newFindings.clientFindings = info;
       const addFindingsReq = await addFindings(newFindings.clientFindings, id);
-      console.log(addFindingsReq);
     };
 
     const updateData = async () => {

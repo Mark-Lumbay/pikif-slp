@@ -211,7 +211,7 @@ class ClientModel {
       const initialFindings = await clientDoc.data().initialFindings;
 
       const updatedFindings = [];
-      updatedFindings.push(initialFindings);
+      updatedFindings.push(...initialFindings);
       updatedFindings.push(newFindings);
 
       await docRef.update({

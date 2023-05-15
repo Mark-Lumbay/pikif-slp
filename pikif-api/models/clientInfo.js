@@ -93,10 +93,12 @@ class ClientModel {
           .pattern(Joi.number().integer(), Joi.string())
           .required(),
       }).required(),
-      initialFindings: Joi.object({
-        findings: Joi.string().required(),
-        date: Joi.string().required(),
-      }).required(),
+      initialFindings: Joi.array().items(
+        Joi.object({
+          date: Joi.string().required(),
+          findings: Joi.string().required(),
+        }).required()
+      ),
     });
 
     const validate = clientInfoSchema.validate(data, {

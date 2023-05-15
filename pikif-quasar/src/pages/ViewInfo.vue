@@ -28,6 +28,7 @@
       <AddFindings
         :withProp="prop"
         @client-findings-update="saveUpdatedClientFindings"
+        @new-client-findings="addNewFindings"
       ></AddFindings>
     </div>
   </div>
@@ -58,6 +59,10 @@ export default {
       informantInfo: null,
       initialFindings: null,
     });
+
+    const newFindings = reactive({
+      clientFindings: null,
+    });
     const id = route.params.id;
 
     // Methods:
@@ -76,11 +81,17 @@ export default {
       console.log(data);
     };
 
+    const addNewFindings = (info) => {
+      newFindings.clientFindings = info;
+      console.log(newFindings.clientFindings);
+    };
+
     return {
       prop,
       saveUpdatedClientInfo,
       saveUpdatedInformantInfo,
       saveUpdatedClientFindings,
+      addNewFindings,
     };
   },
 };

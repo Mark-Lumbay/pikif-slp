@@ -146,7 +146,12 @@ import { useRoute } from "vue-router";
 import { getOneStudent } from "../services/services";
 
 export default {
-  emits: ["clientFindingsSubmit", "goBack", "clientFindingsUpdate"],
+  emits: [
+    "clientFindingsSubmit",
+    "goBack",
+    "clientFindingsUpdate",
+    "newClientFindings",
+  ],
   props: {
     withProp: {
       type: Object,
@@ -210,7 +215,7 @@ export default {
       ) {
         lackingErr.value = true;
       } else {
-        console.log(newClientFindings.value);
+        emit("newClientFindings", newClientFindings.value);
       }
     };
 

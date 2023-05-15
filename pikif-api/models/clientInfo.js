@@ -205,8 +205,6 @@ class ClientModel {
 
   async addClientFindings(id, newFindings) {
     const docId = id;
-    const { findings, date } = newFindings;
-
     try {
       const docRef = firestore().collection("clientInfo").doc(docId);
       const clientDoc = await docRef.get();
@@ -219,9 +217,10 @@ class ClientModel {
       await docRef.update({
         initialFindings: updatedFindings,
       });
-      return { status: true, message: "Data Added" };
+
+      return { success: true, message: "Data Added" };
     } catch (err) {
-      return { status: false, message: "Error retrieving client info" };
+      return { success: false, message: "Error retrieving client info" };
     }
   }
 

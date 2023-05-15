@@ -163,8 +163,10 @@ router.post("/addFindings/:id", async (req, res) => {
 
   try {
     const addFindingsRes = await ClientModel.addClientFindings(id, findings);
-    if (!addFindingsRes) res.status(400).send("Request Incomplete");
-    res.status(200).send({ success: true });
-  } catch (err) {}
+    if (addFindingsRes.data.success) return true;
+    return false;
+  } catch (err) {
+    return false;
+  }
 });
 export default router;

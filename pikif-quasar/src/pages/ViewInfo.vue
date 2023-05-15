@@ -62,7 +62,7 @@ import MessagePage from "src/components/MessagePage.vue";
 import { useStore } from "vuex";
 import { ref, reactive } from "vue";
 import { useRoute } from "vue-router";
-import { updateInfo } from "src/services/services";
+import { updateInfo, addFindings } from "src/services/services";
 
 export default {
   components: {
@@ -109,9 +109,10 @@ export default {
       console.log(data);
     };
 
-    const addNewFindings = (info) => {
+    const addNewFindings = async (info) => {
       newFindings.clientFindings = info;
-      console.log(newFindings.clientFindings);
+      const addFindingsReq = await addFindings(newFindings.clientFindings, id);
+      console.log(addFindingsReq);
     };
 
     const updateData = async () => {

@@ -289,6 +289,7 @@ export default {
       ) {
         lackingErr.value = true;
       } else {
+        console.log("TEST");
         emit("newClientFindings", newClientFindings.value);
       }
 

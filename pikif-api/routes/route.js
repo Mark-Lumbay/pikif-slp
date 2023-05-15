@@ -89,62 +89,19 @@ router.get("/getClient/:id", async (req, res) => {
 //update Info
 router.put("/updateInfo/:id", async (req, res) => {
   try {
+    const info = req.body;
     const id = req.params.id;
-    const interviewDate = req.body.interviewDate;
-    const firstName = req.body.firstName;
-    const middleName = req.body.middleName;
-    const lastName = req.body.lastName;
-    const status = req.body.status;
-    const age = req.body.age;
-    const sex = req.body.sex;
-    const address = req.body.address;
-    const birthDate = req.body.birthDate;
-    const birthPlace = req.body.ArrivalTime;
-    const religion = req.body.religion;
-    const contactNum = req.body.contactNum;
-    const educAttn = req.body.educAttn;
-    const categoryObj = req.body.categoryObj;
-    const condition = req.body.condition;
-    const materials = req.body.materials;
-    const appliances = req.body.appliances;
-    const client = db.collection("clientInfo").doc(id);
-    const all = await db.collection("clientInfo").doc(id);
 
-    const result = await client.update(
-      { _id: id },
-      {
-        $set: {
-          interviewDate: interviewDate,
-          firstName: firstName,
-          middleName: middleName,
-          lastName: lastName,
-          status: status,
-          age: age,
-          sex: sex,
-          address: address,
-          birthDate: birthDate,
-          birthPlace: birthPlace,
-          religion: religion,
-          contactNum: contactNum,
-          educAttn: educAttn,
-          categoryObj: categoryObj,
-          condition: condition,
-          materials: materials,
-          appliances: appliances,
-        },
-      }
-    );
+    console.log(id);
 
-    const data = await db.collection("clientInfo").doc(id);
-    res.status(200).json({
-      success: true,
-      message: `Client with client ID: ${id} has been updated`,
-      confirmation: result,
-      Before: all,
-      After: data,
-    });
-  } catch (error) {
-    res.status(400).json({ message: error.message });
+    const updateResult = await ClientModel.updateClient(info, id);
+    if (updateResult) {
+      res.status(200).send({ success: true });
+    } else {
+      res.status(500).send({ success: false });
+    }
+  } catch (err) {
+    res.status(500).send({ success: false });
   }
 });
 

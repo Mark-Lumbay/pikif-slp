@@ -124,29 +124,29 @@
           </div>
 
           <!-- To Modify -->
-          <div>
-            <div class="w-full md:w-1/6 px-3">
-              <label
-                class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-                for="grid-date"
-              >
-                Date
-              </label>
-              <input
-                class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                id="grid-date"
-                type="date"
-              />
-            </div>
+          <div class="w-full md:w-1/6 px-3">
+            <label
+              class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+              for="grid-date"
+            >
+              Date
+            </label>
+            <input
+              class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+              id="grid-date"
+              type="date"
+              v-model="newClientFindings.date"
+            />
+          </div>
 
-            <div class="flex w-full border-gray-300 rounded h-1/2 mt-8 px-3">
-              <q-input
-                class="flex-1 border py-2 px-4 text-lg"
-                type="textarea"
-                label="Enter Findings Here..."
-                rows="4"
-              ></q-input>
-            </div>
+          <div class="flex w-full border-gray-300 rounded h-1/2 mt-8 px-3">
+            <q-input
+              class="flex-1 border py-2 px-4 text-lg"
+              type="textarea"
+              label="Enter Findings Here..."
+              rows="4"
+              v-model="newClientFindings.findings"
+            ></q-input>
           </div>
         </form>
       </div>
@@ -260,16 +260,15 @@ export default {
     });
 
     const submitClientFindings = () => {
-      console.log(updateMode.value, iterateMode.value);
       if (updateMode.value == true) {
-        if (
-          clientFindingsInfo.value.findings.trim() == "" ||
-          clientFindingsInfo.value.date === ""
-        ) {
-          lackingErr.value = true;
-        } else {
-          emit("clientFindingsUpdate", clientFindingsInfo.value);
-        }
+        // if (
+        //   clientFindingsInfo.value.findings.trim() == "" ||
+        //   clientFindingsInfo.value.date === ""
+        // ) {
+        //   lackingErr.value = true;
+        // } else {
+        // }
+        emit("clientFindingsUpdate", clientFindingsInfo.value);
       } else {
         if (
           newClientFindings.value.findings.trim() == "" ||
@@ -279,6 +278,8 @@ export default {
         }
         emit("clientFindingsSubmit", newClientFindings.value);
       }
+
+      setupViewOnly();
     };
 
     const submitNewFindings = () => {
@@ -290,6 +291,8 @@ export default {
       } else {
         emit("newClientFindings", newClientFindings.value);
       }
+
+      setupViewOnly();
     };
 
     const clearErr = () => {

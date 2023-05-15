@@ -149,6 +149,34 @@ class ClientModel {
     }
   }
 
+  async updateClient(data, id) {
+    try {
+      const user = firestore().collection("clientInfo").doc(id);
+      const userData = await user.get();
+
+      const clientInfo = data.clientInfo || userData.data().clientInfo;
+      const informantInfo = data.informantInfo || userData.data().informantInfo;
+      const initialFindings =
+        data.initialFindings || userData.data().initialFindings;
+
+      if (
+        clientInfo !== userData.data().clientInfo ||
+        informantInfo !== userData.data().informantInfo ||
+        initialFindings !== userData.data().initialFindings
+      ) {
+        await user.update({
+          clientInfo,
+          informantInfo,
+          initialFindings,
+        });
+      }
+
+      return { success: true };
+    } catch (err) {
+      return { success: false, message: `Error occured: ${err}` };
+    }
+  }
+
   async loadDashboard() {
     const query = firestore().collection("clientInfo");
 

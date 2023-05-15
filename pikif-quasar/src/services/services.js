@@ -75,6 +75,17 @@ export async function addStudent(data) {
   }
 }
 
+export async function updateInfo(data, id) {
+  try {
+    const res = await apiClient.put(`/updateInfo/${id}`, data);
+    if (res.data.success) {
+      return true;
+    } else {
+      return false;
+    }
+  } catch (err) {}
+}
+
 export async function checkUserExists(data) {
   try {
     const searchRes = await apiClient.get("/search", {

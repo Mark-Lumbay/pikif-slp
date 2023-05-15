@@ -114,7 +114,7 @@
         </button>
         <button
           class="bg-btnGreen mb-2 w-[12vw] hover:bg-btnGreenHover text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline h-14 transition-all ease-in-out"
-          @click.prevent="setupEditMode"
+          @click.prevent="submitNewFindings"
         >
           Save New Findings
         </button>
@@ -185,7 +185,7 @@ export default {
     });
 
     const newClientFindings = ref({
-      id: null,
+      id: route.params.id,
       findings: "",
       date: "",
     });
@@ -210,6 +210,7 @@ export default {
       ) {
         lackingErr.value = true;
       } else {
+        console.log(newClientFindings.value);
       }
     };
 
@@ -263,6 +264,7 @@ export default {
       setupAddNewFindings,
       newClientFindings,
       cancelNewFindings,
+      submitNewFindings,
     };
   },
 };

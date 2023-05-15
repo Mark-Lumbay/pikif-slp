@@ -95,6 +95,7 @@ class ClientModel {
       }).required(),
       initialFindings: Joi.object({
         findings: Joi.string().required(),
+        date: Joi.string().required(),
       }).required(),
     });
 
@@ -169,6 +170,28 @@ class ClientModel {
       return { status: true, data: documents };
     } catch (error) {
       return { status: false, message: "Internal Server Error" };
+    }
+  }
+
+  async addClientFindings(id, newFindings) {
+    const docId = id;
+    const { findings, date } = newFindings;
+
+    try {
+      const docRef = firestore().collection("clientInfo").doc(docId);
+      const clientDoc = await docRef.get();
+      const initialFindings = await clientDoc.data().initialFindings;
+
+      const updatedFindings = [];
+      updatedFindings.push(initialFindings);
+      updatedFindings.push(newFindings);
+
+      await docRef.update({
+        initialFindings: updatedFindings,
+      });
+      return { status: true, message: "Data Added" };
+    } catch (err) {
+      return { status: false, message: "Error retrieving client info" };
     }
   }
 

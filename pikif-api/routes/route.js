@@ -199,4 +199,15 @@ router.get("/search", async (req, res) => {
     res.status(400).json({ success: false, message: err.message });
   }
 });
+
+router.post("/addFindings/:id", async (req, res) => {
+  const id = req.params.id;
+  const findings = req.body;
+
+  try {
+    const addFindingsRes = await ClientModel.addClientFindings(id, findings);
+    if (!addFindingsRes) res.status(400).send("Request Incomplete");
+    res.status(200).send({ success: true });
+  } catch (err) {}
+});
 export default router;

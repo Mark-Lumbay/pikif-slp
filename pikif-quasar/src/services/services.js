@@ -130,11 +130,21 @@ export async function updateUserDetails(data, id) {
   }
 }
 
-export async function updateUserEmail(newEmail, id) {
+export async function updateUserEmail(emailData, id) {
   try {
-    const res = await apiClient.put(`/updateEmail/${id}`, newEmail);
+    const res = await apiClient.put(`/updateEmail/${id}`, emailData);
     return res;
   } catch (err) {
     return { status: false, message: "Something went wrong!" };
+  }
+}
+
+export async function updateUserPassword(passData, id) {
+  try {
+    const result = await apiClient.put(`/updatePassword/${id}`, passData);
+    console.log(`Result is ${result}`);
+    return true;
+  } catch (err) {
+    return false;
   }
 }

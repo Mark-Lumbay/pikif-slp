@@ -4,7 +4,7 @@
     @close-modal="closeModal"
     :modal-type="modalType"
     @update-email="updateEmail"
-    @update-pass="updatePass"
+    @update-pass="updatePassword"
   ></FormsModal>
 
   <div
@@ -166,6 +166,7 @@ import {
   getUserDetails,
   updateUserDetails,
   updateUserEmail,
+  updateUserPassword,
 } from "../services/services";
 
 export default {
@@ -256,11 +257,24 @@ export default {
         bannerMsg.value = "Incorrect current email";
         bannerState.value = true;
         bannerStyle.value = "bg-primaryRed";
+      } else {
+        bannerMsg.value = "Email updated!";
+        bannerState.value = true;
+        bannerStyle.value = "bg-btnGreen";
       }
     };
 
-    const updatePass = async (data) => {
-      console.log(data);
+    const updatePassword = async (data) => {
+      const result = await updateUserPassword(data, uid.value);
+      if (!result) {
+        bannerMsg.value = "Error in updating password!";
+        bannerState.value = true;
+        bannerStyle.value = "bg-primaryRed";
+      } else {
+        bannerMsg.value = "Password! updated!";
+        bannerState.value = true;
+        bannerStyle.value = "bg-btnGreen";
+      }
     };
 
     return {
@@ -282,7 +296,7 @@ export default {
       formContents,
       modalType,
       updateEmail,
-      updatePass,
+      updatePassword,
     };
   },
 };

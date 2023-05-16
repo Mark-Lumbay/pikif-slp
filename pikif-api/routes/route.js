@@ -209,4 +209,22 @@ router.put("/updateEmail/:id", async (req, res) => {
     return res.status(400).send({ status: false });
   }
 });
+
+router.put("/updatePassword/:id", async (req, res) => {
+  const id = req.params.id;
+  const { currText, newText } = req.body;
+  const passData = {
+    newPass: newText,
+    oldPass: currText,
+  };
+
+  try {
+    const result = await userModel.updateUserPass(passData, id);
+    if (!result.success)
+      return res.status(400).send({ message: "Incorrect Password" });
+    return res.status(200).send({ message: "Update successful" });
+  } catch (err) {
+    return res.status(500).send({ message: "Error in updating password!" });
+  }
+});
 export default router;

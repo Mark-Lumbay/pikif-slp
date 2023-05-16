@@ -78,24 +78,7 @@
             </div>
           </a>
 
-          <a href="/genReport">
-            <div
-              class="hover:bg-secondaryDarker p-4 px-6 transition-all ease-in-out cursor-pointer"
-            >
-              <div class="flex flex-row items-center space-x-4">
-                <q-icon
-                  name="las la-clipboard-list"
-                  size="32px"
-                  class="text-white"
-                ></q-icon>
-                <span
-                  class="text-lg font-semibold text-white"
-                  v-if="leftDrawerOpen"
-                  >Generate Report</span
-                >
-              </div>
-            </div>
-          </a>
+
         </div>
       </div>
 

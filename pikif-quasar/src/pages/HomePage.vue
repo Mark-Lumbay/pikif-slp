@@ -164,7 +164,19 @@
 
     <div
       class="shadow-md sm:rounded-lg flex-1 h-[40vh] p-6 bg-white ml-4"
-    ></div>
+    >
+    <div class="flex flex-row items-center mx-10">
+      <q-icon
+                  name="las la-print"
+                  size="222px"
+                  class="text-black mx-20 my-6"
+                ></q-icon>
+    </div>
+    <div>
+
+     <button class="px-4 py-2 bg-primaryRed text-white text-base font-medium rounded-md w-full shadow-sm hover:bg-primaryRedHover focus:outline-none focus:ring-2 focus:ring-green-300">Generate Report</button>
+    </div>
+  </div>
   </div>
 </template>
 

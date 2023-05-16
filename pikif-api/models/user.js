@@ -45,6 +45,24 @@ class userModel {
       return false;
     }
   }
+
+  async getUserDetails(id) {
+    try {
+      const details = await auth().getUser(id);
+      return details;
+    } catch (err) {
+      return { success: false, message: `Internal server error ${err}` };
+    }
+  }
+
+  async updateUserDetails(data, id) {
+    try {
+      const res = await auth().setCustomUserClaims(id, data);
+      return res;
+    } catch (err) {
+      return { success: false, message: `Internal server error 2 ${err}` };
+    }
+  }
 }
 
 export default new userModel();

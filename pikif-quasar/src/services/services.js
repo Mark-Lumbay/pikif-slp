@@ -110,3 +110,21 @@ export async function checkUserExists(data) {
     return { status: false };
   }
 }
+
+export async function getUserDetails(id) {
+  try {
+    const userDetails = await apiClient.get(`/getUserDetails/${id}`);
+    return userDetails.data.data.customClaims;
+  } catch (err) {
+    return { status: false };
+  }
+}
+
+export async function updateUserDetails(data, id) {
+  try {
+    await apiClient.post(`/updateUserInfo/${id}`, data);
+    return true;
+  } catch (err) {
+    return false;
+  }
+}

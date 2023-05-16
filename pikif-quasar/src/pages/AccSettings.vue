@@ -1,27 +1,5 @@
 <template>
-  <div class="fixed inset-0 left-0 top-0 z-[1055] q-pa-md q-gutter-sm">
-    <q-dialog>
-      <q-card style="min-width: 350px">
-        <q-card-section>
-          <div class="text-h6">Your address</div>
-        </q-card-section>
-
-        <q-card-section class="q-pt-none">
-          <q-input
-            dense
-            v-model="address"
-            autofocus
-            @keyup.enter="prompt = false"
-          />
-        </q-card-section>
-
-        <q-card-actions align="right" class="text-primary">
-          <q-btn flat label="Cancel" v-close-popup />
-          <q-btn flat label="Add address" v-close-popup />
-        </q-card-actions>
-      </q-card>
-    </q-dialog>
-  </div>
+  <FormsModal :open-modal="openModal" @close-modal="closeModal"></FormsModal>
 
   <div
     class="w-[70%] flex flex-col shadow-md rounded-xl p-4 space-x-4 bg-white"
@@ -44,17 +22,19 @@
               </p>
             </div>
 
-            <div class="flex justify-end w-[50%]">
+            <div class="flex justify-end w-[50%] space-x-3">
               <button
                 class="text-primaryRed hover:text-white hover:bg-primaryRed hover:border-transparent font-semibold py-2 px-4 border border-primaryRed rounded"
                 v-if="!editMode"
+                @click.prevent="enableEdit"
               >
                 Edit
               </button>
 
               <button
-                class="text-primaryBtn hover:text-white hover:bg-btnGreen hover:border-transparent font-semibold py-2 px-4 border border-primaryBtn rounded"
+                class="text-primaryRed hover:text-white hover:bg-primaryRed hover:border-transparent font-semibold py-2 px-4 border border-primaryRed rounded"
                 v-if="editMode"
+                @click.prevent="cancelEdit"
               >
                 Cancel
               </button>
@@ -62,6 +42,7 @@
               <button
                 class="text-btnGreen hover:text-white hover:bg-btnGreen hover:border-transparent font-semibold py-2 px-4 border border-btnGreen rounded"
                 v-if="editMode"
+                @click.prevent="updateBasicInfo"
               >
                 Save
               </button>
@@ -81,6 +62,8 @@
                 id="grid-first-name"
                 type="text"
                 placeholder="First Name"
+                v-model="userData.firstName"
+                :disabled="!editMode"
               />
             </div>
             <div class="w-full md:w-1/2 pl-4">
@@ -95,6 +78,8 @@
                 id="grid-last-name"
                 type="text"
                 placeholder="Last Name"
+                v-model="userData.lastName"
+                :disabled="!editMode"
               />
             </div>
           </div>
@@ -120,12 +105,12 @@
                 >
                   Email
                 </label>
-                <p>lumbaymark@gmail.com</p>
+                <p>{{ email }}</p>
               </div>
               <div class="flex justify-end w-[50%]">
                 <button
                   class="text-primaryRed h-12 hover:text-white hover:bg-primaryRed hover:border-transparent font-semibold py-2 px-6 border border-primaryRed rounded"
-                  v-if="!editMode"
+                  @click.prevent="showModal"
                 >
                   Change
                 </button>
@@ -144,7 +129,6 @@
               <div class="flex justify-end w-[50%]">
                 <button
                   class="text-primaryRed h-12 hover:text-white hover:bg-primaryRed hover:border-transparent font-semibold py-2 px-6 border border-primaryRed rounded"
-                  v-if="!editMode"
                 >
                   Change
                 </button>
@@ -159,22 +143,65 @@
 
 <script>
 import { ref, onMounted } from "vue";
-import store from "../store";
+import { useStore } from "vuex";
+import FormsModal from "src/components/FormsModal.vue";
+import { getUserDetails, updateUserDetails } from "../services/services";
 
 export default {
+  components: {
+    FormsModal,
+  },
   setup() {
+    // Mode Variables
     const editMode = ref(false);
     const readOnly = ref(true);
+    const openModal = ref(false);
+    const store = useStore();
+
+    // User Variables
+    const email = ref("");
+    const uid = ref("");
     const userData = ref({
       firstName: "",
       lastName: "",
+      authorization: "",
     });
 
-    onMounted(() => {});
+    onMounted(async () => {
+      email.value = await store.getters.getState.email;
+      uid.value = await store.getters.getState.uid;
+      const { firstName, lastName, authorization } = await getUserDetails(
+        uid.value
+      );
+
+      userData.value.firstName = firstName;
+      userData.value.lastName = lastName;
+      userData.value.authorization = authorization;
+    });
+
+    const closeModal = () => (openModal.value = false);
+    const showModal = () => (openModal.value = true);
+
+    const enableEdit = () => (editMode.value = true);
+    const cancelEdit = () => (editMode.value = false);
+
+    const updateBasicInfo = async () => {
+      await updateUserDetails(userData.value, uid.value);
+      cancelEdit();
+    };
 
     return {
       editMode,
       readOnly,
+      FormsModal,
+      openModal,
+      closeModal,
+      showModal,
+      email,
+      userData,
+      enableEdit,
+      cancelEdit,
+      updateBasicInfo,
     };
   },
 };

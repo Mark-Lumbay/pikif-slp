@@ -207,6 +207,7 @@ export default {
 
     onMounted(async () => {
       email.value = await store.getters.getState.email;
+      console.log(email.value);
       uid.value = await store.getters.getState.uid;
       const { firstName, lastName, authorization } = await getUserDetails(
         uid.value

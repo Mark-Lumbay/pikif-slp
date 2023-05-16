@@ -18,7 +18,10 @@ class userModel {
       abortEarly: false,
     });
 
-    if (validate.error) return false;
+    if (validate.error) {
+      console.log(validate.error.details[0].message);
+      return false;
+    }
     const { email, password, firstName, lastName, authorization } = credentials;
     try {
       const user = await auth().createUser({
@@ -27,10 +30,14 @@ class userModel {
       });
 
       const uid = user.uid;
+      await firestore()
+        .collection("users")
+        .doc(uid)
+        .set({ firstName: firstName, lastName: lastName, auth: authorization });
+
       await auth().setCustomUserClaims(uid, {
         firstName: firstName,
         lastName: lastName,
-        authorization: authorization,
       });
       return true;
     } catch {
@@ -99,6 +106,17 @@ class userModel {
       await auth().updateUser(id, { password: newPass });
 
       return { success: true };
+    } catch (err) {
+      return { success: false, message: err };
+    }
+  }
+
+  async getUserAuth(id) {
+    try {
+      const userRef = firestore().collection("users").doc(id);
+      const userData = await userRef.get();
+      const userAuth = userData.data();
+      return { success: true, data: userAuth };
     } catch (err) {
       return { success: false, message: err };
     }

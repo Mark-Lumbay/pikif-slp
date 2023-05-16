@@ -3,6 +3,7 @@ import ClientModel from "../models/clientInfo.js";
 import userModel from "../models/user.js";
 import pkg from "firebase-admin";
 import clientInfo from "../models/clientInfo.js";
+import user from "../models/user.js";
 const router = Router();
 const { firestore, auth } = pkg;
 
@@ -225,6 +226,18 @@ router.put("/updatePassword/:id", async (req, res) => {
     return res.status(200).send({ message: "Update successful" });
   } catch (err) {
     return res.status(500).send({ message: "Error in updating password!" });
+  }
+});
+
+router.get("/getUserAuth/:id", async (req, res) => {
+  const id = req.params.id;
+
+  try {
+    const userAuth = await userModel.getUserAuth(id);
+    if (userAuth.success)
+      return res.status(200).send({ success: true, data: userAuth.data });
+  } catch (err) {
+    return res.status(500).send({ success: false, message: err });
   }
 });
 export default router;

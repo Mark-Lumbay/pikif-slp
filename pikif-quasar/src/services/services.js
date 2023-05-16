@@ -148,3 +148,12 @@ export async function updateUserPassword(passData, id) {
     return false;
   }
 }
+
+export async function getUserAuth(id) {
+  try {
+    const result = await apiClient.get(`/getUserAuth/${id}`);
+    return result.data;
+  } catch (err) {
+    return false;
+  }
+}

@@ -122,9 +122,19 @@ export async function getUserDetails(id) {
 
 export async function updateUserDetails(data, id) {
   try {
-    await apiClient.post(`/updateUserInfo/${id}`, data);
-    return true;
+    const result = await apiClient.post(`/updateUserInfo/${id}`, data);
+    return { status: false, data: result.data.data.data };
   } catch (err) {
-    return false;
+    console.log(err);
+    return { status: false, data: err };
+  }
+}
+
+export async function updateUserEmail(newEmail, id) {
+  try {
+    const res = await apiClient.put(`/updateEmail/${id}`, newEmail);
+    return res;
+  } catch (err) {
+    return { status: false, message: "Something went wrong!" };
   }
 }

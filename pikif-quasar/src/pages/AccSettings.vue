@@ -3,6 +3,8 @@
     :open-modal="openModal"
     @close-modal="closeModal"
     :modal-type="modalType"
+    @update-email="updateEmail"
+    @update-pass="updatePass"
   ></FormsModal>
 
   <div
@@ -86,15 +88,6 @@
                 :disabled="!editMode"
               />
             </div>
-
-            <div
-              class="mb-5 w-full p-2 text-white font-semibold rounded"
-              :class="style"
-              @click.prevent="clearBanner"
-              v-if="bannerState"
-            >
-              <h3 class="text-sm">{{ bannerMsg }}</h3>
-            </div>
           </div>
 
           <!-- Email and Password -->
@@ -148,6 +141,15 @@
                 </button>
               </div>
             </div>
+
+            <div
+              class="mt-7 w-full p-2 text-white font-semibold rounded"
+              :class="style"
+              @click.prevent="clearBanner"
+              v-if="bannerState"
+            >
+              <h3 class="text-sm">{{ bannerMsg }}</h3>
+            </div>
           </div>
         </form>
       </div>
@@ -160,7 +162,11 @@ import { ref, onMounted, computed } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 import FormsModal from "src/components/FormsModal.vue";
-import { getUserDetails, updateUserDetails } from "../services/services";
+import {
+  getUserDetails,
+  updateUserDetails,
+  updateUserEmail,
+} from "../services/services";
 
 export default {
   components: {
@@ -244,6 +250,19 @@ export default {
       }
     };
 
+    const updateEmail = async (data) => {
+      const result = await updateUserEmail(data, uid.value);
+      if (!result.data.data.success) {
+        bannerMsg.value = "Incorrect current email";
+        bannerState.value = true;
+        bannerStyle.value = "bg-primaryRed";
+      }
+    };
+
+    const updatePass = async (data) => {
+      console.log(data);
+    };
+
     return {
       editMode,
       readOnly,
@@ -262,6 +281,8 @@ export default {
       style,
       formContents,
       modalType,
+      updateEmail,
+      updatePass,
     };
   },
 };

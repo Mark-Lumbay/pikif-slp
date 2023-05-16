@@ -193,4 +193,20 @@ router.post("/updateUserInfo/:id", async (req, res) => {
     return res.status(500).send({ message: `Internal Server Error ${err}` });
   }
 });
+
+router.put("/updateEmail/:id", async (req, res) => {
+  const { currText, newText } = req.body;
+  const emailData = {
+    newEmail: newText,
+    currEmail: currText,
+  };
+  const id = req.params.id;
+  try {
+    const response = await userModel.updateUserEmail(emailData, id);
+
+    return res.status(200).send({ data: response });
+  } catch (err) {
+    return res.status(400).send({ status: false });
+  }
+});
 export default router;

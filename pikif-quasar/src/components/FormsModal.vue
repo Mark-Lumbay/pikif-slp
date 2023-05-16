@@ -18,7 +18,7 @@
               autofocus
               @keyup.enter="prompt = false"
               :placeholder="formContents.placeholder1"
-              v-model="currEmail"
+              v-model="text.currText"
             />
           </q-card-section>
 
@@ -32,7 +32,7 @@
               autofocus
               @keyup.enter="prompt = false"
               :placeholder="formContents.placeholder2"
-              v-model="newEmail"
+              v-model="text.newText"
             />
           </q-card-section>
 
@@ -51,12 +51,22 @@
             <button
               flat
               label="Cancel"
-              @click="closeModal"
+              @click="submitUpdate"
               class="text-btnGreen h-12 hover:text-white hover:bg-btnGreenHover hover:border-transparent font-semibold py-2 px-6 border border-btnGreen rounded"
             >
               Confirm
             </button>
           </q-card-actions>
+
+          <div
+            class="px-4 py-2 rounded mb-6 bg-primaryRed"
+            v-if="showErr"
+            @click.prevent="closeErr"
+          >
+            <p class="text-sm text-white font-semibold">
+              All fields are required
+            </p>
+          </div>
         </div>
       </q-card>
     </q-dialog>
@@ -67,7 +77,7 @@
 import { ref, defineEmits, watch, onMounted } from "vue";
 import { useStore } from "vuex";
 export default {
-  emits: ["closeModal"],
+  emits: ["closeModal", "updateEmail", "updatePass"],
   props: {
     openModal: {
       type: Boolean,
@@ -81,10 +91,14 @@ export default {
   },
   setup(props, { emit }) {
     const prompt = ref(false);
-    const currEmail = ref("");
-    const newEmail = ref("");
+    const text = ref({
+      currText: "",
+      newText: "",
+    });
+
     const store = useStore();
     const email = ref("");
+    const showErr = ref(false);
     const formContents = ref({
       headerText: "",
       text1: "",
@@ -121,14 +135,30 @@ export default {
     );
 
     const closeModal = () => emit("closeModal");
+    const closeErr = () => (showErr.value = false);
+    const submitUpdate = () => {
+      if (text.value.currText !== "" && text.value.newText !== "") {
+        if (props.modalType === 1) {
+          emit("updateEmail", text.value);
+          closeModal();
+        } else {
+          emit("updatePass", text.value);
+          closeModal();
+        }
+      } else {
+        showErr.value = true;
+      }
+    };
 
     return {
       prompt,
       closeModal,
-      currEmail,
-      newEmail,
+      text,
       email,
       formContents,
+      showErr,
+      submitUpdate,
+      closeErr,
     };
   },
 };

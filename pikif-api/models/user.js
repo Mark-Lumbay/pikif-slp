@@ -63,6 +63,25 @@ class userModel {
       return { success: false, message: `Internal server error 2 ${err}` };
     }
   }
+
+  async updateUserEmail(email, id) {
+    const { newEmail, currEmail } = email;
+    try {
+      // Check if email is correct
+      const userRecord = await auth().getUser(id);
+      const currentEmail = userRecord.email;
+
+      if (currentEmail !== currEmail) {
+        return { success: false, message: "Email Mismatch" };
+      }
+
+      const res = await auth().updateUser(id, { email: newEmail });
+      console.log(res);
+      return { success: true, data: res };
+    } catch (err) {
+      return { success: false, message: err };
+    }
+  }
 }
 
 export default new userModel();

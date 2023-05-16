@@ -82,6 +82,15 @@
                 :disabled="!editMode"
               />
             </div>
+
+            <div
+              class="mb-5 w-full p-2 text-white font-semibold rounded"
+              :class="style"
+              @click.prevent="clearBanner"
+              v-if="bannerState"
+            >
+              <h3 class="text-sm">{{ bannerMsg }}</h3>
+            </div>
           </div>
 
           <!-- Email and Password -->
@@ -142,8 +151,9 @@
 </template>
 
 <script>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, computed } from "vue";
 import { useStore } from "vuex";
+import { useRouter } from "vue-router";
 import FormsModal from "src/components/FormsModal.vue";
 import { getUserDetails, updateUserDetails } from "../services/services";
 
@@ -156,7 +166,10 @@ export default {
     const editMode = ref(false);
     const readOnly = ref(true);
     const openModal = ref(false);
+
+    // Vue variables
     const store = useStore();
+    const router = useRouter();
 
     // User Variables
     const email = ref("");
@@ -166,6 +179,11 @@ export default {
       lastName: "",
       authorization: "",
     });
+
+    // Other Variables
+    const bannerMsg = ref("");
+    const bannerState = ref(false);
+    const bannerStyle = ref("");
 
     onMounted(async () => {
       email.value = await store.getters.getState.email;
@@ -179,15 +197,35 @@ export default {
       userData.value.authorization = authorization;
     });
 
-    const closeModal = () => (openModal.value = false);
+    const closeModal = () => {
+      openModal.value = false;
+    };
     const showModal = () => (openModal.value = true);
 
     const enableEdit = () => (editMode.value = true);
-    const cancelEdit = () => (editMode.value = false);
+    const cancelEdit = () => {
+      editMode.value = false;
+    };
+
+    const clearBanner = () => (bannerState.value = false);
+    const style = computed(() => {
+      return bannerStyle.value;
+    });
 
     const updateBasicInfo = async () => {
-      await updateUserDetails(userData.value, uid.value);
-      cancelEdit();
+      if (userData.value.firstName != "" && userData.value.lastName != "") {
+        await updateUserDetails(userData.value, uid.value);
+        cancelEdit();
+
+        bannerMsg.value = "Update Completed";
+        bannerState.value = true;
+        bannerStyle.value = "bg-btnGreen";
+      } else {
+        cancelEdit();
+        bannerMsg.value = "Invalid Input";
+        bannerState.value = true;
+        bannerStyle.value = "bg-primaryRed";
+      }
     };
 
     return {
@@ -202,6 +240,10 @@ export default {
       enableEdit,
       cancelEdit,
       updateBasicInfo,
+      bannerMsg,
+      bannerState,
+      clearBanner,
+      style,
     };
   },
 };

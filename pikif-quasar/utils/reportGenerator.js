@@ -14,6 +14,14 @@ async function generateReport(format, filter) {
       students = await firebase.database().ref("students").orderByChild("Category").equalTo("Survivor").once("value").then(snapshot => snapshot.val());
     } else if (filter === "CICL") {
       students = await firebase.database().ref("students").orderByChild("Category").equalTo("CICL").once("value").then(snapshot => snapshot.val());
+    } else if (filter === "Needly Senior Citizen") {
+      students = await firebase.database().ref("students").orderByChild("Category").equalTo("Needly Senior Citizen").once("value").then(snapshot => snapshot.val());
+    } else if (filter === "CEDC") {
+      students = await firebase.database().ref("students").orderByChild("Category").equalTo("CEDC").once("value").then(snapshot => snapshot.val());
+    } else if (filter === "C/PWD") {
+      students = await firebase.database().ref("students").orderByChild("Category").equalTo("C/PWD").once("value").then(snapshot => snapshot.val());
+    } else if (filter === "WEDC") {
+      students = await firebase.database().ref("students").orderByChild("Category").equalTo("WEDC").once("value").then(snapshot => snapshot.val());
     } else {
       // if no filter selected, get all students
       students = await firebase.database().ref("students").once("value").then(snapshot => snapshot.val());

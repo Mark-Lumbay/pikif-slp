@@ -119,3 +119,12 @@ export async function getUserDetails(id) {
     return { status: false };
   }
 }
+
+export async function updateUserDetails(data, id) {
+  try {
+    await apiClient.post(`/updateUserInfo/${id}`, data);
+    return true;
+  } catch (err) {
+    return false;
+  }
+}

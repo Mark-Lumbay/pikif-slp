@@ -180,4 +180,17 @@ router.get("/getUserDetails/:id", async (req, res) => {
     return res.status(500).send({ message: "Internal Server Error" });
   }
 });
+
+router.post("/updateUserInfo/:id", async (req, res) => {
+  const id = req.params.id;
+  const info = req.body;
+
+  try {
+    const response = await userModel.updateUserDetails(info, id);
+
+    return res.status(200).send({ data: response });
+  } catch (err) {
+    return res.status(500).send({ message: `Internal Server Error ${err}` });
+  }
+});
 export default router;

@@ -57,12 +57,10 @@ class userModel {
 
   async updateUserDetails(data, id) {
     try {
-      const user = firestore().collection("user").doc(id);
-      await user.update({
-        ...data,
-      });
+      const res = await auth().setCustomUserClaims(id, data);
+      return res;
     } catch (err) {
-      return { success: false, message: `Internal server error ${err}` };
+      return { success: false, message: `Internal server error 2 ${err}` };
     }
   }
 }

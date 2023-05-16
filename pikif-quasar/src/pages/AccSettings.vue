@@ -42,6 +42,7 @@
               <button
                 class="text-btnGreen hover:text-white hover:bg-btnGreen hover:border-transparent font-semibold py-2 px-4 border border-btnGreen rounded"
                 v-if="editMode"
+                @click.prevent="updateBasicInfo"
               >
                 Save
               </button>
@@ -144,7 +145,7 @@
 import { ref, onMounted } from "vue";
 import { useStore } from "vuex";
 import FormsModal from "src/components/FormsModal.vue";
-import { getUserDetails } from "../services/services";
+import { getUserDetails, updateUserDetails } from "../services/services";
 
 export default {
   components: {
@@ -159,18 +160,23 @@ export default {
 
     // User Variables
     const email = ref("");
+    const uid = ref("");
     const userData = ref({
       firstName: "",
       lastName: "",
+      authorization: "",
     });
 
     onMounted(async () => {
       email.value = await store.getters.getState.email;
-      const uid = await store.getters.getState.uid;
+      uid.value = await store.getters.getState.uid;
+      const { firstName, lastName, authorization } = await getUserDetails(
+        uid.value
+      );
 
-      const { firstName, lastName } = await getUserDetails(uid);
       userData.value.firstName = firstName;
       userData.value.lastName = lastName;
+      userData.value.authorization = authorization;
     });
 
     const closeModal = () => (openModal.value = false);
@@ -178,6 +184,11 @@ export default {
 
     const enableEdit = () => (editMode.value = true);
     const cancelEdit = () => (editMode.value = false);
+
+    const updateBasicInfo = async () => {
+      await updateUserDetails(userData.value, uid.value);
+      cancelEdit();
+    };
 
     return {
       editMode,
@@ -190,6 +201,7 @@ export default {
       userData,
       enableEdit,
       cancelEdit,
+      updateBasicInfo,
     };
   },
 };

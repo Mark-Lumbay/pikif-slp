@@ -1,4 +1,28 @@
 <template>
+  <div class="fixed inset-0 left-0 top-0 z-[1055] q-pa-md q-gutter-sm">
+    <q-dialog>
+      <q-card style="min-width: 350px">
+        <q-card-section>
+          <div class="text-h6">Your address</div>
+        </q-card-section>
+
+        <q-card-section class="q-pt-none">
+          <q-input
+            dense
+            v-model="address"
+            autofocus
+            @keyup.enter="prompt = false"
+          />
+        </q-card-section>
+
+        <q-card-actions align="right" class="text-primary">
+          <q-btn flat label="Cancel" v-close-popup />
+          <q-btn flat label="Add address" v-close-popup />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
+  </div>
+
   <div
     class="w-[70%] flex flex-col shadow-md rounded-xl p-4 space-x-4 bg-white"
   >

@@ -1,12 +1,22 @@
 import { createStore } from "vuex";
 import { auth } from "../firebase.js";
-import { signInWithEmailAndPassword, signOut } from "firebase/auth";
+import { ref } from "vue";
+import {
+  signInWithEmailAndPassword,
+  signOut,
+  setPersistence,
+  browserSessionPersistence,
+} from "firebase/auth";
 import { testCall } from "src/services/services.js";
+
 const store = createStore({
   state: {
     user: null,
+    fName: null,
+    lName: null,
     token: null,
-    loggedIn: false,
+    studentData: [],
+    indivStudData: [],
   },
 
   getters: {
@@ -15,53 +25,112 @@ const store = createStore({
     },
 
     getState: (state) => {
-      return state.loggedIn;
+      return state.user;
+    },
+
+    getFirstName: (state) => {
+      return state.fName;
+    },
+
+    getData: (state) => {
+      return state.studentData;
+    },
+
+    getOneUser: (state) => {
+      const data = this.getters.getData;
+      const info = data.find((item) => item.id === id);
+      return info;
     },
   },
 
   mutations: {
-    setState(state, payload) {
-      state.user = payload;
-      state.loggedIn = true;
+    setUser(state, details) {
+      if (details) {
+        state.user = details.newUser;
+        state.fName = details.fName;
+        state.lName = details.lName;
+      } else {
+        state.user = details;
+        state.fName = details;
+        state.lName = details;
+      }
     },
 
     setUserToken(state, token) {
       state.token = token;
     },
+
+    setUserData(state, info) {
+      state.studentData = info;
+    },
+
+    setIndivData(state, info) {
+      state.indivStudData = info;
+    },
   },
   actions: {
     async login(context, { email, password }) {
-      const response = await signInWithEmailAndPassword(auth, email, password);
-      if (response) {
-        const token = await response.user.getIdToken(true);
+      try {
+        const response = await signInWithEmailAndPassword(
+          auth,
+          email,
+          password
+        );
+        if (response) {
+          const token = await response.user.getIdToken(true);
 
-        context.commit("setUserToken", token);
-        context.commit("setState", response.user);
+          context.commit("setUserToken", token);
 
-        console.log(context.state.token);
-      } else {
-        throw new Error("login failed");
+          return;
+        } else {
+          throw new Error("login failed");
+        }
+      } catch {
+        throw new Error();
       }
+    },
+
+    storeData(context, data) {
+      context.commit("setUserData", data);
+    },
+
+    storeIndivData(context, data) {
+      context.commit("setIndivData", data);
+    },
+
+    getClientInfo(context, id) {
+      const data = this.getters.getData;
+      const info = data.find((item) => item.id === id);
+      return info;
     },
 
     async logout(context) {
-      const res = await signOut(auth);
-      console.log(res);
-
-      context.commit("setUser", null);
-    },
-
-    async checkToken({ state }) {
       try {
-        const token = state.token;
-        const result = await testCall(token);
-
-        console.log(`Verified! ${result}`);
-      } catch {
-        console.log("Token Verification failure");
+        const res = await signOut(auth);
+        context.commit("setUser", null);
+      } catch (err) {
+        return err;
       }
     },
   },
+});
+
+auth.onAuthStateChanged(async (newUser) => {
+  try {
+    const user = await newUser.getIdTokenResult();
+    const fName = user.claims.firstName;
+    const lName = user.claims.lastName;
+
+    const details = {
+      newUser,
+      fName,
+      lName,
+    };
+
+    store.commit("setUser", details);
+  } catch (err) {
+    return err;
+  }
 });
 
 export default store;

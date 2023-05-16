@@ -40,6 +40,14 @@
               />
             </div>
 
+            <div
+              class="mb-5 w-full bg-red-500 p-2 text-white font-semibold rounded"
+              v-if="incorrect"
+              @click.prevent="closeModal"
+            >
+              <h3 class="text-sm">Email or password is incorrect</h3>
+            </div>
+
             <div class="mb-2 space-y-2 mt-4 w-full text-right">
               <a href="#" class="text-s underline">Forgot Password?</a>
             </div>
@@ -54,7 +62,7 @@
 
               <button
                 class="bg-primaryBtn mb-2 hover:bg-primaryHovBtn text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full h-14 transition-all ease-in-out"
-                @click.prevent="test"
+                @click.prevent="router.push('/register')"
               >
                 Sign Up
               </button>
@@ -78,27 +86,25 @@ export default {
     const store = useStore();
     const router = useRouter();
 
+    const incorrect = ref(false);
+
     const loginUser = async () => {
       try {
         await store.dispatch("login", {
           email: email.value,
           password: password.value,
         });
-        router.push("/home");
-      } catch {
-        console.log("You were not able to login");
+        router.push("/");
+      } catch (err) {
+        incorrect.value = true;
       }
     };
 
-    const test = async () => {
-      try {
-        await store.dispatch("checkToken");
-      } catch {
-        console.log("Error in verification");
-      }
+    const closeModal = () => {
+      incorrect.value = false;
     };
 
-    return { loginUser, test, email, password };
+    return { loginUser, email, password, router, incorrect, closeModal };
   },
 };
 </script>

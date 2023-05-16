@@ -11,12 +11,11 @@ class ClientModel {
   async getInfo(collectionName, data) {
     const { firstName, lastName } = data;
 
-    const clientRef = firestore().collection(collectionName);
-    const query = clientRef
-      .where("clientInfo.firstName", "==", firstName)
-      .where("clientInfo.lastName", "==", lastName);
-
     try {
+      const clientRef = firestore().collection(collectionName);
+      const query = clientRef
+        .where("clientInfo.firstName", "==", firstName)
+        .where("clientInfo.lastName", "==", lastName);
       const snapshot = await query.get();
 
       if (snapshot.empty) {
@@ -44,7 +43,7 @@ class ClientModel {
         active: Joi.boolean().required(),
         interviewDate: Joi.string().required(),
         firstName: Joi.string().required(),
-        middleName: Joi.string().required(),
+        middleName: Joi.string(),
         lastName: Joi.string().required(),
         status: Joi.string().required(),
         age: Joi.number().required(),
@@ -55,7 +54,7 @@ class ClientModel {
         religion: Joi.string().required(),
         contactNum: Joi.string().required(),
         educAttn: Joi.string().required(),
-        categoryObj: Joi.array().required(),
+        category: Joi.string().required(),
         condition: Joi.string().required(),
         materials: Joi.object({
           roof: Joi.string().required(),
@@ -86,22 +85,30 @@ class ClientModel {
         employmentStat: Joi.string().required(),
         employerName: Joi.string().required(),
         workAdd: Joi.string().required(),
+        educAttn: Joi.string().required(),
         assistance: Joi.string().required(),
         otherInc: Joi.string().required(),
         monthlyInc: Joi.string().required(),
-        probs: Joi.string().required(),
+        probs: Joi.object()
+          .pattern(Joi.number().integer(), Joi.string())
+          .required(),
       }).required(),
-      initialFindings: Joi.object({
-        findings: Joi.string().required(),
-        date: Joi.string().required(),
-      }).required(),
+      initialFindings: Joi.array().items(
+        Joi.object({
+          date: Joi.string().required(),
+          findings: Joi.string().required(),
+        }).required()
+      ),
     });
 
     const validate = clientInfoSchema.validate(data, {
       abortEarly: false,
     });
 
-    if (validate.error) return false;
+    if (validate.error) {
+      console.log(validate.error.details[0].message);
+      return false;
+    }
     return this.addClientInfo("clientInfo", data);
   }
 
@@ -122,11 +129,9 @@ class ClientModel {
 
     return this.getInfo("clientInfo", params);
   }
- async  updateFinding(data, id) {
-   
-   const findingID = firestore().collection('clientFindings');
-    const query = findingID
-      .where("personId", "==", id)
+  async updateFinding(data, id) {
+    const findingID = firestore().collection("clientFindings");
+    const query = findingID.where("personId", "==", id);
     try {
       const snapshot = await query.get();
       if (snapshot.empty) {
@@ -136,11 +141,39 @@ class ClientModel {
       console.log(user);
       const personId = snapshot.docs[0].id;
       console.log(personId);
-      const docRef = firestore().collection('clientFindings').doc(personId);
+      const docRef = firestore().collection("clientFindings").doc(personId);
       const result = await docRef.update(data);
       return result;
-    }catch(error){
-      return { status: false, message: error.message};
+    } catch (error) {
+      return { status: false, message: error.message };
+    }
+  }
+
+  async updateClient(data, id) {
+    try {
+      const user = firestore().collection("clientInfo").doc(id);
+      const userData = await user.get();
+
+      const clientInfo = data.clientInfo || userData.data().clientInfo;
+      const informantInfo = data.informantInfo || userData.data().informantInfo;
+      const initialFindings =
+        data.initialFindings || userData.data().initialFindings;
+
+      if (
+        clientInfo !== userData.data().clientInfo ||
+        informantInfo !== userData.data().informantInfo ||
+        initialFindings !== userData.data().initialFindings
+      ) {
+        await user.update({
+          clientInfo,
+          informantInfo,
+          initialFindings,
+        });
+      }
+
+      return { success: true };
+    } catch (err) {
+      return { success: false, message: `Error occured: ${err}` };
     }
   }
 
@@ -152,20 +185,42 @@ class ClientModel {
       const documents = [];
       snapshot.forEach((doc) => {
         const data = doc.data();
+        // const name = `${data.clientInfo.firstName} ${data.clientInfo.middleName} ${data.clientInfo.lastName}`;
         documents.push({
           id: doc.id,
-          firstName: data.clientInfo.firstName,
-          middleName: data.clientInfo.middleName,
-          lastName: data.clientInfo.lastName,
-          age: data.clientInfo.age,
-          sex: data.clientInfo.sex,
-          category: data.clientInfo.category,
-          educAttn: data.clientInfo.educAttn,
+          ...data,
+          // status: data.clientInfo.active,
+          // fullName: name,
+          // age: data.clientInfo.age,
+          // sex: data.clientInfo.sex,
+          // category: data.clientInfo.category,
+          // educAttn: data.clientInfo.educAttn,
         });
       });
       return { status: true, data: documents };
     } catch (error) {
       return { status: false, message: "Internal Server Error" };
+    }
+  }
+
+  async addClientFindings(id, newFindings) {
+    const docId = id;
+    try {
+      const docRef = firestore().collection("clientInfo").doc(docId);
+      const clientDoc = await docRef.get();
+      const initialFindings = await clientDoc.data().initialFindings;
+
+      const updatedFindings = [];
+      updatedFindings.push(...initialFindings);
+      updatedFindings.push(newFindings);
+
+      await docRef.update({
+        initialFindings: updatedFindings,
+      });
+
+      return { success: true, message: "Data Added" };
+    } catch (err) {
+      return { success: false, message: "Error retrieving client info" };
     }
   }
 
@@ -183,6 +238,34 @@ class ClientModel {
       return { status: true, data: data };
     } catch (error) {
       return { status: false, message: "Error retrieving client info" };
+    }
+  }
+
+  async toggleStatus(id) {
+    const docRef = firestore().collection("clientInfo").doc(id);
+
+    try {
+      const doc = await docRef.get();
+      if (!doc.exists) {
+        res.status(404).send("Client not found");
+        return;
+      }
+
+      // "true" to "active" and "false" to "inactive"
+      const activeStatus = doc.data().clientInfo.active;
+      const newActiveStatus = !activeStatus; // Toggle the value of the "active" field
+      console.log(newActiveStatus);
+      const updatePayload = {
+        clientInfo: {
+          active: newActiveStatus,
+        },
+      };
+
+      await docRef.update(updatePayload);
+      return;
+    } catch (error) {
+      console.error(error);
+      return { status: false, message: "Internal Server Error" };
     }
   }
 }

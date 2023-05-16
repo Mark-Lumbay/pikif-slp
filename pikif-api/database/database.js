@@ -1,11 +1,13 @@
-import pkg from "firebase-admin";
-const { firestore, auth } = pkg;
+// This code is deprecated
 
-class Database {
-  async addClientInfo(collectionName, data) {
-    const result = await firestore().collection(collectionName).add(data);
-    return result;
-  }
-}
+// import pkg from "firebase-admin";
+// const { firestore, auth } = pkg;
 
-export default new Database();
+// class Database {
+//   async addClientInfo(collectionName, data) {
+//     const result = await firestore().collection(collectionName).add(data);
+//     return result;
+//   }
+// }
+
+// export default new Database();

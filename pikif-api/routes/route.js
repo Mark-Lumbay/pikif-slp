@@ -49,25 +49,14 @@ router.post("/register", async (req, res) => {
   }
 });
 
-router.post('/setInactive/:id', async (req, res) => {
-  const id = req.params.id;x
-  const isActive = req.body.active;
-
-  const docRef = db.collection('clientInfo').doc(id);
+// Completed
+router.post("/setInactive/toggle/:id", async (req, res) => {
+  const id = req.params.id;
   try {
-    const doc = await docRef.get();
-    if (!doc.exists) {
-      res.status(404).send('Client not found');
-    return;
-  }
-
-    // "true" to "active" and "false" to "inactive"
-    const activeStatus = isActive ? 'active' : 'inactive';
-    await docRef.update({ active: activeStatus });
-    res.send(`Client's status updated successfully to ${activeStatus}`);
+    await ClientModel.toggleStatus(id);
+    res.send({ success: true });
   } catch (error) {
-    console.error(error);
-    res.status(500).send('Error updating client');
+    res.status(500).send({ success: false });
   }
 });
 
@@ -100,62 +89,19 @@ router.get("/getClient/:id", async (req, res) => {
 //update Info
 router.put("/updateInfo/:id", async (req, res) => {
   try {
+    const info = req.body;
     const id = req.params.id;
-    const interviewDate = req.body.interviewDate;
-    const firstName = req.body.firstName;
-    const middleName = req.body.middleName;
-    const lastName = req.body.lastName;
-    const status = req.body.status;
-    const age = req.body.age;
-    const sex = req.body.sex;
-    const address = req.body.address;
-    const birthDate = req.body.birthDate;
-    const birthPlace = req.body.ArrivalTime;
-    const religion = req.body.religion;
-    const contactNum = req.body.contactNum;
-    const educAttn = req.body.educAttn;
-    const categoryObj = req.body.categoryObj;
-    const condition = req.body.condition;
-    const materials = req.body.materials;
-    const appliances = req.body.appliances;
-    const client = db.collection("clientInfo").doc(id);
-    const all = await db.collection("clientInfo").doc(id);
 
-    const result = await client.update(
-      { _id: id },
-      {
-        $set: {
-          interviewDate: interviewDate,
-          firstName: firstName,
-          middleName: middleName,
-          lastName: lastName,
-          status: status,
-          age: age,
-          sex: sex,
-          address: address,
-          birthDate: birthDate,
-          birthPlace: birthPlace,
-          religion: religion,
-          contactNum: contactNum,
-          educAttn: educAttn,
-          categoryObj: categoryObj,
-          condition: condition,
-          materials: materials,
-          appliances: appliances,
-        },
-      }
-    );
+    console.log(id);
 
-    const data = await db.collection("clientInfo").doc(id);
-    res.status(200).json({
-      success: true,
-      message: `Client with client ID: ${id} has been updated`,
-      confirmation: result,
-      Before: all,
-      After: data,
-    });
-  } catch (error) {
-    res.status(400).json({ message: error.message });
+    const updateResult = await ClientModel.updateClient(info, id);
+    if (updateResult) {
+      res.status(200).send({ success: true });
+    } else {
+      res.status(500).send({ success: false });
+    }
+  } catch (err) {
+    res.status(500).send({ success: false });
   }
 });
 
@@ -163,35 +109,33 @@ router.put("/updateInfo/:id", async (req, res) => {
 router.put("/updateFindings", async (req, res) => {
   try {
     const id = req.query.id;
-    
+
     const data = {
       date: req.body.date,
-      findings: req.body.findings
+      findings: req.body.findings,
+    };
+    const result = await ClientModel.updateFinding(data, id);
+    const findingID = firestore().collection("clientFindings");
+    const query = findingID.where("personId", "==", id);
+    try {
+      const snapshot = await query.get();
+      if (snapshot.empty) {
+        return { status: false, message: "No Matching Documents" };
+      }
+      const user = snapshot.docs[0].data();
+      console.log(user);
+      const personId = snapshot.docs[0].id;
+      console.log(personId);
+      res.status(200).json({
+        success: true,
+        result,
+        user,
+      });
+    } catch (error) {
+      return { status: false, message: error.message };
     }
-  const result = await ClientModel.updateFinding(data, id);
-  const findingID = firestore().collection('clientFindings');
-  const query = findingID
-    .where("personId", "==", id)
-  try {
-    const snapshot = await query.get();
-    if (snapshot.empty) {
-      return { status: false, message: "No Matching Documents" };
-    }
-    const user = snapshot.docs[0].data();
-    console.log(user);
-    const personId = snapshot.docs[0].id;
-    console.log(personId);
-    res.status(200).json({
-      success: true,
-      result,
-      user
-    });
-  }catch(error){
-    return { status: false, message: error.message};
-  }
- 
   } catch (error) {
-    res.status(400).json({  success: false, message: error.message });
+    res.status(400).json({ success: false, message: error.message });
   }
 });
 
@@ -199,13 +143,30 @@ router.put("/updateFindings", async (req, res) => {
 //search  by first name, last name
 router.get("/search", async (req, res) => {
   const info = req.query;
- 
-  const clientInfo = await ClientModel.getClientInfo(info);
-  
-  if (clientInfo.status) {
-    res.status(200).json({ success: true, result: clientInfo });
-  } else {
-    res.status(400).json({ success: false, message: clientInfo.message });
+
+  try {
+    const clientInfo = await ClientModel.getClientInfo(info);
+
+    if (clientInfo.status) {
+      res.status(200).json({ success: true, result: clientInfo });
+    } else {
+      res.status(400).json({ success: false, message: clientInfo.message });
+    }
+  } catch (err) {
+    res.status(400).json({ success: false, message: err.message });
+  }
+});
+
+router.post("/addFindings/:id", async (req, res) => {
+  const id = req.params.id;
+  const findings = req.body;
+
+  try {
+    const addFindingsRes = await ClientModel.addClientFindings(id, findings);
+    if (addFindingsRes.data.success) return true;
+    return false;
+  } catch (err) {
+    return false;
   }
 });
 export default router;

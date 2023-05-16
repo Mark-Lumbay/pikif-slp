@@ -1,12 +1,25 @@
 import store from "../store";
+import { auth } from "../firebase.js";
 
-export default function middleware(to, from, next) {
-  const loggedIn = store.getters.getState;
-  if (to.meta.requiresAuth && !loggedIn) {
-    console.log("nope");
-    next("/login");
+let user = store.getters.getState;
+
+function getAuthState() {
+  return new Promise((resolve) => {
+    auth.onAuthStateChanged((newUser) => {
+      resolve(newUser);
+    });
+  });
+}
+
+async function runCheck() {
+  user = await getAuthState();
+}
+
+export default async function middleware(to, from, next) {
+  await runCheck();
+  if (to.meta.requiresAuth && !user) {
+    return next("/login");
   } else {
-    console.log("passed");
     return next();
   }
 }

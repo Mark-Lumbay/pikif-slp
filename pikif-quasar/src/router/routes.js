@@ -1,7 +1,63 @@
 const routes = [
   {
     path: "/",
-    children: [{ path: "", component: () => import("pages/TestPage.vue") }],
+    meta: {
+      requiresAuth: true,
+    },
+    component: () => import("layouts/NavBar.vue"),
+    children: [
+      {
+        path: "/",
+        name: "Home",
+        component: () => import("pages/HomePage.vue"),
+      },
+    ],
+  },
+
+  {
+    path: "/addStudent",
+    meta: {
+      requiresAuth: true,
+    },
+    component: () => import("layouts/NavBar.vue"),
+    children: [
+      {
+        path: "/addStudent",
+        name: "Add Student",
+        component: () => import("pages/AddStudent.vue"),
+      },
+    ],
+  },
+
+  {
+    path: "/viewInfo/:id",
+    meta: {
+      requiresAuth: true,
+    },
+    component: () => import("layouts/NavBar.vue"),
+    children: [
+      {
+        path: "/viewInfo/:id",
+        name: "View Student Info",
+        component: () => import("pages/ViewInfo.vue"),
+      },
+    ],
+  },
+
+  {
+    path: "/account-settings",
+    meta: {
+      requiresAuth: true,
+    },
+
+    component: () => import("layouts/NavBar.vue"),
+    children: [
+      {
+        path: "/account-settings",
+        name: "Account Settings",
+        component: () => import("pages/AccSettings.vue"),
+      },
+    ],
   },
 
   {
@@ -15,15 +71,16 @@ const routes = [
     children: [{ path: "", component: () => import("pages/RegisterAcc.vue") }],
   },
 
-  {
-    path: "/home",
-    name: "home",
-    meta: {
-      requiresAuth: true,
-    },
-    component: () => import("layouts/NavBar.vue"),
-    children: [{ path: "", component: () => import("pages/HomePage.vue") }],
-  },
+  // Removed path since base path will be loading home page
+  // {
+  //   path: "/home",
+  //   name: "home",
+  //   meta: {
+  //     requiresAuth: true,
+  //   },
+  //   component: () => import("layouts/NavBar.vue"),
+  //   children: [{ path: "", component: () => import("pages/HomePage.vue") }],
+  // },
 
   // Always leave this as last one,
   // but you can also remove it

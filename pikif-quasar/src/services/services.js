@@ -114,8 +114,7 @@ export async function checkUserExists(data) {
 export async function getUserDetails(id) {
   try {
     const userDetails = await apiClient.get(`/getUserDetails/${id}`);
-
-    return userDetails.data.data;
+    return userDetails.data.data.customClaims;
   } catch (err) {
     return { status: false };
   }

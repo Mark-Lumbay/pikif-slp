@@ -48,10 +48,19 @@ class userModel {
 
   async getUserDetails(id) {
     try {
-      const details = await firestore().collection("users").doc(id).get();
+      const details = await auth().getUser(id);
+      return details;
+    } catch (err) {
+      return { success: false, message: `Internal server error ${err}` };
+    }
+  }
 
-      const data = details.data();
-      return data;
+  async updateUserDetails(data, id) {
+    try {
+      const user = firestore().collection("user").doc(id);
+      await user.update({
+        ...data,
+      });
     } catch (err) {
       return { success: false, message: `Internal server error ${err}` };
     }

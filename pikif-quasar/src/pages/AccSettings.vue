@@ -1,27 +1,5 @@
 <template>
-  <div class="fixed inset-0 left-0 top-0 z-[1055] q-pa-md q-gutter-sm">
-    <q-dialog>
-      <q-card style="min-width: 350px">
-        <q-card-section>
-          <div class="text-h6">Your address</div>
-        </q-card-section>
-
-        <q-card-section class="q-pt-none">
-          <q-input
-            dense
-            v-model="address"
-            autofocus
-            @keyup.enter="prompt = false"
-          />
-        </q-card-section>
-
-        <q-card-actions align="right" class="text-primary">
-          <q-btn flat label="Cancel" v-close-popup />
-          <q-btn flat label="Add address" v-close-popup />
-        </q-card-actions>
-      </q-card>
-    </q-dialog>
-  </div>
+  <FormsModal :open-modal="openModal" @close-modal="closeModal"></FormsModal>
 
   <div
     class="w-[70%] flex flex-col shadow-md rounded-xl p-4 space-x-4 bg-white"
@@ -120,12 +98,13 @@
                 >
                   Email
                 </label>
-                <p>lumbaymark@gmail.com</p>
+                <p>{{ email }}</p>
               </div>
               <div class="flex justify-end w-[50%]">
                 <button
                   class="text-primaryRed h-12 hover:text-white hover:bg-primaryRed hover:border-transparent font-semibold py-2 px-6 border border-primaryRed rounded"
                   v-if="!editMode"
+                  @click.prevent="showModal"
                 >
                   Change
                 </button>
@@ -159,22 +138,39 @@
 
 <script>
 import { ref, onMounted } from "vue";
-import store from "../store";
+import { useStore } from "vuex";
+import FormsModal from "src/components/FormsModal.vue";
 
 export default {
+  components: {
+    FormsModal,
+  },
   setup() {
     const editMode = ref(false);
     const readOnly = ref(true);
+    const openModal = ref(false);
+    const store = useStore();
+    const email = ref("");
     const userData = ref({
       firstName: "",
       lastName: "",
     });
 
-    onMounted(() => {});
+    onMounted(async () => {
+      email.value = await store.getters.getState.email;
+    });
+
+    const closeModal = () => (openModal.value = false);
+    const showModal = () => (openModal.value = true);
 
     return {
       editMode,
       readOnly,
+      FormsModal,
+      openModal,
+      closeModal,
+      showModal,
+      email,
     };
   },
 };

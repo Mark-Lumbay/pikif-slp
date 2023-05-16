@@ -4,12 +4,12 @@
       <q-card class="w-full">
         <div class="w-full h-14 bg-primaryHovBtn flex items-center px-4">
           <p class="block text-white text-xl font-semibold">
-            Change Your Email
+            {{ formContents.headerText }}
           </p>
         </div>
         <div class="px-4">
           <q-card-section class="mt-4">
-            <div class="text-h6">Your current email</div>
+            <div class="text-h6">{{ formContents.text1 }}</div>
           </q-card-section>
 
           <q-card-section class="q-pt-none">
@@ -17,13 +17,13 @@
               dense
               autofocus
               @keyup.enter="prompt = false"
-              placeholder="Enter current email"
+              :placeholder="formContents.placeholder1"
               v-model="currEmail"
             />
           </q-card-section>
 
           <q-card-section>
-            <div class="text-h6">Your new email</div>
+            <div class="text-h6">{{ formContents.text2 }}</div>
           </q-card-section>
 
           <q-card-section class="q-pt-none">
@@ -31,7 +31,7 @@
               dense
               autofocus
               @keyup.enter="prompt = false"
-              placeholder="Enter new email"
+              :placeholder="formContents.placeholder2"
               v-model="newEmail"
             />
           </q-card-section>
@@ -73,6 +73,11 @@ export default {
       type: Boolean,
       required: true,
     },
+
+    modalType: {
+      type: Number,
+      required: true,
+    },
   },
   setup(props, { emit }) {
     const prompt = ref(false);
@@ -80,11 +85,38 @@ export default {
     const newEmail = ref("");
     const store = useStore();
     const email = ref("");
+    const formContents = ref({
+      headerText: "",
+      text1: "",
+      text2: "",
+      placeholder1: "",
+      placeholder2: "",
+    });
 
     watch(
       () => props.openModal,
       (state) => {
         prompt.value = state;
+      }
+    );
+
+    watch(
+      () => props.modalType,
+      (mode) => {
+        if (mode == 1) {
+          formContents.value.headerText = "Change Your Email";
+          formContents.value.text1 = "Your Current Email";
+          formContents.value.text2 = "Your New Email";
+          formContents.value.placeholder1 = "Enter current email";
+          formContents.value.placeholder2 = "Enter new email";
+        }
+        if (mode == 2) {
+          formContents.value.headerText = "Change Your Password";
+          formContents.value.text1 = "Your Current Password";
+          formContents.value.text2 = "Your New Password";
+          formContents.value.placeholder1 = "Enter current password";
+          formContents.value.placeholder2 = "Enter new password";
+        }
       }
     );
 
@@ -96,6 +128,7 @@ export default {
       currEmail,
       newEmail,
       email,
+      formContents,
     };
   },
 };

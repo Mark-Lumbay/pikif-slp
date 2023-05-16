@@ -1,5 +1,9 @@
 <template>
-  <FormsModal :open-modal="openModal" @close-modal="closeModal"></FormsModal>
+  <FormsModal
+    :open-modal="openModal"
+    @close-modal="closeModal"
+    :modal-type="modalType"
+  ></FormsModal>
 
   <div
     class="w-[70%] flex flex-col shadow-md rounded-xl p-4 space-x-4 bg-white"
@@ -119,7 +123,7 @@
               <div class="flex justify-end w-[50%]">
                 <button
                   class="text-primaryRed h-12 hover:text-white hover:bg-primaryRed hover:border-transparent font-semibold py-2 px-6 border border-primaryRed rounded"
-                  @click.prevent="showModal"
+                  @click.prevent="showModal(1)"
                 >
                   Change
                 </button>
@@ -138,6 +142,7 @@
               <div class="flex justify-end w-[50%]">
                 <button
                   class="text-primaryRed h-12 hover:text-white hover:bg-primaryRed hover:border-transparent font-semibold py-2 px-6 border border-primaryRed rounded"
+                  @click.prevent="showModal(2)"
                 >
                   Change
                 </button>
@@ -166,6 +171,13 @@ export default {
     const editMode = ref(false);
     const readOnly = ref(true);
     const openModal = ref(false);
+    const formContents = ref({
+      headerText: "",
+      text1: "",
+      text2: "",
+      placeholder1: "",
+      placeholder2: "",
+    });
 
     // Vue variables
     const store = useStore();
@@ -184,6 +196,7 @@ export default {
     const bannerMsg = ref("");
     const bannerState = ref(false);
     const bannerStyle = ref("");
+    const modalType = ref(0);
 
     onMounted(async () => {
       email.value = await store.getters.getState.email;
@@ -200,7 +213,10 @@ export default {
     const closeModal = () => {
       openModal.value = false;
     };
-    const showModal = () => (openModal.value = true);
+    const showModal = (type) => {
+      modalType.value = type;
+      openModal.value = true;
+    };
 
     const enableEdit = () => (editMode.value = true);
     const cancelEdit = () => {
@@ -244,6 +260,8 @@ export default {
       bannerState,
       clearBanner,
       style,
+      formContents,
+      modalType,
     };
   },
 };

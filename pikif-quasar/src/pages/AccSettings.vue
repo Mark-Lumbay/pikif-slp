@@ -22,17 +22,19 @@
               </p>
             </div>
 
-            <div class="flex justify-end w-[50%]">
+            <div class="flex justify-end w-[50%] space-x-3">
               <button
                 class="text-primaryRed hover:text-white hover:bg-primaryRed hover:border-transparent font-semibold py-2 px-4 border border-primaryRed rounded"
                 v-if="!editMode"
+                @click.prevent="enableEdit"
               >
                 Edit
               </button>
 
               <button
-                class="text-primaryBtn hover:text-white hover:bg-btnGreen hover:border-transparent font-semibold py-2 px-4 border border-primaryBtn rounded"
+                class="text-primaryRed hover:text-white hover:bg-primaryRed hover:border-transparent font-semibold py-2 px-4 border border-primaryRed rounded"
                 v-if="editMode"
+                @click.prevent="cancelEdit"
               >
                 Cancel
               </button>
@@ -59,6 +61,8 @@
                 id="grid-first-name"
                 type="text"
                 placeholder="First Name"
+                v-model="userData.firstName"
+                :disabled="!editMode"
               />
             </div>
             <div class="w-full md:w-1/2 pl-4">
@@ -73,6 +77,8 @@
                 id="grid-last-name"
                 type="text"
                 placeholder="Last Name"
+                v-model="userData.lastName"
+                :disabled="!editMode"
               />
             </div>
           </div>
@@ -103,7 +109,6 @@
               <div class="flex justify-end w-[50%]">
                 <button
                   class="text-primaryRed h-12 hover:text-white hover:bg-primaryRed hover:border-transparent font-semibold py-2 px-6 border border-primaryRed rounded"
-                  v-if="!editMode"
                   @click.prevent="showModal"
                 >
                   Change
@@ -123,7 +128,6 @@
               <div class="flex justify-end w-[50%]">
                 <button
                   class="text-primaryRed h-12 hover:text-white hover:bg-primaryRed hover:border-transparent font-semibold py-2 px-6 border border-primaryRed rounded"
-                  v-if="!editMode"
                 >
                   Change
                 </button>
@@ -140,16 +144,20 @@
 import { ref, onMounted } from "vue";
 import { useStore } from "vuex";
 import FormsModal from "src/components/FormsModal.vue";
+import { getUserDetails } from "../services/services";
 
 export default {
   components: {
     FormsModal,
   },
   setup() {
+    // Mode Variables
     const editMode = ref(false);
     const readOnly = ref(true);
     const openModal = ref(false);
     const store = useStore();
+
+    // User Variables
     const email = ref("");
     const userData = ref({
       firstName: "",
@@ -158,10 +166,18 @@ export default {
 
     onMounted(async () => {
       email.value = await store.getters.getState.email;
+      const uid = await store.getters.getState.uid;
+
+      const { firstName, lastName } = await getUserDetails(uid);
+      userData.value.firstName = firstName;
+      userData.value.lastName = lastName;
     });
 
     const closeModal = () => (openModal.value = false);
     const showModal = () => (openModal.value = true);
+
+    const enableEdit = () => (editMode.value = true);
+    const cancelEdit = () => (editMode.value = false);
 
     return {
       editMode,
@@ -171,6 +187,9 @@ export default {
       closeModal,
       showModal,
       email,
+      userData,
+      enableEdit,
+      cancelEdit,
     };
   },
 };

@@ -169,4 +169,15 @@ router.post("/addFindings/:id", async (req, res) => {
     return false;
   }
 });
+
+router.get("/getUserDetails/:id", async (req, res) => {
+  const id = req.params.id;
+
+  try {
+    const userDetails = await userModel.getUserDetails(id);
+    return res.status(200).send({ data: userDetails });
+  } catch (err) {
+    return res.status(500).send({ message: "Internal Server Error" });
+  }
+});
 export default router;

@@ -45,6 +45,17 @@ class userModel {
       return false;
     }
   }
+
+  async getUserDetails(id) {
+    try {
+      const details = await firestore().collection("users").doc(id).get();
+
+      const data = details.data();
+      return data;
+    } catch (err) {
+      return { success: false, message: `Internal server error ${err}` };
+    }
+  }
 }
 
 export default new userModel();

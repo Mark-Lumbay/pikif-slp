@@ -126,7 +126,7 @@ auth.onAuthStateChanged(async (newUser) => {
   try {
     const user = await newUser.getIdTokenResult();
     const token = await newUser.getIdToken(true);
-    const authLevel = await getUserAuth(response.user.uid);
+    const authLevel = await getUserAuth(user.claims.user_id);
 
     const fName = user.claims.firstName;
     const lName = user.claims.lastName;
@@ -141,6 +141,7 @@ auth.onAuthStateChanged(async (newUser) => {
     store.commit("setUserToken", token);
     store.commit("setAuth", authLevel.data.auth);
   } catch (err) {
+    console.log(err);
     return err;
   }
 });

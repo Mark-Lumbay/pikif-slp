@@ -29,6 +29,7 @@ const routes = [
     ],
   },
 
+
   {
     path: "/viewInfo/:id",
     meta: {

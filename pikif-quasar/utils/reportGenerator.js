@@ -30,7 +30,7 @@ async function generateReport(format, filter) {
     // create document object
     let doc;
     if (format === "pdf") {
-      doc = new PDFDocument();
+      doc = new pdf.Document();
     } else if (format === "docx") {
       doc = new docx.Document();
     } else {

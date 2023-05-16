@@ -145,6 +145,9 @@ export default {
           emit("updatePass", text.value);
           closeModal();
         }
+
+        text.value.currText = "";
+        text.value.newText = "";
       } else {
         showErr.value = true;
       }

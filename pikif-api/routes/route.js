@@ -58,8 +58,8 @@ router.post('/setInactive/:id', async (req, res) => {
     const doc = await docRef.get();
     if (!doc.exists) {
       res.status(404).send('Client not found');
-      return;
-    }
+    return;
+  }
 
     // "true" to "active" and "false" to "inactive"
     const activeStatus = isActive ? 'active' : 'inactive';

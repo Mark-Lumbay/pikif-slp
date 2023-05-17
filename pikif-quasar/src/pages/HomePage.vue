@@ -626,10 +626,7 @@ export default {
     <div>
 
      <button class="px-4 py-2 bg-primaryRed text-white text-base font-medium rounded-md w-full shadow-sm hover:bg-primaryRedHover focus:outline-none focus:ring-2 focus:ring-green-300"
-     data-te-toggle="modal"
-  data-te-target="#staticBackdrop"
-  data-te-ripple-init
-  data-te-ripple-color="light"
+
      >Generate Report</button>
     </div>
   </div>

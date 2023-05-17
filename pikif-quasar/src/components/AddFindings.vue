@@ -270,6 +270,7 @@ export default {
         // }
         emit("clientFindingsUpdate", clientFindingsInfo.value);
       } else {
+        console.log("TEST");
         if (
           newClientFindings.value.findings.trim() == "" ||
           newClientFindings.value.date === ""

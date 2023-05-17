@@ -127,7 +127,7 @@
                 <select
                   class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                   id="grid-occupation"
-                  v-model="occupation"
+                  v-model="informantPersonalInfo.informantInfo.occupation"
                   :disabled="textField"
                 >
                   <option value="Laborer">Laborer</option>
@@ -169,8 +169,11 @@
                 id="grid-birth-place"
                 type="text"
                 placeholder="Specify job"
-                v-model="occupationOthers"
-                :disabled="occupation != 'Others'"
+                v-model="informantPersonalInfo.informantInfo.occupationOthers"
+                :disabled="
+                  informantPersonalInfo.informantInfo.occupation != 'Others' ||
+                  !editMode
+                "
               />
             </div>
           </div>
@@ -561,7 +564,7 @@
                 <select
                   class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                   id="grid-occupation"
-                  v-model="otherInc"
+                  v-model="informantPersonalInfo.informantInfo.otherInc"
                   :disabled="textField"
                 >
                   <option value="Laborer">Laborer</option>
@@ -602,8 +605,11 @@
                 id="grid-roof-others"
                 type="text"
                 placeholder="Other options"
-                :disabled="otherInc != 'Others'"
-                v-model="otherIncOthers"
+                :disabled="
+                  informantPersonalInfo.informantInfo.otherInc != 'Others' ||
+                  !editMode
+                "
+                v-model="informantPersonalInfo.informantInfo.otherIncOthers"
               />
             </div>
 
@@ -651,8 +657,8 @@
                 id="grid-overall"
                 type="text"
                 placeholder="Specify Other Problems:"
-                v-model="checkBoxesOthers"
-                :disabled="!checkBoxes[7].checked"
+                v-model="informantPersonalInfo.informantInfo.probsOthers"
+                :disabled="!checkBoxes[7].checked || !editMode"
               />
             </div>
           </div>
@@ -754,6 +760,13 @@ export default {
           if (entry) {
             // 3. Update the checked value accordingly
             entry.checked = true;
+          } else {
+            checkBoxes.value.find((checkbox) => {
+              if (checkbox.text === "Others") {
+                checkbox.checked = true;
+              }
+            });
+            informantPersonalInfo.value.informantInfo.probsOthers = findText;
           }
         });
 
@@ -834,11 +847,8 @@ export default {
         birthPlace: "",
         religion: "",
         contactNum: "",
-        occupation: computed(() => {
-          return occupation.value == "Others"
-            ? occupationOthers.value
-            : occupation.value;
-        }),
+        occupation: "Laborer",
+        occupationOthers: "",
         income: {
           type: "Fixed",
           amount: "",
@@ -850,6 +860,7 @@ export default {
         educAttn: "Pre-school",
         assistance: "4P's",
         otherInc: "Laborer",
+        otherIncOthers: "",
         monthlyInc: "",
         probs: computed(() => {
           const othersCheckbox = checkBoxes.value.find(
@@ -872,6 +883,7 @@ export default {
             )
             .map((checkbox) => checkbox.text);
         }),
+        probsOthers: "",
       },
     });
 
@@ -925,7 +937,7 @@ export default {
           } else {
             continue;
           }
-        } else {
+        } else if (!field == "occupationOthers" || !field == "otherIncOthers") {
           if (
             informantPersonalInfo.value.informantInfo[field] === "" ||
             typeof informantPersonalInfo.value.informantInfo[field] === "number"
@@ -938,6 +950,22 @@ export default {
     };
 
     const submitInformantInfo = () => {
+      if (informantPersonalInfo.value.informantInfo.occupation !== "Others") {
+        informantPersonalInfo.value.informantInfo.occupationOthers = "";
+      }
+
+      if (informantPersonalInfo.value.informantInfo.otherInc !== "Others") {
+        informantPersonalInfo.value.informantInfo.otherIncOthers = "";
+      }
+
+      const othersCheckbox = checkBoxes.value.find(
+        (checkbox) => checkbox.text === "Others"
+      );
+
+      if (othersCheckbox && !othersCheckbox.checked) {
+        informantPersonalInfo.value.informantInfo.probsOthers = "";
+      }
+
       if (validate()) {
         const plainObj = toRawObject(informantPersonalInfo.value.informantInfo);
         if (updateMode.value == false) {

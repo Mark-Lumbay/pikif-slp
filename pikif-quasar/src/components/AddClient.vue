@@ -398,7 +398,10 @@
                 id="grid-other"
                 type="text"
                 placeholder="Other options"
-                :disabled="clientPersonalInfo.clientInfo.condition != 'Others'"
+                :disabled="
+                  clientPersonalInfo.clientInfo.condition != 'Others' ||
+                  !editMode
+                "
                 v-model="clientPersonalInfo.clientInfo.conditionOthers"
               />
             </div>
@@ -423,7 +426,7 @@
                 <select
                   class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                   id="grid-roof"
-                  v-model="clientPersonalInfo.clientInfo.roof"
+                  v-model="clientPersonalInfo.clientInfo.materials.roof"
                   :disabled="textField"
                 >
                   <option value="Nipa">Nipa</option>
@@ -458,8 +461,11 @@
                 id="grid-roof-others"
                 type="text"
                 placeholder="Other options"
-                :disabled="clientPersonalInfo.clientInfo.roof != 'Others'"
-                v-model="clientPersonalInfo.clientInfo.roofOthers"
+                :disabled="
+                  clientPersonalInfo.clientInfo.materials.roof != 'Others' ||
+                  !editMode
+                "
+                v-model="clientPersonalInfo.clientInfo.materials.roofOthers"
               />
             </div>
 
@@ -474,7 +480,7 @@
                 <select
                   class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                   id="grid-wall"
-                  v-model="clientPersonalInfo.clientInfo.walls"
+                  v-model="clientPersonalInfo.clientInfo.materials.walls"
                   :disabled="textField"
                 >
                   <option value="Nipa">Nipa</option>
@@ -510,8 +516,11 @@
                 id="grid-roof-others"
                 type="text"
                 placeholder="Other options"
-                :disabled="clientPersonalInfo.clientInfo.walls != 'Others'"
-                v-model="clientPersonalInfo.clientInfo.wallOthers"
+                :disabled="
+                  clientPersonalInfo.clientInfo.materials.walls != 'Others' ||
+                  !editMode
+                "
+                v-model="clientPersonalInfo.clientInfo.materials.wallOthers"
               />
             </div>
 
@@ -526,7 +535,7 @@
                 <select
                   class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                   id="grid-wall"
-                  v-model="clientPersonalInfo.clientInfo.floor"
+                  v-model="clientPersonalInfo.clientInfo.materials.floor"
                   :disabled="textField"
                 >
                   <option value="Soil">Soil</option>
@@ -562,8 +571,11 @@
                 id="grid-roof-others"
                 type="text"
                 placeholder="Other options"
-                :disabled="clientPersonalInfo.clientInfo.floor != 'Others'"
-                v-model="clientPersonalInfo.clientInfo.floorOthers"
+                :disabled="
+                  clientPersonalInfo.clientInfo.materials.floor != 'Others' ||
+                  !editMode
+                "
+                v-model="clientPersonalInfo.clientInfo.materials.floorOthers"
               />
             </div>
           </div>
@@ -657,7 +669,7 @@ export default {
     // Solution sakong binugok
     // 1. Create others property
     // 2. On load, check if ____Cond is others
-    // 3. Of others, get value from others field
+    // 3. If others, get value from others field
     // 4. Otherwise use ____Cond
     const clientPersonalInfo = ref({
       clientInfo: {
@@ -714,23 +726,23 @@ export default {
       updateMode.value = false;
     };
 
-    function toRawObject(reactiveObj) {
-      let rawObj = {};
-      for (let key in reactiveObj) {
-        let value = reactiveObj[key];
-        if (value?.value !== undefined) {
-          // If it's a ref or computed ref, use the value directly
-          rawObj[key] = value.value;
-        } else if (typeof value === "object" && value !== null) {
-          // If it's a nested object, call toRawObject recursively
-          rawObj[key] = toRawObject(value);
-        } else {
-          // Otherwise, just copy the value
-          rawObj[key] = value;
-        }
-      }
-      return rawObj;
-    }
+    // function toRawObject(reactiveObj) {
+    //   let rawObj = {};
+    //   for (let key in reactiveObj) {
+    //     let value = reactiveObj[key];
+    //     if (value?.value !== undefined) {
+    //       // If it's a ref or computed ref, use the value directly
+    //       rawObj[key] = value.value;
+    //     } else if (typeof value === "object" && value !== null) {
+    //       // If it's a nested object, call toRawObject recursively
+    //       rawObj[key] = toRawObject(value);
+    //     } else {
+    //       // Otherwise, just copy the value
+    //       rawObj[key] = value;
+    //     }
+    //   }
+    //   return rawObj;
+    // }
 
     const validate = () => {
       for (const field in clientPersonalInfo.value.clientInfo) {
@@ -740,7 +752,11 @@ export default {
           } else {
             continue;
           }
-        } else {
+        } else if (
+          !field === "materials" ||
+          !field === "conditions" ||
+          !field === "conditionOthers"
+        ) {
           if (
             clientPersonalInfo.value.clientInfo[field] === "" ||
             typeof clientPersonalInfo.value.clientInfo[field] === "number"
@@ -753,14 +769,30 @@ export default {
     };
 
     const submitPersonInfo = () => {
+      if (clientPersonalInfo.value.clientInfo.condition !== "Others") {
+        clientPersonalInfo.value.clientInfo.conditionOthers = "";
+      }
+
+      if (clientPersonalInfo.value.clientInfo.materials.roof !== "Others") {
+        clientPersonalInfo.value.clientInfo.materials.roofOthers = "";
+      }
+
+      if (clientPersonalInfo.value.clientInfo.materials.walls !== "Others") {
+        clientPersonalInfo.value.clientInfo.materials.wallOthers = "";
+      }
+
+      if (clientPersonalInfo.value.clientInfo.materials.floor !== "Others") {
+        clientPersonalInfo.value.clientInfo.materials.floorOthers = "";
+      }
+
       if (validate()) {
         console.log(clientPersonalInfo.value.clientInfo);
-        const plainObj = toRawObject(clientPersonalInfo.value.clientInfo);
         if (updateMode.value == false) {
-          emit("clientInfoSubmit", plainObj);
+          emit("clientInfoSubmit", clientPersonalInfo.value.clientInfo);
         } else {
           setupViewOnly();
-          emit("clientInfoUpdate", plainObj);
+
+          emit("clientInfoUpdate", clientPersonalInfo.value.clientInfo);
         }
       } else {
         lackingErr.value = true;

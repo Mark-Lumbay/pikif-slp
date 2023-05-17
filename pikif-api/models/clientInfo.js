@@ -56,14 +56,14 @@ class ClientModel {
         educAttn: Joi.string().required(),
         category: Joi.string().required(),
         condition: Joi.string().required(),
-        conditionOthers: Joi.string().required(),
+        conditionOthers: Joi.string().allow(""),
         materials: Joi.object({
           roof: Joi.string().required(),
-          roofOthers: Joi.string().required(),
+          roofOthers: Joi.string().allow(""),
           walls: Joi.string().required(),
-          wallOthers: Joi.string().required(),
+          wallOthers: Joi.string().allow(""),
           floor: Joi.string().required(),
-          floorOthers: Joi.string().required(),
+          floorOthers: Joi.string().allow(""),
         }).required(),
         appliances: Joi.string().required(),
       }).required(),
@@ -81,6 +81,7 @@ class ClientModel {
         religion: Joi.string().required(),
         contactNum: Joi.string().required(),
         occupation: Joi.string().required(),
+        occupationOthers: Joi.string().allow(""),
         income: Joi.object({
           type: Joi.string().required(),
           amount: Joi.string().required(),
@@ -92,6 +93,7 @@ class ClientModel {
         educAttn: Joi.string().required(),
         assistance: Joi.string().required(),
         otherInc: Joi.string().required(),
+        otherIncOthers: Joi.string().allow(""),
         monthlyInc: Joi.string().required(),
         probs: Joi.object()
           .pattern(Joi.number().integer(), Joi.string())
@@ -113,6 +115,8 @@ class ClientModel {
       console.log(validate.error.details[0].message);
       return false;
     }
+
+    console.log("LAHOS YAWA");
     return this.addClientInfo("clientInfo", data);
   }
 

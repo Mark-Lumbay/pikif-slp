@@ -1,6 +1,8 @@
 import Joi from "joi";
 import pkg from "firebase-admin";
 const { firestore, auth } = pkg;
+import { auth2 } from "../firebase.js";
+// import { signInWithEmailAndPassword } from "firebase/auth";
 
 class userModel {
   async register(credentials) {
@@ -16,7 +18,10 @@ class userModel {
       abortEarly: false,
     });
 
-    if (validate.error) return false;
+    if (validate.error) {
+      console.log(validate.error.details[0].message);
+      return false;
+    }
     const { email, password, firstName, lastName, authorization } = credentials;
     try {
       const user = await auth().createUser({
@@ -25,10 +30,14 @@ class userModel {
       });
 
       const uid = user.uid;
+      await firestore()
+        .collection("users")
+        .doc(uid)
+        .set({ firstName: firstName, lastName: lastName, auth: authorization });
+
       await auth().setCustomUserClaims(uid, {
         firstName: firstName,
         lastName: lastName,
-        authorization: authorization,
       });
       return true;
     } catch {
@@ -57,10 +66,61 @@ class userModel {
 
   async updateUserDetails(data, id) {
     try {
+      console.log(data);
       const res = await auth().setCustomUserClaims(id, data);
+      console.log(res);
       return res;
     } catch (err) {
       return { success: false, message: `Internal server error 2 ${err}` };
+    }
+  }
+
+  async updateUserEmail(email, id) {
+    const { newEmail, currEmail } = email;
+    try {
+      // Check if email is correct
+      const userRecord = await auth().getUser(id);
+      const currentEmail = userRecord.email;
+
+      if (currentEmail !== currEmail) {
+        return { success: false, message: "Email Mismatch" };
+      }
+
+      const res = await auth().updateUser(id, { email: newEmail });
+      console.log(res);
+      return { success: true, data: res };
+    } catch (err) {
+      return { success: false, message: err };
+    }
+  }
+
+  async updateUserPass(pass, id) {
+    const { oldPass, newPass } = pass;
+
+    try {
+      const user = await auth().getUser(id);
+      const email = user.email;
+
+      const result = await signInWithEmailAndPassword(auth2, email, oldPass);
+      if (!result) return { success: false };
+
+      await auth().revokeRefreshTokens(id);
+      await auth().updateUser(id, { password: newPass });
+
+      return { success: true };
+    } catch (err) {
+      return { success: false, message: err };
+    }
+  }
+
+  async getUserAuth(id) {
+    try {
+      const userRef = firestore().collection("users").doc(id);
+      const userData = await userRef.get();
+      const userAuth = userData.data();
+      return { success: true, data: userAuth };
+    } catch (err) {
+      return { success: false, message: err };
     }
   }
 }

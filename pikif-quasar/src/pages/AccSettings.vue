@@ -1,5 +1,11 @@
 <template>
-  <FormsModal :open-modal="openModal" @close-modal="closeModal"></FormsModal>
+  <FormsModal
+    :open-modal="openModal"
+    @close-modal="closeModal"
+    :modal-type="modalType"
+    @update-email="updateEmail"
+    @update-pass="updatePassword"
+  ></FormsModal>
 
   <div
     class="w-[70%] flex flex-col shadow-md rounded-xl p-4 space-x-4 bg-white"
@@ -62,7 +68,7 @@
                 id="grid-first-name"
                 type="text"
                 placeholder="First Name"
-                v-model="userData.firstName"
+                v-model="getData.firstName"
                 :disabled="!editMode"
               />
             </div>
@@ -78,7 +84,7 @@
                 id="grid-last-name"
                 type="text"
                 placeholder="Last Name"
-                v-model="userData.lastName"
+                v-model="getData.lastName"
                 :disabled="!editMode"
               />
             </div>
@@ -105,12 +111,12 @@
                 >
                   Email
                 </label>
-                <p>{{ email }}</p>
+                <p>{{ getEmail }}</p>
               </div>
               <div class="flex justify-end w-[50%]">
                 <button
                   class="text-primaryRed h-12 hover:text-white hover:bg-primaryRed hover:border-transparent font-semibold py-2 px-6 border border-primaryRed rounded"
-                  @click.prevent="showModal"
+                  @click.prevent="showModal(1)"
                 >
                   Change
                 </button>
@@ -129,10 +135,20 @@
               <div class="flex justify-end w-[50%]">
                 <button
                   class="text-primaryRed h-12 hover:text-white hover:bg-primaryRed hover:border-transparent font-semibold py-2 px-6 border border-primaryRed rounded"
+                  @click.prevent="showModal(2)"
                 >
                   Change
                 </button>
               </div>
+            </div>
+
+            <div
+              class="mt-7 w-full p-2 text-white font-semibold rounded"
+              :class="style"
+              @click.prevent="clearBanner"
+              v-if="bannerState"
+            >
+              <h3 class="text-sm">{{ bannerMsg }}</h3>
             </div>
           </div>
         </form>
@@ -142,10 +158,16 @@
 </template>
 
 <script>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, computed, watch } from "vue";
 import { useStore } from "vuex";
+import { useRouter } from "vue-router";
 import FormsModal from "src/components/FormsModal.vue";
-import { getUserDetails, updateUserDetails } from "../services/services";
+import {
+  getUserDetails,
+  updateUserDetails,
+  updateUserEmail,
+  updateUserPassword,
+} from "../services/services";
 
 export default {
   components: {
@@ -156,38 +178,126 @@ export default {
     const editMode = ref(false);
     const readOnly = ref(true);
     const openModal = ref(false);
+    const formContents = ref({
+      headerText: "",
+      text1: "",
+      text2: "",
+      placeholder1: "",
+      placeholder2: "",
+    });
+
+    // Vue variables
     const store = useStore();
+    const router = useRouter();
 
     // User Variables
-    const email = ref("");
+    const userEmail = ref("");
+    const actualEmail = ref("");
+    const tempFName = ref("");
+    const tempLName = ref("");
+    const tempAuth = ref("");
+    const tempUid = ref("");
     const uid = ref("");
     const userData = ref({
       firstName: "",
       lastName: "",
-      authorization: "",
+      authorization: "read only",
     });
+
+    // Other Variables
+    const bannerMsg = ref("");
+    const bannerState = ref(false);
+    const bannerStyle = ref("");
+    const modalType = ref(0);
+
+    watch(
+      [tempFName, tempLName, userEmail, tempUid],
+      ([newFName, newLName, newEmail, newUid]) => {
+        userData.value.firstName = newFName;
+        userData.value.lastName = newLName;
+        actualEmail.value = newEmail;
+        uid.value = newUid;
+      }
+    );
 
     onMounted(async () => {
-      email.value = await store.getters.getState.email;
-      uid.value = await store.getters.getState.uid;
-      const { firstName, lastName, authorization } = await getUserDetails(
-        uid.value
-      );
+      const basicDetails = await store.getters.getBasicDetails;
+      console.log(await store.getters.getState);
 
-      userData.value.firstName = firstName;
-      userData.value.lastName = lastName;
-      userData.value.authorization = authorization;
+      tempFName.value = basicDetails.firstName;
+      tempLName.value = basicDetails.lastName;
+      tempAuth.value = basicDetails.auth;
+      tempUid.value = basicDetails.uid;
+      userEmail.value = basicDetails.email;
     });
 
-    const closeModal = () => (openModal.value = false);
-    const showModal = () => (openModal.value = true);
+    const getData = computed(() => {
+      return userData.value;
+    });
+
+    const getEmail = computed(() => {
+      return actualEmail.value;
+    });
+
+    const closeModal = () => {
+      openModal.value = false;
+    };
+    const showModal = (type) => {
+      modalType.value = type;
+      openModal.value = true;
+    };
 
     const enableEdit = () => (editMode.value = true);
-    const cancelEdit = () => (editMode.value = false);
+    const cancelEdit = () => {
+      editMode.value = false;
+    };
+
+    const clearBanner = () => (bannerState.value = false);
+    const style = computed(() => {
+      return bannerStyle.value;
+    });
 
     const updateBasicInfo = async () => {
-      await updateUserDetails(userData.value, uid.value);
-      cancelEdit();
+      if (userData.value.firstName != "" && userData.value.lastName != "") {
+        console.log(uid.value);
+        await updateUserDetails(userData.value, uid.value);
+        cancelEdit();
+
+        bannerMsg.value = "Update Completed";
+        bannerState.value = true;
+        bannerStyle.value = "bg-btnGreen";
+      } else {
+        cancelEdit();
+        bannerMsg.value = "Invalid Input";
+        bannerState.value = true;
+        bannerStyle.value = "bg-primaryRed";
+      }
+    };
+
+    const updateEmail = async (data) => {
+      const result = await updateUserEmail(data, uid.value);
+      if (!result.data.data.success) {
+        bannerMsg.value = "Incorrect current email";
+        bannerState.value = true;
+        bannerStyle.value = "bg-primaryRed";
+      } else {
+        bannerMsg.value = "Email updated!";
+        bannerState.value = true;
+        bannerStyle.value = "bg-btnGreen";
+      }
+    };
+
+    const updatePassword = async (data) => {
+      const result = await updateUserPassword(data, uid.value);
+      if (!result) {
+        bannerMsg.value = "Error in updating password!";
+        bannerState.value = true;
+        bannerStyle.value = "bg-primaryRed";
+      } else {
+        bannerMsg.value = "Password! updated!";
+        bannerState.value = true;
+        bannerStyle.value = "bg-btnGreen";
+      }
     };
 
     return {
@@ -197,11 +307,20 @@ export default {
       openModal,
       closeModal,
       showModal,
-      email,
       userData,
       enableEdit,
       cancelEdit,
       updateBasicInfo,
+      bannerMsg,
+      bannerState,
+      clearBanner,
+      style,
+      formContents,
+      modalType,
+      updateEmail,
+      updatePassword,
+      getData,
+      getEmail,
     };
   },
 };

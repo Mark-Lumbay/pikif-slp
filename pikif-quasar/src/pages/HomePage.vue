@@ -74,9 +74,7 @@
       class="flex w-full h-[10vh] bg-white shadow-md sm:rounded-lg items-center px-6"
     >
       <div class="flex w-[50%]">
-        <p class="font-semibold text-2xl">
-          Welcome back, {{ props.userName }}!
-        </p>
+        <p class="font-semibold text-2xl">Welcome back, {{ getName }}!</p>
       </div>
       <div class="flex w-[50%] justify-end">
         <p class="text-xl">Monday, May 8, 2023</p>
@@ -232,16 +230,23 @@
       </div>
     </div>
 
-    <div
-      class="shadow-md sm:rounded-lg flex-1 h-[40vh] p-6 bg-white ml-4"
-    >
-    <div class="flex flex-row items-center mx-10">
-      <q-icon
-                  name="las la-print"
-                  size="222px"
-                  class="text-black mx-20 my-6"
-                ></q-icon>
+    <div class="shadow-md sm:rounded-lg h-[40vh] p-6 bg-white ml-4">
+      <div class="flex flex-row items-center mx-10">
+        <q-icon
+          name="las la-print"
+          size="200px"
+          class="text-black mx-20 my-6"
+        ></q-icon>
+      </div>
+      <div>
+        <button
+          class="px-4 py-2 bg-primaryRed text-white text-base font-medium rounded-md w-full shadow-sm hover:bg-primaryRedHover focus:outline-none focus:ring-2 focus:ring-green-300"
+        >
+          Generate Report
+        </button>
+      </div>
     </div>
+<<<<<<< HEAD
     <div>
 
      <button class="px-4 py-2 bg-primaryRed text-white text-base font-medium rounded-md w-full shadow-sm hover:bg-primaryRedHover focus:outline-none focus:ring-2 focus:ring-green-300"
@@ -252,13 +257,16 @@
      >Generate Report</button>
     </div>
   </div>
+=======
+>>>>>>> 0b9c55a259bea90e08ee710493c9da1e5dc85bba
   </div>
 </template>
 
 <script>
-import { computed, ref, onMounted } from "vue";
+import { computed, ref, onMounted, watch } from "vue";
 import { loadDashboard } from "../services/services";
 import { useRoute, useRouter } from "vue-router";
+import store from "../store";
 
 export default {
   props: {
@@ -271,9 +279,26 @@ export default {
     const rows = ref([]);
     const route = useRoute();
     const router = useRouter();
+    const firstName = ref("");
+    const nameHolder = ref("");
+
+    watch(
+      () => nameHolder.value,
+      (username) => {
+        firstName.value = username;
+        console.log(username);
+        console.log(firstName.value);
+      }
+    );
+
     onMounted(async () => {
       rows.value = await getData();
+      nameHolder.value = await store.getters.getFirstName;
       filterTable();
+    });
+
+    const getName = computed(() => {
+      return firstName.value;
     });
 
     const showSortMenu = ref(false);
@@ -431,6 +456,8 @@ export default {
       returnFiltered,
       selectedRow,
       viewRow,
+      firstName,
+      getName,
     };
   },
 };

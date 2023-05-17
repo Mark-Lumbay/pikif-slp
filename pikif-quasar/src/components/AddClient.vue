@@ -398,7 +398,7 @@
                 id="grid-other"
                 type="text"
                 placeholder="Other options"
-                :disabled="clientPersonalInfo.clientInfo.condition != 'Others'"
+                :disabled="housingCond != 'Others'"
                 v-model="housingOthers"
               />
             </div>

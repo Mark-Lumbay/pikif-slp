@@ -3,6 +3,7 @@ import ClientModel from "../models/clientInfo.js";
 import userModel from "../models/user.js";
 import pkg from "firebase-admin";
 import clientInfo from "../models/clientInfo.js";
+import user from "../models/user.js";
 const router = Router();
 const { firestore, auth } = pkg;
 
@@ -191,6 +192,52 @@ router.post("/updateUserInfo/:id", async (req, res) => {
     return res.status(200).send({ data: response });
   } catch (err) {
     return res.status(500).send({ message: `Internal Server Error ${err}` });
+  }
+});
+
+router.put("/updateEmail/:id", async (req, res) => {
+  const { currText, newText } = req.body;
+  const emailData = {
+    newEmail: newText,
+    currEmail: currText,
+  };
+  const id = req.params.id;
+  try {
+    const response = await userModel.updateUserEmail(emailData, id);
+
+    return res.status(200).send({ data: response });
+  } catch (err) {
+    return res.status(400).send({ status: false });
+  }
+});
+
+router.put("/updatePassword/:id", async (req, res) => {
+  const id = req.params.id;
+  const { currText, newText } = req.body;
+  const passData = {
+    newPass: newText,
+    oldPass: currText,
+  };
+
+  try {
+    const result = await userModel.updateUserPass(passData, id);
+    if (!result.success)
+      return res.status(400).send({ message: "Incorrect Password" });
+    return res.status(200).send({ message: "Update successful" });
+  } catch (err) {
+    return res.status(500).send({ message: "Error in updating password!" });
+  }
+});
+
+router.get("/getUserAuth/:id", async (req, res) => {
+  const id = req.params.id;
+
+  try {
+    const userAuth = await userModel.getUserAuth(id);
+    if (userAuth.success)
+      return res.status(200).send({ success: true, data: userAuth.data });
+  } catch (err) {
+    return res.status(500).send({ success: false, message: err });
   }
 });
 export default router;

@@ -210,6 +210,7 @@ export default {
         firstName: fName.value,
         lastName: lName.value,
         password: password.value,
+        authorization: "Read",
       };
 
       const regReq = await register(creds);
@@ -228,9 +229,15 @@ export default {
     };
 
     const passCheck = (pass) => {
-      const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
+      const passwordRegex =
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d!@#$%^&*_]{8,}$/;
+      const result = passwordRegex.test(pass);
 
-      passErr.value = !passwordRegex.test(pass);
+      if (!result) {
+        passErr.value = true;
+      } else {
+        passErr.value = false;
+      }
     };
 
     return {

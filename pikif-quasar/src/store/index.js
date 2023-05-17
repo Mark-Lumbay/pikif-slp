@@ -7,14 +7,17 @@ import {
   setPersistence,
   browserSessionPersistence,
 } from "firebase/auth";
-import { testCall } from "src/services/services.js";
+import { getUserAuth } from "src/services/services.js";
 
 const store = createStore({
   state: {
     user: null,
     fName: null,
     lName: null,
+    auth: null,
     token: null,
+    email: null,
+    uid: null,
     studentData: [],
     indivStudData: [],
   },
@@ -30,6 +33,16 @@ const store = createStore({
 
     getFirstName: (state) => {
       return state.fName;
+    },
+
+    getBasicDetails: (state) => {
+      const dataObj = {
+        firstName: state.fName,
+        lastName: state.lName,
+        email: state.email,
+        uid: state.uid,
+      };
+      return dataObj;
     },
 
     getData: (state) => {
@@ -49,10 +62,14 @@ const store = createStore({
         state.user = details.newUser;
         state.fName = details.fName;
         state.lName = details.lName;
+        state.email = details.email;
+        state.uid = details.uid;
       } else {
         state.user = details;
         state.fName = details;
         state.lName = details;
+        state.email = details;
+        state.uid = details;
       }
     },
 
@@ -67,6 +84,10 @@ const store = createStore({
     setIndivData(state, info) {
       state.indivStudData = info;
     },
+
+    setAuth(state, authLevel) {
+      state.auth = authLevel;
+    },
   },
   actions: {
     async login(context, { email, password }) {
@@ -78,8 +99,10 @@ const store = createStore({
         );
         if (response) {
           const token = await response.user.getIdToken(true);
+          const authLevel = await getUserAuth(response.user.uid);
 
           context.commit("setUserToken", token);
+          context.commit("setAuth", authLevel.data.auth);
 
           return;
         } else {
@@ -88,6 +111,10 @@ const store = createStore({
       } catch {
         throw new Error();
       }
+    },
+
+    async storeUser(context, details) {
+      context.commit("setUser", details);
     },
 
     storeData(context, data) {
@@ -118,6 +145,9 @@ const store = createStore({
 auth.onAuthStateChanged(async (newUser) => {
   try {
     const user = await newUser.getIdTokenResult();
+    const token = await newUser.getIdToken(true);
+    const authLevel = await getUserAuth(user.claims.user_id);
+
     const fName = user.claims.firstName;
     const lName = user.claims.lastName;
 
@@ -128,7 +158,10 @@ auth.onAuthStateChanged(async (newUser) => {
     };
 
     store.commit("setUser", details);
+    store.commit("setUserToken", token);
+    store.commit("setAuth", authLevel.data.auth);
   } catch (err) {
+    console.log(err);
     return err;
   }
 });

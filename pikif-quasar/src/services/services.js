@@ -122,8 +122,37 @@ export async function getUserDetails(id) {
 
 export async function updateUserDetails(data, id) {
   try {
-    await apiClient.post(`/updateUserInfo/${id}`, data);
+    const result = await apiClient.post(`/updateUserInfo/${id}`, data);
+    return { status: false, data: result.data.data.data };
+  } catch (err) {
+    console.log(err);
+    return { status: false, data: err };
+  }
+}
+
+export async function updateUserEmail(emailData, id) {
+  try {
+    const res = await apiClient.put(`/updateEmail/${id}`, emailData);
+    return res;
+  } catch (err) {
+    return { status: false, message: "Something went wrong!" };
+  }
+}
+
+export async function updateUserPassword(passData, id) {
+  try {
+    const result = await apiClient.put(`/updatePassword/${id}`, passData);
+    console.log(`Result is ${result}`);
     return true;
+  } catch (err) {
+    return false;
+  }
+}
+
+export async function getUserAuth(id) {
+  try {
+    const result = await apiClient.get(`/getUserAuth/${id}`);
+    return result.data;
   } catch (err) {
     return false;
   }

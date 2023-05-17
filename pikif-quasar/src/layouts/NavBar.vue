@@ -77,8 +77,6 @@
               </div>
             </div>
           </a>
-
-
         </div>
       </div>
 
@@ -90,7 +88,7 @@
 </template>
 
 <script>
-import { ref, computed } from "vue";
+import { ref, computed, onMounted, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { useStore } from "vuex";
 
@@ -106,7 +104,19 @@ export default {
     const router = useRouter();
     const store2 = useStore();
 
-    const name = ref(store.getters.getFirstName);
+    const name = ref("");
+    const nameHolder = ref("");
+
+    onMounted(async () => {
+      nameHolder.value = await store.getters.getFirstName;
+    });
+
+    watch(
+      () => nameHolder.value,
+      (username) => {
+        name.value = username;
+      }
+    );
 
     const drawerState = () => {
       leftDrawerOpen.value = !leftDrawerOpen.value;

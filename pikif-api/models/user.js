@@ -66,7 +66,9 @@ class userModel {
 
   async updateUserDetails(data, id) {
     try {
+      console.log(data);
       const res = await auth().setCustomUserClaims(id, data);
+      console.log(res);
       return res;
     } catch (err) {
       return { success: false, message: `Internal server error 2 ${err}` };

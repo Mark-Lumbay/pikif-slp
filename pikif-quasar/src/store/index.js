@@ -17,6 +17,7 @@ const store = createStore({
     auth: null,
     token: null,
     email: null,
+    uid: null,
     studentData: [],
     indivStudData: [],
   },
@@ -39,6 +40,7 @@ const store = createStore({
         firstName: state.fName,
         lastName: state.lName,
         email: state.email,
+        uid: state.uid,
       };
       return dataObj;
     },
@@ -61,11 +63,13 @@ const store = createStore({
         state.fName = details.fName;
         state.lName = details.lName;
         state.email = details.email;
+        state.uid = details.uid;
       } else {
         state.user = details;
         state.fName = details;
         state.lName = details;
         state.email = details;
+        state.uid = details;
       }
     },
 

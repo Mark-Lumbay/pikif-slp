@@ -111,7 +111,7 @@
                 >
                   Email
                 </label>
-                <p>{{ getData.email }}</p>
+                <p>{{ getEmail }}</p>
               </div>
               <div class="flex justify-end w-[50%]">
                 <button
@@ -192,15 +192,16 @@ export default {
 
     // User Variables
     const userEmail = ref("");
+    const actualEmail = ref("");
     const tempFName = ref("");
     const tempLName = ref("");
     const tempAuth = ref("");
+    const tempUid = ref("");
     const uid = ref("");
     const userData = ref({
       firstName: "",
       lastName: "",
-      authorization: "",
-      email: "",
+      authorization: "read only",
     });
 
     // Other Variables
@@ -209,43 +210,33 @@ export default {
     const bannerStyle = ref("");
     const modalType = ref(0);
 
-    // watch(
-    //   () => tempFName.value,
-    //   (username) => {
-    //     userData.value.firstName = username;
-    //   }
-    // );
-
-    // watch(
-    //   () => tempLName.value,
-    //   (username) => {
-    //     userData.value.lastName = username;
-    //   }
-    // );
-
     watch(
-      [tempFName, tempLName, userEmail],
-      ([newFName, newLName, newEmail]) => {
+      [tempFName, tempLName, userEmail, tempUid],
+      ([newFName, newLName, newEmail, newUid]) => {
         userData.value.firstName = newFName;
         userData.value.lastName = newLName;
-        userData.value.email = newEmail;
+        actualEmail.value = newEmail;
+        uid.value = newUid;
       }
     );
 
     onMounted(async () => {
       const basicDetails = await store.getters.getBasicDetails;
-      // email.value = await store.getters.getBasicDetails.email;
-      // uid.value = await store.getters.getState.uid;
-      console.log(basicDetails);
+      console.log(await store.getters.getState);
 
       tempFName.value = basicDetails.firstName;
       tempLName.value = basicDetails.lastName;
       tempAuth.value = basicDetails.auth;
+      tempUid.value = basicDetails.uid;
       userEmail.value = basicDetails.email;
     });
 
     const getData = computed(() => {
       return userData.value;
+    });
+
+    const getEmail = computed(() => {
+      return actualEmail.value;
     });
 
     const closeModal = () => {
@@ -268,6 +259,7 @@ export default {
 
     const updateBasicInfo = async () => {
       if (userData.value.firstName != "" && userData.value.lastName != "") {
+        console.log(uid.value);
         await updateUserDetails(userData.value, uid.value);
         cancelEdit();
 
@@ -328,6 +320,7 @@ export default {
       updateEmail,
       updatePassword,
       getData,
+      getEmail,
     };
   },
 };

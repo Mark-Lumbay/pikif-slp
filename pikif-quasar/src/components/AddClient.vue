@@ -360,7 +360,7 @@
                 <select
                   class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                   id="grid-housing"
-                  v-model="housingCond"
+                  v-model="clientPersonalInfo.clientInfo.condition"
                   :disabled="textField"
                 >
                   <option value="Squater's Shanty">Squater's Shanty</option>
@@ -398,8 +398,8 @@
                 id="grid-other"
                 type="text"
                 placeholder="Other options"
-                :disabled="housingCond != 'Others'"
-                v-model="housingOthers"
+                :disabled="clientPersonalInfo.clientInfo.condition != 'Others'"
+                v-model="clientPersonalInfo.clientInfo.conditionOthers"
               />
             </div>
           </div>
@@ -423,7 +423,7 @@
                 <select
                   class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                   id="grid-roof"
-                  v-model="roofMats"
+                  v-model="clientPersonalInfo.clientInfo.roof"
                   :disabled="textField"
                 >
                   <option value="Nipa">Nipa</option>
@@ -458,8 +458,8 @@
                 id="grid-roof-others"
                 type="text"
                 placeholder="Other options"
-                :disabled="roofMats != 'Others'"
-                v-model="roofOthers"
+                :disabled="clientPersonalInfo.clientInfo.roof != 'Others'"
+                v-model="clientPersonalInfo.clientInfo.roofOthers"
               />
             </div>
 
@@ -474,7 +474,7 @@
                 <select
                   class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                   id="grid-wall"
-                  v-model="wallMats"
+                  v-model="clientPersonalInfo.clientInfo.walls"
                   :disabled="textField"
                 >
                   <option value="Nipa">Nipa</option>
@@ -510,8 +510,8 @@
                 id="grid-roof-others"
                 type="text"
                 placeholder="Other options"
-                :disabled="wallMats != 'Others'"
-                v-model="wallOthers"
+                :disabled="clientPersonalInfo.clientInfo.walls != 'Others'"
+                v-model="clientPersonalInfo.clientInfo.wallOthers"
               />
             </div>
 
@@ -526,7 +526,7 @@
                 <select
                   class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                   id="grid-wall"
-                  v-model="floorMats"
+                  v-model="clientPersonalInfo.clientInfo.floor"
                   :disabled="textField"
                 >
                   <option value="Soil">Soil</option>
@@ -562,8 +562,8 @@
                 id="grid-roof-others"
                 type="text"
                 placeholder="Other options"
-                :disabled="floorMats != 'Others'"
-                v-model="floorOthers"
+                :disabled="clientPersonalInfo.clientInfo.floor != 'Others'"
+                v-model="clientPersonalInfo.clientInfo.floorOthers"
               />
             </div>
           </div>
@@ -654,18 +654,11 @@ export default {
     const editMode = ref(false);
     const updateMode = ref(false);
 
-    const housingCond = ref("Squater's Shanty");
-    const housingOthers = ref("");
-
-    const roofMats = ref("Nipa");
-    const roofOthers = ref("");
-
-    const wallMats = ref("Nipa");
-    const wallOthers = ref("");
-
-    const floorMats = ref("Soil");
-    const floorOthers = ref("");
-
+    // Solution sakong binugok
+    // 1. Create others property
+    // 2. On load, check if ____Cond is others
+    // 3. Of others, get value from others field
+    // 4. Otherwise use ____Cond
     const clientPersonalInfo = ref({
       clientInfo: {
         active: true,
@@ -674,7 +667,7 @@ export default {
         middleName: "",
         lastName: "",
         status: "Single",
-        age: 0,
+        age: "",
         sex: "Female",
         address: "",
         birthDate: "",
@@ -683,27 +676,15 @@ export default {
         contactNum: "",
         educAttn: "Pre-school",
         category: "Survivor",
-        condition: computed(() => {
-          return housingCond.value === "Others"
-            ? housingOthers.value
-            : housingCond.value;
-        }),
+        condition: "Squater's Shanty",
+        conditionOthers: "",
         materials: {
-          roof: computed(() => {
-            return roofMats.value == "Others"
-              ? roofOthers.value
-              : roofMats.value;
-          }),
-          walls: computed(() => {
-            return wallMats.value == "Others"
-              ? wallOthers.value
-              : wallMats.value;
-          }),
-          floor: computed(() => {
-            return floorMats.value == "Others"
-              ? floorOthers.value
-              : floorMats.value;
-          }),
+          roof: "Nipa",
+          roofOthers: "",
+          walls: "Nipa",
+          wallOthers: "",
+          floor: "Soil",
+          floorOthers: "",
         },
         appliances: "",
       },
@@ -773,6 +754,7 @@ export default {
 
     const submitPersonInfo = () => {
       if (validate()) {
+        console.log(clientPersonalInfo.value.clientInfo);
         const plainObj = toRawObject(clientPersonalInfo.value.clientInfo);
         if (updateMode.value == false) {
           emit("clientInfoSubmit", plainObj);
@@ -788,14 +770,6 @@ export default {
     return {
       lackingErr,
       clearErr,
-      housingOthers,
-      housingCond,
-      roofMats,
-      roofOthers,
-      wallMats,
-      wallOthers,
-      floorMats,
-      floorOthers,
       clientPersonalInfo,
       submitPersonInfo,
       textField,

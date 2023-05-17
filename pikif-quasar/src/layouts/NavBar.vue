@@ -11,7 +11,7 @@
           <q-menu>
             <q-list style="min-width: 100px">
               <q-item clickable v-close-popup>
-                <q-item-section>Settings</q-item-section>
+                <q-item-section @click="settingsPage">Settings</q-item-section>
               </q-item>
               <q-item clickable v-close-popup>
                 <q-item-section @click="logout">Log Out</q-item-section>
@@ -77,6 +77,25 @@
               </div>
             </div>
           </a>
+
+          <a @click="router.push('/account-settings')">
+            <div
+              class="hover:bg-secondaryDarker p-4 px-6 transition-all ease-in-out cursor-pointer"
+            >
+              <div class="flex flex-row items-center space-x-4">
+                <q-icon
+                  name="las la-user-cog"
+                  size="32px"
+                  class="text-white"
+                ></q-icon>
+                <span
+                  class="text-lg font-semibold text-white"
+                  v-if="leftDrawerOpen"
+                  >Account Settings</span
+                >
+              </div>
+            </div>
+          </a>
         </div>
       </div>
 
@@ -96,8 +115,8 @@ import store from "../store";
 
 export default {
   setup() {
-    const width = ref("w-[15vw]");
-    const contentWidth = ref("w-[85vw]");
+    const width = ref("w-[17vw]");
+    const contentWidth = ref("w-[83vw]");
     const leftDrawerOpen = ref(true);
 
     const route = useRoute();
@@ -121,8 +140,8 @@ export default {
     const drawerState = () => {
       leftDrawerOpen.value = !leftDrawerOpen.value;
       if (leftDrawerOpen.value) {
-        width.value = "w-[15vw]";
-        contentWidth.value = "w-[85vw]";
+        width.value = "w-[17vw]";
+        contentWidth.value = "w-[83vw]";
       } else {
         width.value = "";
         contentWidth.value = "flex-1";
@@ -136,6 +155,10 @@ export default {
       } catch (err) {
         console.log(err);
       }
+    };
+
+    const settingsPage = async () => {
+      router.push("/account-settings");
     };
 
     const userName = computed(() => {
@@ -155,6 +178,7 @@ export default {
       contentWidth,
       router,
       logout,
+      settingsPage,
     };
   },
 };

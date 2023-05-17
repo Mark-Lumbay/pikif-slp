@@ -35,99 +35,101 @@
       </div>
     </div>
   </div>
-  <div class="w-[90%] h-screen flex justify-center items-center">
-    <!-- Add here -->
+  <div class="px-6 h-[94vh] flex items-center justify-center">
+    <div class="flex">
+      <!-- Add here -->
 
-    <!-- Ends here -->
-    <div
-      class="w-full flex flex-col shadow-md rounded-xl p-4 space-x-4 bg-white"
-    >
-      <q-toolbar v-if="currPage != 3">
-        <q-breadcrumbs
-          style="font-size: 16px"
-          class="outline outline-1 px-4 py-2 rounded-full bg-primaryDark"
-        >
-          <template v-slot:separator>
-            <q-icon
-              size="1.5em"
-              name="chevron_right"
-              :class="'text-lightGray'"
-            />
-          </template>
-
-          <q-breadcrumbs-el
-            :class="
-              currPage === 0 ? 'text-btnGreen font-semibold' : 'text-white'
-            "
-            class="transition-all ease-in-out"
+      <!-- Ends here -->
+      <div
+        class="w-full flex flex-col shadow-md rounded-xl p-4 space-x-4 bg-white"
+      >
+        <q-toolbar v-if="currPage != 3">
+          <q-breadcrumbs
+            style="font-size: 16px"
+            class="outline outline-1 px-4 py-2 rounded-full bg-primaryDark"
           >
-            <q-icon
-              class="text-lg mr-2"
-              size="24px"
-              name="las la-user-plus"
-            ></q-icon>
-            Personal Information
-          </q-breadcrumbs-el>
+            <template v-slot:separator>
+              <q-icon
+                size="1.5em"
+                name="chevron_right"
+                :class="'text-lightGray'"
+              />
+            </template>
 
-          <q-breadcrumbs-el
-            class="transition-all ease-in-out"
-            :class="
-              currPage === 1 ? 'text-btnGreen font-semibold' : 'text-gray-300'
-            "
-          >
-            <q-icon
-              class="text-lg mr-2"
-              size="24px"
-              name="las la-user-friends"
-            ></q-icon>
-            Informant Information
-          </q-breadcrumbs-el>
+            <q-breadcrumbs-el
+              :class="
+                currPage === 0 ? 'text-btnGreen font-semibold' : 'text-white'
+              "
+              class="transition-all ease-in-out"
+            >
+              <q-icon
+                class="text-lg mr-2"
+                size="24px"
+                name="las la-user-plus"
+              ></q-icon>
+              Personal Information
+            </q-breadcrumbs-el>
 
-          <q-breadcrumbs-el
-            class="transition-all ease-in-out"
-            :class="
-              currPage === 2 ? 'text-btnGreen font-semibold' : 'text-white'
-            "
-          >
-            <q-icon
-              class="text-lg mr-2"
-              size="24px"
-              name="lar la-chart-bar"
-            ></q-icon>
-            Findings
-          </q-breadcrumbs-el>
-        </q-breadcrumbs>
-      </q-toolbar>
-      <KeepAlive>
-        <component
-          :is="getCurrentComponent"
-          @client-info-submit="saveClientInfo"
-          v-if="currPage === 0"
-        ></component>
-      </KeepAlive>
+            <q-breadcrumbs-el
+              class="transition-all ease-in-out"
+              :class="
+                currPage === 1 ? 'text-btnGreen font-semibold' : 'text-gray-300'
+              "
+            >
+              <q-icon
+                class="text-lg mr-2"
+                size="24px"
+                name="las la-user-friends"
+              ></q-icon>
+              Informant Information
+            </q-breadcrumbs-el>
 
-      <KeepAlive>
-        <component
-          :is="getCurrentComponent"
-          @informant-info-submit="saveInformantInfo"
-          @go-back="prevPage"
-          v-if="currPage === 1"
-        ></component>
-      </KeepAlive>
+            <q-breadcrumbs-el
+              class="transition-all ease-in-out"
+              :class="
+                currPage === 2 ? 'text-btnGreen font-semibold' : 'text-white'
+              "
+            >
+              <q-icon
+                class="text-lg mr-2"
+                size="24px"
+                name="lar la-chart-bar"
+              ></q-icon>
+              Findings
+            </q-breadcrumbs-el>
+          </q-breadcrumbs>
+        </q-toolbar>
+        <KeepAlive>
+          <component
+            :is="getCurrentComponent"
+            @client-info-submit="saveClientInfo"
+            v-if="currPage === 0"
+          ></component>
+        </KeepAlive>
 
-      <KeepAlive>
-        <component
-          :is="getCurrentComponent"
-          @client-findings-submit="saveClientFindings"
-          @go-back="prevPage"
-          v-if="currPage === 2"
-        ></component>
-      </KeepAlive>
-      <MessagePage
-        :message="message"
-        v-if="currPage === 3"
-        @reset-page="resetPage"
-      ></MessagePage>
+        <KeepAlive>
+          <component
+            :is="getCurrentComponent"
+            @informant-info-submit="saveInformantInfo"
+            @go-back="prevPage"
+            v-if="currPage === 1"
+          ></component>
+        </KeepAlive>
+
+        <KeepAlive>
+          <component
+            :is="getCurrentComponent"
+            @client-findings-submit="saveClientFindings"
+            @go-back="prevPage"
+            v-if="currPage === 2"
+          ></component>
+        </KeepAlive>
+        <MessagePage
+          :message="message"
+          v-if="currPage === 3"
+          @reset-page="resetPage"
+        ></MessagePage>
+      </div>
     </div>
   </div>
 </template>

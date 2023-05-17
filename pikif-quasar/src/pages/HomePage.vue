@@ -19,7 +19,7 @@
     </div>
 
     <div
-      class="relative overflow-x-auto shadow-md sm:rounded-lg w-[55vw] h-[70vh] p-6 bg-white"
+      class="relative overflow-x-auto shadow-md sm:rounded-lg flex-1 h-[70vh] p-6 bg-white"
     >
       <div class="flex w-full h-[5vh] items-center mb-4">
         <div class="w-[50%] flex">
@@ -174,7 +174,7 @@
     </div>
 
     <!-- /generate report modal -->
-    <div class="shadow-md sm:rounded-lg flex-1 p-6 bg-white ml-4">
+    <div class="shadow-md sm:rounded-lg flex-3 p-6 bg-white ml-6">
       <div class="flex flex-row items-center mx-10">
         <q-icon
           name="las la-print"

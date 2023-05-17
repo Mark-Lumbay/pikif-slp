@@ -33,6 +33,14 @@ const store = createStore({
       return state.fName;
     },
 
+    getBasicDetails: (state) => {
+      const dataObj = {
+        firstName: state.fName,
+        lastName: state.lName,
+      };
+      return dataObj;
+    },
+
     getData: (state) => {
       return state.studentData;
     },
@@ -97,6 +105,10 @@ const store = createStore({
       }
     },
 
+    async storeUser(context, details) {
+      context.commit("setUser", details);
+    },
+
     storeData(context, data) {
       context.commit("setUserData", data);
     },
@@ -137,6 +149,7 @@ auth.onAuthStateChanged(async (newUser) => {
       lName,
     };
 
+    console.log(user);
     store.commit("setUser", details);
     store.commit("setUserToken", token);
     store.commit("setAuth", authLevel.data.auth);

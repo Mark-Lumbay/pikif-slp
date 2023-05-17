@@ -88,7 +88,7 @@
 </template>
 
 <script>
-import { ref, computed, onMounted } from "vue";
+import { ref, computed, onMounted, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { useStore } from "vuex";
 
@@ -105,10 +105,18 @@ export default {
     const store2 = useStore();
 
     const name = ref("");
+    const nameHolder = ref("");
 
     onMounted(async () => {
-      name.value = await store.getters.getFirstName;
+      nameHolder.value = await store.getters.getFirstName;
     });
+
+    watch(
+      () => nameHolder.value,
+      (username) => {
+        name.value = username;
+      }
+    );
 
     const drawerState = () => {
       leftDrawerOpen.value = !leftDrawerOpen.value;

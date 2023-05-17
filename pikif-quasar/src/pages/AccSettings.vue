@@ -68,7 +68,7 @@
                 id="grid-first-name"
                 type="text"
                 placeholder="First Name"
-                v-model="userData.firstName"
+                v-model="getData.firstName"
                 :disabled="!editMode"
               />
             </div>
@@ -84,7 +84,7 @@
                 id="grid-last-name"
                 type="text"
                 placeholder="Last Name"
-                v-model="userData.lastName"
+                v-model="getData.lastName"
                 :disabled="!editMode"
               />
             </div>
@@ -158,7 +158,7 @@
 </template>
 
 <script>
-import { ref, onMounted, computed } from "vue";
+import { ref, onMounted, computed, watch } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 import FormsModal from "src/components/FormsModal.vue";
@@ -192,6 +192,9 @@ export default {
 
     // User Variables
     const email = ref("");
+    const tempFName = ref("");
+    const tempLName = ref("");
+    const tempAuth = ref("");
     const uid = ref("");
     const userData = ref({
       firstName: "",
@@ -205,17 +208,38 @@ export default {
     const bannerStyle = ref("");
     const modalType = ref(0);
 
-    onMounted(async () => {
-      email.value = await store.getters.getState.email;
-      console.log(email.value);
-      uid.value = await store.getters.getState.uid;
-      const { firstName, lastName, authorization } = await getUserDetails(
-        uid.value
-      );
+    // watch(
+    //   () => tempFName.value,
+    //   (username) => {
+    //     userData.value.firstName = username;
+    //   }
+    // );
 
-      userData.value.firstName = firstName;
-      userData.value.lastName = lastName;
-      userData.value.authorization = authorization;
+    // watch(
+    //   () => tempLName.value,
+    //   (username) => {
+    //     userData.value.lastName = username;
+    //   }
+    // );
+
+    watch([tempFName, tempLName, email], ([newFName, newLName, newEmail]) => {
+      userData.value.firstName = newFName;
+      userData.value.lastName = newLName;
+      email.value = newEmail;
+    });
+
+    onMounted(async () => {
+      // email.value = await store.getters.getState.email;
+      // uid.value = await store.getters.getState.uid;
+      const basicDetails = await store.getters.getBasicDetails;
+
+      tempFName.value = basicDetails.fName;
+      tempLName.value = basicDetails.lName;
+      tempAuth.value = basicDetails.auth;
+    });
+
+    const getData = computed(() => {
+      return userData.value;
     });
 
     const closeModal = () => {
@@ -298,6 +322,7 @@ export default {
       modalType,
       updateEmail,
       updatePassword,
+      getData,
     };
   },
 };

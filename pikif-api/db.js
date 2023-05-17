@@ -7,5 +7,3 @@ import("./pikif-3470c-firebase-adminsdk-wjrqj-fd652f07e5.json", {
     credential: admin.credential.cert(value.default),
   });
 });
-
-export default admin;

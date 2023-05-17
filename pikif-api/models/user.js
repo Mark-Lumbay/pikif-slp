@@ -2,7 +2,7 @@ import Joi from "joi";
 import pkg from "firebase-admin";
 const { firestore, auth } = pkg;
 import { auth2 } from "../firebase.js";
-import { signInWithEmailAndPassword } from "firebase/auth";
+// import { signInWithEmailAndPassword } from "firebase/auth";
 
 class userModel {
   async register(credentials) {

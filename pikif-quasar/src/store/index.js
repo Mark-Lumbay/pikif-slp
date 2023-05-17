@@ -16,6 +16,7 @@ const store = createStore({
     lName: null,
     auth: null,
     token: null,
+    email: null,
     studentData: [],
     indivStudData: [],
   },
@@ -37,6 +38,7 @@ const store = createStore({
       const dataObj = {
         firstName: state.fName,
         lastName: state.lName,
+        email: state.email,
       };
       return dataObj;
     },
@@ -58,10 +60,12 @@ const store = createStore({
         state.user = details.newUser;
         state.fName = details.fName;
         state.lName = details.lName;
+        state.email = details.email;
       } else {
         state.user = details;
         state.fName = details;
         state.lName = details;
+        state.email = details;
       }
     },
 
@@ -149,7 +153,6 @@ auth.onAuthStateChanged(async (newUser) => {
       lName,
     };
 
-    console.log(user);
     store.commit("setUser", details);
     store.commit("setUserToken", token);
     store.commit("setAuth", authLevel.data.auth);

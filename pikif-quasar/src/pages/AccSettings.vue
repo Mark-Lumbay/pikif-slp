@@ -111,7 +111,7 @@
                 >
                   Email
                 </label>
-                <p>{{ email }}</p>
+                <p>{{ getData.email }}</p>
               </div>
               <div class="flex justify-end w-[50%]">
                 <button
@@ -191,7 +191,7 @@ export default {
     const router = useRouter();
 
     // User Variables
-    const email = ref("");
+    const userEmail = ref("");
     const tempFName = ref("");
     const tempLName = ref("");
     const tempAuth = ref("");
@@ -200,6 +200,7 @@ export default {
       firstName: "",
       lastName: "",
       authorization: "",
+      email: "",
     });
 
     // Other Variables
@@ -222,20 +223,25 @@ export default {
     //   }
     // );
 
-    watch([tempFName, tempLName, email], ([newFName, newLName, newEmail]) => {
-      userData.value.firstName = newFName;
-      userData.value.lastName = newLName;
-      email.value = newEmail;
-    });
+    watch(
+      [tempFName, tempLName, userEmail],
+      ([newFName, newLName, newEmail]) => {
+        userData.value.firstName = newFName;
+        userData.value.lastName = newLName;
+        userData.value.email = newEmail;
+      }
+    );
 
     onMounted(async () => {
-      // email.value = await store.getters.getState.email;
-      // uid.value = await store.getters.getState.uid;
       const basicDetails = await store.getters.getBasicDetails;
+      // email.value = await store.getters.getBasicDetails.email;
+      // uid.value = await store.getters.getState.uid;
+      console.log(basicDetails);
 
-      tempFName.value = basicDetails.fName;
-      tempLName.value = basicDetails.lName;
+      tempFName.value = basicDetails.firstName;
+      tempLName.value = basicDetails.lastName;
       tempAuth.value = basicDetails.auth;
+      userEmail.value = basicDetails.email;
     });
 
     const getData = computed(() => {
@@ -309,7 +315,6 @@ export default {
       openModal,
       closeModal,
       showModal,
-      email,
       userData,
       enableEdit,
       cancelEdit,

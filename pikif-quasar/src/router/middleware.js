@@ -17,8 +17,10 @@ async function runCheck() {
     fName: user.claims.firstName,
     lName: user.claims.lastName,
     user: user,
+    email: user.claims.email,
   };
 
+  console.log(user.claims.email);
   store.dispatch("storeUser", userDetails);
 }
 

@@ -4,8 +4,7 @@
     @close-modal="closeModal"
     :modal-type="modalType"
   ></generateReport>
-  <div class="flex space-y-4">
-
+  <div class="flex space-y-4 p-6">
     <div
       class="flex w-full h-[10vh] bg-white shadow-md sm:rounded-lg items-center px-6"
     >
@@ -146,9 +145,7 @@
                   @click="changeFilter('None')"
                   >None
                 </a>
-
               </div>
-
             </div>
           </div>
         </div>
@@ -164,30 +161,37 @@
           :pagination="initialPagination"
           class="flex-1"
           @row-click="viewRow"
-        />
+        >
+          <template v-slot:body-cell-button="props">
+            <!-- Accessing the provided props -->
+            <q-td :props="props">
+              <!-- Content for the cell -->
+              <q-btn icon="edit" dense round flat />
+            </q-td>
+          </template>
+        </q-table>
       </div>
     </div>
 
-            <!-- /generate report modal -->
-            <div class="shadow-md sm:rounded-lg h-[40vh] p-6 bg-white ml-4">
-              <div class="flex flex-row items-center mx-10">
-                <q-icon
-                  name="las la-print"
-                  size="200px"
-                  class="text-black mx-20 my-6"
-                ></q-icon>
-              </div>
-              <div>
-                <button
-                  class="px-4 py-2 bg-primaryRed text-white text-base font-medium rounded-md w-full shadow-sm hover:bg-primaryRedHover focus:outline-none focus:ring-2 focus:ring-green-300"
-                  @click.prevent="showModal"
-                  >
-                  Generate Report
-                </button>
-              </div>
-            </div>
-          <!-- /generate report modal -->
-
+    <!-- /generate report modal -->
+    <div class="shadow-md sm:rounded-lg flex-1 p-6 bg-white ml-4">
+      <div class="flex flex-row items-center mx-10">
+        <q-icon
+          name="las la-print"
+          size="200px"
+          class="text-black mx-20 my-6"
+        ></q-icon>
+      </div>
+      <div>
+        <button
+          class="px-4 py-2 bg-primaryRed text-white text-base font-medium rounded-md w-full shadow-sm hover:bg-primaryRedHover focus:outline-none focus:ring-2 focus:ring-green-300"
+          @click.prevent="showModal"
+        >
+          Generate Report
+        </button>
+      </div>
+    </div>
+    <!-- /generate report modal -->
   </div>
 </template>
 
@@ -205,7 +209,7 @@ export default {
     },
     components: {
       generateReport,
-    }
+    },
   },
 
   setup(props) {
@@ -217,7 +221,6 @@ export default {
     const openModal = ref(false);
     const modalType = ref(0);
 
-
     //MGA MODAL
     const closeModal = () => {
       openModal.value = false;
@@ -226,7 +229,6 @@ export default {
       modalType.value = type;
       openModal.value = true;
     };
-
 
     watch(
       () => nameHolder.value,

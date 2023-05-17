@@ -1,7 +1,108 @@
 <template>
-  <q-layout view="hHh lpR fFf" class="w-[100vw] bg-slate-100">
-    <q-header class="bg-primaryBlue text-white" height-hint="108">
-      <q-toolbar>
+  <div class="">
+    <q-layout view="lHh Lpr lff" class="shadow-2 rounded-borders">
+      <q-header elevated class="bg-navBar">
+        <q-toolbar>
+          <q-btn flat @click="drawer = !drawer" round dense icon="menu" />
+
+          <q-toolbar-title class="font-semibold">{{
+            route.name
+          }}</q-toolbar-title>
+        </q-toolbar>
+      </q-header>
+
+      <q-drawer
+        class="bg-sideBar"
+        :mini="drawer"
+        show-if-above
+        :mini-width="75"
+      >
+        <q-scroll-area style="height: calc(100% - 150px)">
+          <q-list padding>
+            <q-item clickable v-ripple>
+              <q-item-section avatar>
+                <div
+                  class="hover:bg-secondaryDarker transition-all ease-in-out cursor-pointer"
+                >
+                  <div class="flex flex-row items-center space-x-4">
+                    <q-icon
+                      name="las la-home"
+                      size="40px"
+                      class="text-white"
+                    ></q-icon>
+                  </div>
+                </div>
+              </q-item-section>
+
+              <q-item-section
+                class="text-white font-semibold"
+                @click="router.push('/')"
+              >
+                Home
+              </q-item-section>
+            </q-item>
+
+            <q-item clickable v-ripple>
+              <q-item-section avatar>
+                <div
+                  class="hover:bg-secondaryDarker transition-all ease-in-out cursor-pointer"
+                >
+                  <div class="flex flex-row items-center space-x-4">
+                    <q-icon
+                      name="las la-user-plus"
+                      size="40px"
+                      class="text-white"
+                    ></q-icon>
+                  </div>
+                </div>
+              </q-item-section>
+
+              <q-item-section
+                class="text-white font-semibold"
+                @click="router.push('/addStudent')"
+              >
+                Add Student
+              </q-item-section>
+            </q-item>
+
+            <q-item clickable v-ripple>
+              <q-item-section avatar>
+                <div
+                  class="hover:bg-secondaryDarker transition-all ease-in-out cursor-pointer"
+                >
+                  <div class="flex flex-row items-center space-x-4">
+                    <q-icon
+                      name="las la-user-cog"
+                      size="40px"
+                      class="text-white"
+                    ></q-icon>
+                  </div>
+                </div>
+              </q-item-section>
+
+              <q-item-section
+                class="text-white font-semibold"
+                @click="router.push('/account-settings')"
+              >
+                Account Settings
+              </q-item-section>
+            </q-item>
+          </q-list>
+        </q-scroll-area>
+      </q-drawer>
+
+      <q-page-container class="bg-slate-100">
+        <q-page>
+          <router-view :userName="userName"></router-view>
+        </q-page>
+      </q-page-container>
+    </q-layout>
+  </div>
+
+  <!-- old code here -->
+  <!-- <q-layout view="hHh lpR fFf" class="w-[100vw] h-full bg-slate-100">
+    <q-header class="bg-navBar text-white flex w-full h-[7%]">
+      <q-toolbar class="flex items-center justify-center">
         <q-btn dense flat round icon="menu" @click="drawerState" />
 
         <q-toolbar-title class="text-white">
@@ -38,8 +139,8 @@
     </q-header>
 
     <div class="flex flex-row w-full h-full">
-      <div class="flex-row mt-12" :class="classWidth">
-        <div class="fixed h-screen bg-secondaryBlue" :class="classWidth">
+      <div class="flex-row mt-16" :class="classWidth">
+        <div class="h-full bg-navBar" :class="classWidth">
           <a @click="router.push('/')">
             <div
               class="hover:bg-secondaryDarker p-4 px-6 transition-all ease-in-out cursor-pointer"
@@ -99,11 +200,11 @@
         </div>
       </div>
 
-      <div class="flex flex-col mt-12 p-6 items-center" :class="contentWidth">
+      <div class="flex flex-col mt-16 items-center" :class="contentWidth">
         <router-view :userName="userName"></router-view>
       </div>
     </div>
-  </q-layout>
+  </q-layout> -->
 </template>
 
 <script>
@@ -179,6 +280,7 @@ export default {
       router,
       logout,
       settingsPage,
+      drawer: ref(false),
     };
   },
 };

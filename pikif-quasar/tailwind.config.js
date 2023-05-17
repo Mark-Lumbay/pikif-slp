@@ -15,6 +15,8 @@ module.exports = {
         primaryRedHover: "#f1858c",
         primaryDark: "#163142",
         lightGray: "#cedfdb",
+        navBar: "#16252d",
+        sideBar: "#29353b",
       },
     },
   },

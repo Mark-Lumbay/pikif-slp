@@ -35,7 +35,7 @@
       </div>
     </div>
   </div>
-  <div class="w-[90%] h-[90%] flex justify-center items-center">
+  <div class="w-[90%] h-screen flex justify-center items-center">
     <!-- Add here -->
 
     <!-- Ends here -->

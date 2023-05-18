@@ -182,6 +182,7 @@
     :open-modal="openModal"
     @change-filter="updateFil"
     @close-modal="closeModal"
+    @export-pdf="exportToPDFBasic"
   ></GenerateReport>
 </template>
 

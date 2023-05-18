@@ -3,7 +3,22 @@
     <q-dialog v-model="prompt" persistent>
       <q-card class="w-full">
         <div class="w-full h-14 bg-primaryHovBtn flex items-center px-4">
-          <p class="block text-white text-xl font-semibold">Generate Report</p>
+          <div class="w-[50%]">
+            <p class="block text-white text-xl font-semibold">
+              Generate Report
+            </p>
+          </div>
+
+          <div class="flex justify-end w-[50%]">
+            <button @click="closeModal">
+              <q-icon
+                name="las la-times-circle"
+                class="text-white hover:text-primaryRed"
+                size="34px"
+              >
+              </q-icon>
+            </button>
+          </div>
         </div>
         <div class="flex flex-col px-4 justify-center items-center p-6">
           <q-card-section class="q-pt-none">
@@ -122,30 +137,27 @@
             </div>
           </q-card-section>
 
-          <q-card-section class="flex flex-col">
-            <button>Export as PDF</button>
-            <button>Export as CSV</button>
+          <q-card-section class="flex flex-row space-x-4">
+            <button
+              flat
+              label="Cancel"
+              @click="exportToPdf"
+              class="text-primaryRed h-12 hover:text-white hover:bg-primaryRed hover:border-transparent font-semibold py-2 px-6 border border-primaryRed rounded"
+            >
+              <q-icon name="las la-file-pdf" size="32px"></q-icon>
+              Export as PDF
+            </button>
+            <button
+              flat
+              label="Cancel"
+              @click="closeModal"
+              class="text-btnGreen h-12 hover:text-white hover:bg-btnGreen hover:border-transparent font-semibold py-2 px-6 border border-btnGreen rounded"
+            >
+              <q-icon name="las la-file-csv" size="32px"></q-icon>
+              Export as CSV
+            </button>
           </q-card-section>
         </div>
-
-        <q-card-actions align="right" class="text-primary space-x-3 px-4 mb-4">
-          <button
-            flat
-            label="Cancel"
-            @click="closeModal"
-            class="text-primaryRed h-12 hover:text-white hover:bg-primaryRed hover:border-transparent font-semibold py-2 px-6 border border-primaryRed rounded"
-          >
-            Cancel
-          </button>
-          <button
-            flat
-            label="Cancel"
-            @click="closeModal"
-            class="text-btnGreen h-12 hover:text-white hover:bg-btnGreenHover hover:border-transparent font-semibold py-2 px-6 border border-btnGreen rounded"
-          >
-            Confirm
-          </button>
-        </q-card-actions>
       </q-card>
     </q-dialog>
   </div>
@@ -154,7 +166,13 @@
 <script>
 import { ref, watch, computed } from "vue";
 export default {
-  emits: ["closeModal", "updateEmail", "updatePass", "changeFilter"],
+  emits: [
+    "closeModal",
+    "updateEmail",
+    "updatePass",
+    "changeFilter",
+    "exportPdf",
+  ],
   props: {
     openModal: {
       type: Boolean,
@@ -230,6 +248,7 @@ export default {
 
     const closeModal = () => emit("closeModal");
     const closeErr = () => (showErr.value = false);
+    const exportToPdf = () => emit("exportPdf");
     // const submitUpdate = () => {
     //   if (text.value.currText !== "" && text.value.newText !== "") {
     //     if (props.modalType === 1) {
@@ -260,6 +279,7 @@ export default {
       toggleDropDown,
       filterOption,
       updateFilter,
+      exportToPdf,
     };
   },
 };

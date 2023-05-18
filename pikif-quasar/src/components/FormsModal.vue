@@ -50,7 +50,7 @@
             </button>
             <button
               flat
-              label="Cancel"
+              label="Confirm"
               @click="submitUpdate"
               class="text-btnGreen h-12 hover:text-white hover:bg-btnGreenHover hover:border-transparent font-semibold py-2 px-6 border border-btnGreen rounded"
             >

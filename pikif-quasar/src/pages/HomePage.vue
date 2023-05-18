@@ -195,6 +195,7 @@ import { useRoute, useRouter } from "vue-router";
 import generateReport from "src/components/generateReport.vue";
 import store from "../store";
 import GenerateReport from "src/components/generateReport.vue";
+import PDFDocument from "pdfkit";
 
 export default {
   props: {
@@ -349,6 +350,16 @@ export default {
         }
       }
     }
+
+    const exportToPDF = () => {
+      const doc = new PDFDocument();
+
+      doc.info.Title = `Table Export for ${filterOption.value}`;
+      doc.info.Author = "Your Name";
+
+      const headers = ["Name", "Age", "Sex", ""];
+    };
+
     const returnFiltered = computed(() => {
       return filteredArr.value;
     });

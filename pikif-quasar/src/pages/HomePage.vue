@@ -183,7 +183,7 @@
 
         <button
           class="px-4 py-2 bg-primaryRed text-white text-base font-medium rounded-md w-full shadow-sm hover:bg-primaryRedHover focus:outline-none focus:ring-2 focus:ring-green-300"
-          @click.prevent="exportToPDF"
+          @click.prevent="exportToPDFBasic"
         >
           TEST export to pdf
         </button>
@@ -202,7 +202,10 @@ import { useRoute, useRouter } from "vue-router";
 import generateReport from "src/components/generateReport.vue";
 import store from "../store";
 import GenerateReport from "src/components/generateReport.vue";
-import jsPDF from "jspdf";
+import { jsPDF } from "jspdf";
+import autoTable from "jspdf-autotable";
+import { useStore } from "vuex";
+
 export default {
   props: {
     userName: {
@@ -220,6 +223,8 @@ export default {
     const nameHolder = ref("");
     const openModal = ref(false);
     const modalType = ref(0);
+    const store2 = useStore();
+
     //MGA MODAL
     const closeModal = () => {
       openModal.value = false;
@@ -345,6 +350,8 @@ export default {
         for (const option of options) {
           if (filterStr.value === "None") {
             filteredArr.value = rows.value;
+            console.log(filteredArr.value);
+
             return filteredArr.value;
           }
           if (filterStr.value === option) {
@@ -357,52 +364,143 @@ export default {
       }
     }
 
-    const exportToPDF = () => {
+    const exportToPDFBasic = () => {
       const doc = new jsPDF();
 
-      doc.setProperties({
-        title: `Table Export for ${filterOption.value}`,
-        author: "Your Name",
-      });
-
       const headers = [
-        "id",
-        "status",
-        "fullName",
-        "age",
-        "sex",
-        "category",
-        "educAttn",
+        "Full Name",
+        "Age",
+        "Sex",
+        "Category",
+        "Educational Level",
+        "Status",
       ];
 
-      const columnWidths = headers.map(() => 70); // Adjust as needed
-      const data = [
-        ...filteredArr.value.map((row) => {
-          return headers.map((header) => {
-            return row[header];
-          });
-        }),
-      ];
+      const data = filteredArr.value.map((row) => [
+        row.fullName,
+        row.age,
+        row.sex,
+        row.category,
+        row.educAttn,
+        row.status,
+      ]);
 
-      let y = 20;
-
-      headers.forEach((header, columnIndex) => {
-        doc.text(header, 10, y);
-        y += 10;
-        doc.rect(10, y, columnWidths[columnIndex], 10, "S");
+      doc.autoTable({
+        head: [headers],
+        body: data,
       });
 
-      data.forEach((rowData) => {
-        y += 10;
-        rowData.forEach((cellData, columnIndex) => {
-          doc.text(cellData, 10, y);
-          y += 10;
-          doc.rect(10, y, columnWidths[columnIndex], 10, "S");
-        });
-      });
-
-      doc.save(`Export Table ${filterOption.value}.pdf`);
+      doc.save("Export.pdf");
     };
+
+    // const exportToPDFAll = () => {
+    //   const doc = new jsPDF();
+    //   const temp = store.getters.getData;
+    //   console.log(temp);
+    //   const headers = [
+    //     "Client First Name",
+    //     "Client Middle Name",
+    //     "Client Last Name",
+    //     "Client Age",
+    //     "Client Sex",
+    //     "Client Contact Number",
+    //     "Client Category",
+    //     "Client Educational Level",
+    //     "Client Status",
+    //     "Client Interview Date",
+    //     "Client Address",
+    //     "Client Birth Date",
+    //     "Client Birth Place",
+    //     "Client Religion",
+    //     "Client Housing Condition",
+    //     "Client Roof Materials",
+    //     "Client Wall Materials",
+    //     "Client Floor Materials",
+    //     "Client Appliances",
+    //     "Client Active Status",
+    //     "Informant First Name",
+    //     "Informant Middle Name",
+    //     "Informant Last Name",
+    //     "Informant Age",
+    //     "Informant Sex",
+    //     "Informant Educational Level",
+    //     "Informant Status",
+    //     "Informant Occupation",
+    //     "Informant Interview Date",
+    //     "Informant Address",
+    //     "Informant Birth Date",
+    //     "Informant Birth Place",
+    //     "Informant Religion",
+    //     "Informant Occupation",
+    //     "Informant Income Type",
+    //     "Informant Income Amount",
+    //     "Informant Employment",
+    //     "Informant Employment Status",
+    //     "Informant Employer Name",
+    //     "Informant Work Address",
+    //     "Informant Educational Level",
+    //     "Informant Assistance",
+    //     "Informant Other Income Source",
+    //     "Informant Monthly Income",
+    //     "Informant Problems Presented",
+    //     "Findings",
+    //   ];
+
+    //   const data = temp.map((row) => [
+    //     row.clientInfo.firstName,
+    //     row.clientInfo.middleName,
+    //     row.clientInfo.lastName,
+    //     row.clientInfo.age,
+    //     row.clientInfo.sex,
+    //     row.clientInfo.contactNum,
+    //     row.clientInfo.category,
+    //     row.clientInfo.educAttn,
+    //     row.clientInfo.status,
+    //     row.clientInfo.interviewDate,
+    //     row.clientInfo.address,
+    //     row.clientInfo.birthDate,
+    //     row.clientInfo.birthPlace,
+    //     row.clientInfo.religion,
+    //     row.clientInfo.condition + row.clientInfo.conditionOthers,
+    //     row.clientInfo.materials.roof + row.clientInfo.materials.roofOthers,
+    //     row.clientInfo.materials.walls + row.clientInfo.materials.wallOthers,
+    //     row.clientInfo.materials.floor + row.clientInfo.materials.floorOthers,
+    //     row.clientInfo.appliances,
+    //     row.clientInfo.active,
+    //     row.informantInfo.firstName,
+    //     row.informantInfo.middleName,
+    //     row.informantInfo.lastName,
+    //     row.informantInfo.age,
+    //     row.informantInfo.sex,
+    //     row.informantInfo.contactNum,
+    //     row.informantInfo.educAttn,
+    //     row.informantInfo.status,
+    //     row.informantInfo.interviewDate,
+    //     row.informantInfo.address,
+    //     row.informantInfo.birthDate,
+    //     row.informantInfo.birthPlace,
+    //     row.informantInfo.religion,
+    //     row.informantInfo.occupation + row.informantInfo.occupationOthers,
+    //     row.informantInfo.income.type,
+    //     row.informantInfo.income.amount,
+    //     row.informantInfo.employment,
+    //     row.informantInfo.employmentStat,
+    //     row.informantInfo.employmentName,
+    //     row.informantInfo.workAdd,
+    //     row.informantInfo.educAttn,
+    //     row.informantInfo.assistance,
+    //     row.informantInfo.otherInc,
+    //     row.informantInfo.monthlyInc,
+    //     row.initialFindings.findings,
+    //   ]);
+
+    //   doc.autoTable({
+    //     head: [headers],
+    //     body: data,
+    //   });
+
+    //   doc.save("ExportALL.pdf");
+    // };
 
     const returnFiltered = computed(() => {
       return filteredArr.value;
@@ -442,7 +540,8 @@ export default {
       showModal,
       closeModal,
       rowDesign,
-      exportToPDF,
+      exportToPDFBasic,
+      exportToPDFAll,
     };
   },
   components: { GenerateReport },

@@ -8,6 +8,36 @@
           <q-toolbar-title class="font-semibold">{{
             route.name
           }}</q-toolbar-title>
+
+          <button class="inline-flex">
+            <q-menu>
+              <q-list style="min-width: 100px">
+                <q-item clickable v-close-popup>
+                  <q-item-section @click="settingsPage"
+                    >Settings</q-item-section
+                  >
+                </q-item>
+                <q-item clickable v-close-popup>
+                  <q-item-section @click="logout">Log Out</q-item-section>
+                </q-item>
+                <q-separator />
+              </q-list>
+            </q-menu>
+            {{ userName }}
+            <svg
+              class="w-5 h-5 ml-1"
+              aria-hidden="true"
+              fill="currentColor"
+              viewBox="0 0 20 20"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                clip-rule="evenodd"
+              ></path>
+            </svg>
+          </button>
         </q-toolbar>
       </q-header>
 
@@ -15,11 +45,11 @@
         class="bg-sideBar"
         :mini="drawer"
         show-if-above
-        :mini-width="75"
+        :mini-width="100"
       >
         <q-scroll-area style="height: calc(100% - 150px)">
           <q-list padding>
-            <q-item clickable v-ripple>
+            <q-item clickable v-ripple @click="router.push('/')">
               <q-item-section avatar>
                 <div
                   class="hover:bg-secondaryDarker transition-all ease-in-out cursor-pointer"
@@ -27,22 +57,24 @@
                   <div class="flex flex-row items-center space-x-4">
                     <q-icon
                       name="las la-home"
-                      size="40px"
-                      class="text-white"
+                      size="45px"
+                      :class="
+                        route.name === 'Home' ? 'text-btnGreen' : 'text-white'
+                      "
                     ></q-icon>
                   </div>
                 </div>
               </q-item-section>
 
               <q-item-section
-                class="text-white font-semibold"
-                @click="router.push('/')"
+                class="text-btnGreen text-lg font-semibold"
+                :class="route.name === 'Home' ? 'text-btnGreen' : 'text-white'"
               >
                 Home
               </q-item-section>
             </q-item>
 
-            <q-item clickable v-ripple>
+            <q-item clickable v-ripple @click="router.push('/addStudent')">
               <q-item-section avatar>
                 <div
                   class="hover:bg-secondaryDarker transition-all ease-in-out cursor-pointer"
@@ -50,22 +82,32 @@
                   <div class="flex flex-row items-center space-x-4">
                     <q-icon
                       name="las la-user-plus"
-                      size="40px"
-                      class="text-white"
+                      size="45px"
+                      :class="
+                        route.name === 'Add Student'
+                          ? 'text-btnGreen'
+                          : 'text-white'
+                      "
                     ></q-icon>
                   </div>
                 </div>
               </q-item-section>
 
               <q-item-section
-                class="text-white font-semibold"
-                @click="router.push('/addStudent')"
+                class="text-lg font-semibold"
+                :class="
+                  route.name === 'Add Student' ? 'text-btnGreen' : 'text-white'
+                "
               >
                 Add Student
               </q-item-section>
             </q-item>
 
-            <q-item clickable v-ripple>
+            <q-item
+              clickable
+              v-ripple
+              @click="router.push('/account-settings')"
+            >
               <q-item-section avatar>
                 <div
                   class="hover:bg-secondaryDarker transition-all ease-in-out cursor-pointer"
@@ -73,16 +115,24 @@
                   <div class="flex flex-row items-center space-x-4">
                     <q-icon
                       name="las la-user-cog"
-                      size="40px"
-                      class="text-white"
+                      size="45px"
+                      :class="
+                        route.name === 'Account Settings'
+                          ? 'text-btnGreen'
+                          : 'text-white'
+                      "
                     ></q-icon>
                   </div>
                 </div>
               </q-item-section>
 
               <q-item-section
-                class="text-white font-semibold"
-                @click="router.push('/account-settings')"
+                class="text-lg font-semibold"
+                :class="
+                  route.name === 'Account Settings'
+                    ? 'text-btnGreen'
+                    : 'text-white'
+                "
               >
                 Account Settings
               </q-item-section>

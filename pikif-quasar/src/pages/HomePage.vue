@@ -180,6 +180,13 @@
         >
           Generate Report
         </button>
+
+        <button
+          class="px-4 py-2 bg-primaryRed text-white text-base font-medium rounded-md w-full shadow-sm hover:bg-primaryRedHover focus:outline-none focus:ring-2 focus:ring-green-300"
+          @click.prevent="exportToPDF"
+        >
+          TEST export to pdf
+        </button>
       </div>
     </div>
     <!-- /generate report modal -->
@@ -195,8 +202,7 @@ import { useRoute, useRouter } from "vue-router";
 import generateReport from "src/components/generateReport.vue";
 import store from "../store";
 import GenerateReport from "src/components/generateReport.vue";
-import PDFDocument from "pdfkit";
-
+import jsPDF from "jspdf";
 export default {
   props: {
     userName: {
@@ -352,12 +358,50 @@ export default {
     }
 
     const exportToPDF = () => {
-      const doc = new PDFDocument();
+      const doc = new jsPDF();
 
-      doc.info.Title = `Table Export for ${filterOption.value}`;
-      doc.info.Author = "Your Name";
+      doc.setProperties({
+        title: `Table Export for ${filterOption.value}`,
+        author: "Your Name",
+      });
 
-      const headers = ["Name", "Age", "Sex", ""];
+      const headers = [
+        "id",
+        "status",
+        "fullName",
+        "age",
+        "sex",
+        "category",
+        "educAttn",
+      ];
+
+      const columnWidths = headers.map(() => 70); // Adjust as needed
+      const data = [
+        ...filteredArr.value.map((row) => {
+          return headers.map((header) => {
+            return row[header];
+          });
+        }),
+      ];
+
+      let y = 20;
+
+      headers.forEach((header, columnIndex) => {
+        doc.text(header, 10, y);
+        y += 10;
+        doc.rect(10, y, columnWidths[columnIndex], 10, "S");
+      });
+
+      data.forEach((rowData) => {
+        y += 10;
+        rowData.forEach((cellData, columnIndex) => {
+          doc.text(cellData, 10, y);
+          y += 10;
+          doc.rect(10, y, columnWidths[columnIndex], 10, "S");
+        });
+      });
+
+      doc.save(`Export Table ${filterOption.value}.pdf`);
     };
 
     const returnFiltered = computed(() => {
@@ -398,6 +442,7 @@ export default {
       showModal,
       closeModal,
       rowDesign,
+      exportToPDF,
     };
   },
   components: { GenerateReport },

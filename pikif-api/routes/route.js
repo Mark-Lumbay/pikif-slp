@@ -91,12 +91,11 @@ router.get("/getClient/:id", async (req, res) => {
 //update Info
 router.put("/updateInfo/:id", async (req, res) => {
   try {
-    const info = req.body;
+    const data = req.body.data;
+    const userData = req.body.accInfo;
     const id = req.params.id;
 
-    console.log(id);
-
-    const updateResult = await ClientModel.updateClient(info, id);
+    const updateResult = await ClientModel.updateClient(data, userData, id);
     if (updateResult) {
       res.status(200).send({ success: true });
     } else {
@@ -161,10 +160,15 @@ router.get("/search", async (req, res) => {
 
 router.post("/addFindings/:id", async (req, res) => {
   const id = req.params.id;
-  const findings = req.body;
+  const findings = req.body.findings;
+  const userData = req.body.accInfo;
 
   try {
-    const addFindingsRes = await ClientModel.addClientFindings(id, findings);
+    const addFindingsRes = await ClientModel.addClientFindings(
+      id,
+      findings,
+      userData
+    );
     if (addFindingsRes.data.success) return true;
     return false;
   } catch (err) {

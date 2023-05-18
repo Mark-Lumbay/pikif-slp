@@ -11,7 +11,7 @@ class ClientModel {
       action: action,
       timestamp: firestore.FieldValue.serverTimestamp(),
     };
-    console.log("YAWA");
+    console.log(userDetails);
 
     try {
       await firestore().collection("auditLog").add(auditReport);
@@ -177,7 +177,8 @@ class ClientModel {
     }
   }
 
-  async updateClient(data, id) {
+  async updateClient(data, userData, id) {
+    const userInfo = userData;
     try {
       const user = firestore().collection("clientInfo").doc(id);
       const userData = await user.get();
@@ -192,11 +193,14 @@ class ClientModel {
         informantInfo !== userData.data().informantInfo ||
         initialFindings !== userData.data().initialFindings
       ) {
-        await user.update({
+        const result = await user.update({
           clientInfo,
           informantInfo,
           initialFindings,
         });
+
+        const action = `User ${userInfo.firstName} ${userInfo.lastName} with id of ${userInfo.uid} Updated data with id of ${id}`;
+        this.auditAction(userInfo, action);
       }
 
       return { success: true };
@@ -231,7 +235,7 @@ class ClientModel {
     }
   }
 
-  async addClientFindings(id, newFindings) {
+  async addClientFindings(id, newFindings, userData) {
     const docId = id;
     try {
       const docRef = firestore().collection("clientInfo").doc(docId);
@@ -245,6 +249,8 @@ class ClientModel {
       await docRef.update({
         initialFindings: updatedFindings,
       });
+      const action = `User ${userData.firstName} ${userData.lastName} with id of ${userData.uid} Added findings to document with id of ${id}`;
+      this.auditAction(userData, action);
 
       return { success: true, message: "Data Added" };
     } catch (err) {

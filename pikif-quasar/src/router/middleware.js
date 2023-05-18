@@ -40,8 +40,6 @@ let user = store.getters.getState;
 function getAuthState() {
   return new Promise((resolve) => {
     auth.onAuthStateChanged((newUser) => {
-      console.log("CALLED");
-      console.log(newUser);
       if (!newUser) {
         resolve(newUser);
       } else {

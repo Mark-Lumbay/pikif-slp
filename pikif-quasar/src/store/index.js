@@ -159,6 +159,8 @@ auth.onAuthStateChanged(async (newUser) => {
       newUser,
       fName,
       lName,
+      email: user.claims.email,
+      uid: user.claims.user_id,
     };
 
     store.commit("setUser", details);

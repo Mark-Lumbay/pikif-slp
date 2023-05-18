@@ -72,6 +72,7 @@ export async function getOneStudent(id) {
 }
 
 // Add audit log func
+// Complete
 export async function addStudent(data) {
   const accInfo = store.getters.getBasicDetails;
   const payload = {
@@ -87,9 +88,16 @@ export async function addStudent(data) {
 }
 
 // Add audit log func
+// Completed
 export async function updateInfo(data, id) {
+  const accInfo = store.getters.getBasicDetails;
+  console.log(accInfo);
+  const payload = {
+    accInfo,
+    data,
+  };
   try {
-    const res = await apiClient.put(`/updateInfo/${id}`, data);
+    const res = await apiClient.put(`/updateInfo/${id}`, payload);
     if (res.data.success) {
       return true;
     } else {
@@ -100,8 +108,13 @@ export async function updateInfo(data, id) {
 
 // Add audit log func
 export async function addFindings(findings, id) {
+  const accInfo = store.getters.getBasicDetails;
+  const payload = {
+    accInfo,
+    findings,
+  };
   try {
-    const addRes = await apiClient.post(`/addFindings/${id}`, findings);
+    const addRes = await apiClient.post(`/addFindings/${id}`, payload);
 
     if (addRes) return true;
     return false;
@@ -133,7 +146,6 @@ export async function getUserDetails(id) {
   }
 }
 
-// Add audit log func
 export async function updateUserDetails(data, id) {
   try {
     const result = await apiClient.post(`/updateUserInfo/${id}`, data);

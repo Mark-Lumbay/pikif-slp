@@ -150,7 +150,7 @@
             <button
               flat
               label="Cancel"
-              @click="closeModal"
+              @click="exportToCsv"
               class="text-btnGreen h-12 hover:text-white hover:bg-btnGreen hover:border-transparent font-semibold py-2 px-6 border border-btnGreen rounded"
             >
               <q-icon name="las la-file-csv" size="32px"></q-icon>
@@ -172,6 +172,7 @@ export default {
     "updatePass",
     "changeFilter",
     "exportPdf",
+    "exportCsv",
   ],
   props: {
     openModal: {
@@ -249,6 +250,7 @@ export default {
     const closeModal = () => emit("closeModal");
     const closeErr = () => (showErr.value = false);
     const exportToPdf = () => emit("exportPdf");
+    const exportToCsv = () => emit("exportCsv");
     // const submitUpdate = () => {
     //   if (text.value.currText !== "" && text.value.newText !== "") {
     //     if (props.modalType === 1) {
@@ -280,6 +282,7 @@ export default {
       filterOption,
       updateFilter,
       exportToPdf,
+      exportToCsv,
     };
   },
 };

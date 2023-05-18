@@ -41,6 +41,10 @@ export async function loadDashboard() {
         sex: info.clientInfo.sex,
         category: info.clientInfo.category,
         educAttn: info.clientInfo.educAttn,
+        materials: info.clientInfo.materials,
+        condition: info.clientInfo.condition,
+        conditionOthers: info.clientInfo.conditionOthers,
+        findings: info.initialFindings,
       });
     }
 

@@ -297,7 +297,374 @@ export default {
         format: (val) => `${val}`,
         sortable: true,
       },
+      {
+        name: "condition",
+        label: "Housing Condition",
+        field: (row) =>
+          row.condition === "Others" ? row.conditionOthers : row.condition,
+        format: (val) => `${val}`,
+        sortable: false,
+      },
+      {
+        name: "roof",
+        label: "Roof Material",
+        field: (row) =>
+          row.materials.roof === "Others"
+            ? row.materials.roofOthers
+            : row.materials.roof,
+        format: (val) => `${val}`,
+        sortable: false,
+      },
+      {
+        name: "walls",
+        label: "Wall Material",
+        field: (row) =>
+          row.materials.walls === "Others"
+            ? row.materials.wallOthers
+            : row.materials.walls,
+        format: (val) => `${val}`,
+        sortable: false,
+      },
+      {
+        name: "floor",
+        label: "Floor Material",
+        field: (row) =>
+          row.materials.floor === "Others"
+            ? row.materials.floorOthers
+            : row.materials.floor,
+        format: (val) => `${val}`,
+        sortable: false,
+      },
+      {
+        name: "findings",
+        label: "Client Findings",
+        field: (row) => row.findings.map((item) => item.findings).join(", "),
+        format: (val) => `${val}`,
+        sortable: false,
+      },
     ];
+
+    // const csvCols = [
+    //   {
+    //     name: "active",
+    //     label: "Client Active Status",
+    //     field: (row) => row.clientInfo.active,
+    //     format: (val) => `${val}`,
+    //     align: "left",
+    //     sortable: true,
+    //   },
+
+    //   {
+    //     name: "interviewDate",
+    //     label: "Client Interview Date",
+    //     field: (row) => row.clientInfo.interviewDate,
+    //     format: (val) => `${val}`,
+    //     align: "left",
+    //     sortable: true,
+    //   },
+    //   {
+    //     name: "Client firstName",
+    //     label: "Client First Name",
+    //     field: (row) => row.clientInfo.firstName,
+    //     format: (val) => `${val}`,
+    //     align: "left",
+    //     sortable: true,
+    //   },
+    //   {
+    //     name: "middleName",
+    //     label: "Client Middle Name",
+    //     field: (row) => row.clientInfo.middleName,
+    //     format: (val) => `${val}`,
+    //     align: "left",
+    //     sortable: true,
+    //   },
+    //   {
+    //     name: "lastName",
+    //     label: "Client Last Name",
+    //     field: (row) => row.clientInfo.lastName,
+    //     format: (val) => `${val}`,
+    //     align: "left",
+    //     sortable: true,
+    //   },
+    //   {
+    //     name: "status",
+    //     label: "Client Status",
+    //     field: (row) => row.clientInfo.status,
+    //     format: (val) => `${val}`,
+    //     sortable: true,
+    //   },
+    //   {
+    //     name: "age",
+    //     label: "Client Age",
+    //     field: (row) => row.clientInfo.age,
+    //     sortable: true,
+    //   },
+    //   {
+    //     name: "sex",
+    //     label: "Client Sex",
+    //     field: (row) => row.clientInfo.sex,
+    //     format: (val) => `${val}`,
+    //     sortable: true,
+    //   },
+    //   {
+    //     name: "address",
+    //     label: "Client Address",
+    //     field: (row) => row.clientInfo.address,
+    //     format: (val) => `${val}`,
+    //     sortable: true,
+    //   },
+    //   {
+    //     name: "birthDate",
+    //     label: "Client Birth Date",
+    //     field: (row) => row.clientInfo.birthDate,
+    //     format: (val) => `${val}`,
+    //   },
+    //   {
+    //     name: "birthPlace",
+    //     label: "Client Birth Place",
+    //     field: (row) => row.clientInfo.birthPlace,
+    //     format: (val) => `${val}`,
+    //   },
+    //   {
+    //     name: "religion",
+    //     label: "Client Religion",
+    //     field: (row) => row.clientInfo.religion,
+    //     format: (val) => `${val}`,
+    //   },
+    //   {
+    //     name: "contactNum",
+    //     label: "Client Contact Number",
+    //     field: (row) => row.clientInfo.contactNum,
+    //     format: (val) => `${val}`,
+    //   },
+    //   {
+    //     name: "educAttn",
+    //     label: "Client Educational Attainment",
+    //     field: (row) => row.clientInfo.educAttn,
+    //     format: (val) => `${val}`,
+    //     sortable: true,
+    //   },
+    //   {
+    //     name: "category",
+    //     label: "Client Category",
+    //     field: (row) => row.clientInfo.category,
+    //     format: (val) => `${val}`,
+    //     sortable: true,
+    //   },
+    //   {
+    //     name: "condition",
+    //     label: "Client Housing Condition",
+    //     field: (row) =>
+    //       row.clientInfo.condition === "Others"
+    //         ? row.clientInfo.conditionOthers
+    //         : row.clientInfo.condition,
+    //     format: (val) => `${val}`,
+    //     sortable: false,
+    //   },
+    //   {
+    //     name: "materials.roof",
+    //     label: "Client Roof Material",
+    //     field: (row) =>
+    //       row.clientInfo.materials.roof === "Others"
+    //         ? row.clientInfo.materials.roofOthers
+    //         : row.clientInfo.materials.roof,
+    //     format: (val) => `${val}`,
+    //     sortable: false,
+    //   },
+    //   {
+    //     name: "materials.walls",
+    //     label: "Client Wall Material",
+    //     field: (row) =>
+    //       row.clientInfo.materials.walls === "Others"
+    //         ? row.clientInfo.materials.wallOthers
+    //         : row.clientInfo.materials.walls,
+    //     format: (val) => `${val}`,
+    //     sortable: false,
+    //   },
+    //   {
+    //     name: "materials.floor",
+    //     label: "Client Floor Material",
+    //     field: (row) =>
+    //       row.clientInfo.materials.floor === "Others"
+    //         ? row.clientInfo.materials.floorOthers
+    //         : row.clientInfo.materials.floor,
+    //     format: (val) => `${val}`,
+    //     sortable: false,
+    //   },
+    //   {
+    //     name: "appliances",
+    //     label: "Client Appliances",
+    //     field: (row) => row.clientInfo.appliances,
+    //     format: (val) => `${val}`,
+    //     sortable: true,
+    //   },
+
+    //   {
+    //     name: "active",
+    //     label: "Informant Active Status",
+    //     field: (row) => row.informantInfo.active,
+    //     format: (val) => `${val}`,
+    //     align: "left",
+    //     sortable: true,
+    //   },
+
+    //   {
+    //     name: "interviewDate",
+    //     label: "Informant Interview Date",
+    //     field: (row) => row.informantInfo.interviewDate,
+    //     format: (val) => `${val}`,
+    //     align: "left",
+    //     sortable: true,
+    //   },
+    //   {
+    //     name: "Client firstName",
+    //     label: "Informant First Name",
+    //     field: (row) => row.informantInfo.firstName,
+    //     format: (val) => `${val}`,
+    //     align: "left",
+    //     sortable: true,
+    //   },
+    //   {
+    //     name: "middleName",
+    //     label: "Informant Middle Name",
+    //     field: (row) => row.informantInfo.middleName,
+    //     format: (val) => `${val}`,
+    //     align: "left",
+    //     sortable: true,
+    //   },
+    //   {
+    //     name: "lastName",
+    //     label: "Informant Last Name",
+    //     field: (row) => row.informantInfo.lastName,
+    //     format: (val) => `${val}`,
+    //     align: "left",
+    //     sortable: true,
+    //   },
+    //   {
+    //     name: "status",
+    //     label: "Informant Status",
+    //     field: (row) => row.informantInfo.status,
+    //     format: (val) => `${val}`,
+    //     sortable: true,
+    //   },
+    //   {
+    //     name: "age",
+    //     label: "Informant Age",
+    //     field: (row) => row.informantInfo.age,
+    //     sortable: true,
+    //   },
+    //   {
+    //     name: "sex",
+    //     label: "Informant Sex",
+    //     field: (row) => row.informantInfo.sex,
+    //     format: (val) => `${val}`,
+    //     sortable: true,
+    //   },
+    //   {
+    //     name: "address",
+    //     label: "Informant Address",
+    //     field: (row) => row.informantInfo.address,
+    //     format: (val) => `${val}`,
+    //     sortable: true,
+    //   },
+    //   {
+    //     name: "birthDate",
+    //     label: "Informant Birth Date",
+    //     field: (row) => row.informantInfo.birthDate,
+    //     format: (val) => `${val}`,
+    //   },
+    //   {
+    //     name: "birthPlace",
+    //     label: "Informant Birth Place",
+    //     field: (row) => row.informantInfo.birthPlace,
+    //     format: (val) => `${val}`,
+    //   },
+    //   {
+    //     name: "religion",
+    //     label: "Informant Religion",
+    //     field: (row) => row.informantInfo.religion,
+    //     format: (val) => `${val}`,
+    //   },
+    //   {
+    //     name: "contactNum",
+    //     label: "Informant Contact Number",
+    //     field: (row) => row.informantInfo.contactNum,
+    //     format: (val) => `${val}`,
+    //   },
+    //   {
+    //     name: "occupation",
+    //     label: "Informant Occupation",
+    //     field: (row) =>
+    //       row.informantInfo.occupation === "Others"
+    //         ? row.informantInfo.occupationOthers
+    //         : row.informantInfo.occupation,
+    //     format: (val) => `${val}`,
+    //   },
+    //   {
+    //     name: "type",
+    //     label: "Informant Income Type",
+    //     field: (row) => row.informantInfo.income.type,
+    //     format: (val) => `${val}`,
+    //   },
+    //   {
+    //     name: "amount",
+    //     label: "Informant Income Amount",
+    //     field: (row) => row.informantInfo.income.amount,
+    //     format: (val) => `${val}`,
+    //   },
+    //   {
+    //     name: "employment",
+    //     label: "Informant Employment",
+    //     field: (row) => row.informantInfo.employment,
+    //     format: (val) => `${val}`,
+    //   },
+    //   {
+    //     name: "employmentStat",
+    //     label: "Informant Employment Status",
+    //     field: (row) => row.informantInfo.employmentStat,
+    //     format: (val) => `${val}`,
+    //   },
+    //   {
+    //     name: "employerName",
+    //     label: "Informant Employer Name",
+    //     field: (row) => row.informantInfo.employerName,
+    //     format: (val) => `${val}`,
+    //   },
+    //   {
+    //     name: "workAdd",
+    //     label: "Informant Work Address",
+    //     field: (row) => row.informantInfo.workAdd,
+    //     format: (val) => `${val}`,
+    //   },
+    //   {
+    //     name: "educAttn",
+    //     label: "Informant Educational Level",
+    //     field: (row) => row.informantInfo.educAttn,
+    //     format: (val) => `${val}`,
+    //   },
+    //   {
+    //     name: "assistance",
+    //     label: "Informant Government Assistance",
+    //     field: (row) => row.informantInfo.assistance,
+    //     format: (val) => `${val}`,
+    //   },
+    //   {
+    //     name: "otherInc",
+    //     label: "Other Income Sources",
+    //     field: (row) =>
+    //       row.informantInfo.otherInc === "Others"
+    //         ? row.informantInfo.otherIncOthers
+    //         : row.informantInfo.otherInc,
+    //     format: (val) => `${val}`,
+    //   },
+    //   {
+    //     name: "monthlyInc",
+    //     label: "Monthly Income",
+    //     field: (row) => row.informantInfo.monthlyInc,
+    //     format: (val) => `${val}`,
+    //   },
+    // ];
+
     const rowDesign = computed(() => {
       return (index) => {
         return index % 2 === 0 ? "bg-gray-100" : "bg-white";
@@ -356,8 +723,29 @@ export default {
         }
       }
     }
+
+    const flattenObject = (obj, prefix = "") => {
+      const flattened = {};
+
+      for (const key in obj) {
+        if (obj.hasOwnProperty(key)) {
+          const value = obj[key];
+          const newKey = prefix ? `${prefix}.${key}` : key;
+
+          if (typeof value === "object" && value !== null) {
+            Object.assign(flattened, flattenObject(value, newKey));
+          } else {
+            flattened[newKey] = value;
+          }
+        }
+      }
+
+      return flattened;
+    };
+
     const exportToPDFBasic = () => {
       const doc = new jsPDF();
+      // const data = filteredArr.value;
       const headers = [
         "Full Name",
         "Age",
@@ -365,6 +753,11 @@ export default {
         "Category",
         "Educational Level",
         "Status",
+        "Housing Condition",
+        "Roof Material",
+        "Wall Material",
+        "Floor Material",
+        "Findings",
       ];
       const data = filteredArr.value.map((row) => [
         row.fullName,
@@ -373,7 +766,15 @@ export default {
         row.category,
         row.educAttn,
         row.status,
+        row.condition === "Others" ? row.conditionOthers : row.condition,
+        row.roof === "Others" ? row.materials.roofOthers : row.materials.roof,
+        row.walls === "Others" ? row.materials.wallOthers : row.materials.walls,
+        row.floor === "Others"
+          ? row.materials.floorOthers
+          : row.materials.floor,
+        row.findings.map((item) => item.findings).join(", "),
       ]);
+
       doc.autoTable({
         head: [headers],
         body: data,
@@ -388,13 +789,6 @@ export default {
         formatted === void 0 || formatted === null ? "" : String(formatted);
 
       formatted = formatted.split('"').join('""');
-      /**
-       * Excel accepts \n and \r in strings, but some other CSV parsers do not
-       * Uncomment the next two lines to escape new lines
-       */
-      // .split('\n').join('\\n')
-      // .split('\r').join('\\r')
-
       return `"${formatted}"`;
     }
 
@@ -420,111 +814,6 @@ export default {
       exportFile("table-export.csv", content, "text/csv");
     };
 
-    // const exportToPDFAll = () => {
-    //   const doc = new jsPDF();
-    //   const temp = store.getters.getData;
-    //   console.log(temp);
-    //   const headers = [
-    //     "Client First Name",
-    //     "Client Middle Name",
-    //     "Client Last Name",
-    //     "Client Age",
-    //     "Client Sex",
-    //     "Client Contact Number",
-    //     "Client Category",
-    //     "Client Educational Level",
-    //     "Client Status",
-    //     "Client Interview Date",
-    //     "Client Address",
-    //     "Client Birth Date",
-    //     "Client Birth Place",
-    //     "Client Religion",
-    //     "Client Housing Condition",
-    //     "Client Roof Materials",
-    //     "Client Wall Materials",
-    //     "Client Floor Materials",
-    //     "Client Appliances",
-    //     "Client Active Status",
-    //     "Informant First Name",
-    //     "Informant Middle Name",
-    //     "Informant Last Name",
-    //     "Informant Age",
-    //     "Informant Sex",
-    //     "Informant Educational Level",
-    //     "Informant Status",
-    //     "Informant Occupation",
-    //     "Informant Interview Date",
-    //     "Informant Address",
-    //     "Informant Birth Date",
-    //     "Informant Birth Place",
-    //     "Informant Religion",
-    //     "Informant Occupation",
-    //     "Informant Income Type",
-    //     "Informant Income Amount",
-    //     "Informant Employment",
-    //     "Informant Employment Status",
-    //     "Informant Employer Name",
-    //     "Informant Work Address",
-    //     "Informant Educational Level",
-    //     "Informant Assistance",
-    //     "Informant Other Income Source",
-    //     "Informant Monthly Income",
-    //     "Informant Problems Presented",
-    //     "Findings",
-    //   ];
-    //   const data = temp.map((row) => [
-    //     row.clientInfo.firstName,
-    //     row.clientInfo.middleName,
-    //     row.clientInfo.lastName,
-    //     row.clientInfo.age,
-    //     row.clientInfo.sex,
-    //     row.clientInfo.contactNum,
-    //     row.clientInfo.category,
-    //     row.clientInfo.educAttn,
-    //     row.clientInfo.status,
-    //     row.clientInfo.interviewDate,
-    //     row.clientInfo.address,
-    //     row.clientInfo.birthDate,
-    //     row.clientInfo.birthPlace,
-    //     row.clientInfo.religion,
-    //     row.clientInfo.condition + row.clientInfo.conditionOthers,
-    //     row.clientInfo.materials.roof + row.clientInfo.materials.roofOthers,
-    //     row.clientInfo.materials.walls + row.clientInfo.materials.wallOthers,
-    //     row.clientInfo.materials.floor + row.clientInfo.materials.floorOthers,
-    //     row.clientInfo.appliances,
-    //     row.clientInfo.active,
-    //     row.informantInfo.firstName,
-    //     row.informantInfo.middleName,
-    //     row.informantInfo.lastName,
-    //     row.informantInfo.age,
-    //     row.informantInfo.sex,
-    //     row.informantInfo.contactNum,
-    //     row.informantInfo.educAttn,
-    //     row.informantInfo.status,
-    //     row.informantInfo.interviewDate,
-    //     row.informantInfo.address,
-    //     row.informantInfo.birthDate,
-    //     row.informantInfo.birthPlace,
-    //     row.informantInfo.religion,
-    //     row.informantInfo.occupation + row.informantInfo.occupationOthers,
-    //     row.informantInfo.income.type,
-    //     row.informantInfo.income.amount,
-    //     row.informantInfo.employment,
-    //     row.informantInfo.employmentStat,
-    //     row.informantInfo.employmentName,
-    //     row.informantInfo.workAdd,
-    //     row.informantInfo.educAttn,
-    //     row.informantInfo.assistance,
-    //     row.informantInfo.otherInc,
-    //     row.informantInfo.monthlyInc,
-    //     row.initialFindings.findings,
-    //   ]);
-    //   doc.autoTable({
-    //     head: [headers],
-    //     body: data,
-    //   });
-    //   doc.save("ExportALL.pdf");
-    // };
     const returnFiltered = computed(() => {
       return filteredArr.value;
     });

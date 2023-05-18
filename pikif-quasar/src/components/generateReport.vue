@@ -23,118 +23,129 @@
         <div class="flex flex-col px-4 justify-center items-center p-6">
           <q-card-section class="q-pt-none">
             <p class="font-medium text-lg">Choose your filters</p>
-
-            <div class="text-left">
-              <div class="">
-                <button
-                  type="button"
-                  class="inline-flex w-full justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
-                  id="menu-button"
-                  aria-expanded="true"
-                  aria-haspopup="true"
-                  @click="toggleDropDown"
+            <q-btn-dropdown color="primary" :label="`Filter: ${filterStr}`">
+              <q-list>
+                <q-item
+                  clickable
+                  v-close-popup
+                  @click="updateFilter('Pre-school')"
                 >
-                  Filter: {{ filterOption }}
-                </button>
-              </div>
+                  <q-item-section>
+                    <q-item-label>Pre-School</q-item-label>
+                  </q-item-section>
+                </q-item>
 
-              <div
-                class="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
-                role="menu"
-                aria-orientation="vertical"
-                aria-labelledby="menu-button"
-                tabindex="-1"
-                v-if="sortState"
-              >
-                <div class="py-1" role="none">
-                  <!-- Active: "bg-gray-100 text-gray-900", Not Active: "text-gray-700" -->
-                  <a
-                    href="#"
-                    class="text-gray-700 block px-4 py-2 text-sm"
-                    role="menuitem"
-                    tabindex="-1"
-                    id="menu-item-0"
-                    @click="updateFilter('Needly Adult')"
-                    >Needly Adult
-                  </a>
-                  <a
-                    href="#"
-                    class="text-gray-700 block px-4 py-2 text-sm"
-                    role="menuitem"
-                    tabindex="-1"
-                    id="menu-item-1"
-                    @click="updateFilter('Survivor')"
-                    >Survivor
-                  </a>
-                  <a
-                    href="#"
-                    class="text-gray-700 block px-4 py-2 text-sm"
-                    role="menuitem"
-                    tabindex="-1"
-                    id="menu-item-2"
-                    @click="updateFilter('Needly Youth')"
-                    >Needly Youth
-                  </a>
-                  <a
-                    href="#"
-                    class="text-gray-700 block px-4 py-2 text-sm"
-                    role="menuitem"
-                    tabindex="-1"
-                    id="menu-item-2"
-                    @click="updateFilter('Needly Senior Citizen')"
-                    >Needly Senior Citizen
-                  </a>
-                  <a
-                    href="#"
-                    class="text-gray-700 block px-4 py-2 text-sm"
-                    role="menuitem"
-                    tabindex="-1"
-                    id="menu-item-2"
-                    @click="updateFilter('CICL')"
-                    >CICL
-                  </a>
+                <q-item
+                  clickable
+                  v-close-popup
+                  @click="updateFilter('Elementary')"
+                >
+                  <q-item-section>
+                    <q-item-label>Elementary</q-item-label>
+                  </q-item-section>
+                </q-item>
 
-                  <a
-                    href="#"
-                    class="text-gray-700 block px-4 py-2 text-sm"
-                    role="menuitem"
-                    tabindex="-1"
-                    id="menu-item-2"
-                    @click="updateFilter('CEDC')"
-                    >CEDC
-                  </a>
+                <q-item
+                  clickable
+                  v-close-popup
+                  @click="updateFilter('High School')"
+                >
+                  <q-item-section>
+                    <q-item-label>High School</q-item-label>
+                  </q-item-section>
+                </q-item>
 
-                  <a
-                    href="#"
-                    class="text-gray-700 block px-4 py-2 text-sm"
-                    role="menuitem"
-                    tabindex="-1"
-                    id="menu-item-2"
-                    @click="updateFilter('C/PWD')"
-                    >C/PWD
-                  </a>
+                <q-item
+                  clickable
+                  v-close-popup
+                  @click="updateFilter('Senior High School')"
+                >
+                  <q-item-section>
+                    <q-item-label>Senior High School</q-item-label>
+                  </q-item-section>
+                </q-item>
 
-                  <a
-                    href="#"
-                    class="text-gray-700 block px-4 py-2 text-sm"
-                    role="menuitem"
-                    tabindex="-1"
-                    id="menu-item-2"
-                    @click="updateFilter('WEDC')"
-                    >WEDC
-                  </a>
-                  <a
-                    href="#"
-                    class="text-gray-700 block px-4 py-2 text-sm"
-                    role="menuitem"
-                    tabindex="-1"
-                    id="menu-item-2"
-                    @click="updateFilter('None')"
-                    >None
-                  </a>
-                </div>
-              </div>
-            </div>
+                <q-item
+                  clickable
+                  v-close-popup
+                  @click="updateFilter('College')"
+                >
+                  <q-item-section>
+                    <q-item-label>College</q-item-label>
+                  </q-item-section>
+                </q-item>
+
+                <q-item
+                  clickable
+                  v-close-popup
+                  @click="updateFilter('Needly Adult')"
+                >
+                  <q-item-section>
+                    <q-item-label>Needly Adult</q-item-label>
+                  </q-item-section>
+                </q-item>
+
+                <q-item
+                  clickable
+                  v-close-popup
+                  @click="updateFilter('Needly Youth')"
+                >
+                  <q-item-section>
+                    <q-item-label>Needly Youth</q-item-label>
+                  </q-item-section>
+                </q-item>
+
+                <q-item
+                  clickable
+                  v-close-popup
+                  @click="updateFilter('Needly Senior Citizen')"
+                >
+                  <q-item-section>
+                    <q-item-label>Needly Senior Citizen</q-item-label>
+                  </q-item-section>
+                </q-item>
+
+                <q-item
+                  clickable
+                  v-close-popup
+                  @click="updateFilter('Survivor')"
+                >
+                  <q-item-section>
+                    <q-item-label>Survivor</q-item-label>
+                  </q-item-section>
+                </q-item>
+
+                <q-item clickable v-close-popup @click="updateFilter('CICL')">
+                  <q-item-section>
+                    <q-item-label>CICL</q-item-label>
+                  </q-item-section>
+                </q-item>
+
+                <q-item clickable v-close-popup @click="updateFilter('CEDC')">
+                  <q-item-section>
+                    <q-item-label>CEDC</q-item-label>
+                  </q-item-section>
+                </q-item>
+
+                <q-item clickable v-close-popup @click="updateFilter('C/PWD')">
+                  <q-item-section>
+                    <q-item-label>C/PWD</q-item-label>
+                  </q-item-section>
+                </q-item>
+
+                <q-item clickable v-close-popup @click="updateFilter('WEDC')">
+                  <q-item-section>
+                    <q-item-label>WEDC</q-item-label>
+                  </q-item-section>
+                </q-item>
+
+                <q-item clickable v-close-popup @click="updateFilter('None')">
+                  <q-item-section>
+                    <q-item-label>None</q-item-label>
+                  </q-item-section>
+                </q-item>
+              </q-list>
+            </q-btn-dropdown>
           </q-card-section>
 
           <q-card-section class="flex flex-row space-x-4">
@@ -247,6 +258,9 @@ export default {
       }
     );
 
+    const filterStr = computed(() => {
+      return filterOption.value;
+    });
     const closeModal = () => emit("closeModal");
     const closeErr = () => (showErr.value = false);
     const exportToPdf = () => emit("exportPdf");
@@ -283,6 +297,7 @@ export default {
       updateFilter,
       exportToPdf,
       exportToCsv,
+      filterStr,
     };
   },
 };

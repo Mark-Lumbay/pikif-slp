@@ -32,7 +32,7 @@
         </div>
 
         <div class="w-[50%] flex justify-end">
-          <q-btn-dropdown color="primary" label="Dropdown Button">
+          <q-btn-dropdown color="primary" :label="`Filter: ${filterStr}`">
             <q-list>
               <q-item
                 clickable

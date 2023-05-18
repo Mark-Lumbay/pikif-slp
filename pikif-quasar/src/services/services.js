@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useStore } from "vuex";
+import store from "../store";
 
 const apiClient = axios.create({
   baseURL: "http://localhost:8080/island-kids", // Replace with your API endpoint
@@ -70,15 +71,22 @@ export async function getOneStudent(id) {
   }
 }
 
+// Add audit log func
 export async function addStudent(data) {
+  const accInfo = store.getters.getBasicDetails;
+  const payload = {
+    accInfo,
+    data,
+  };
   try {
-    await apiClient.post("/addClientInfo", data);
+    await apiClient.post("/addClientInfo", payload);
     return { success: true };
   } catch (err) {
     return { success: false, message: err.message };
   }
 }
 
+// Add audit log func
 export async function updateInfo(data, id) {
   try {
     const res = await apiClient.put(`/updateInfo/${id}`, data);
@@ -90,6 +98,7 @@ export async function updateInfo(data, id) {
   } catch (err) {}
 }
 
+// Add audit log func
 export async function addFindings(findings, id) {
   try {
     const addRes = await apiClient.post(`/addFindings/${id}`, findings);
@@ -124,6 +133,7 @@ export async function getUserDetails(id) {
   }
 }
 
+// Add audit log func
 export async function updateUserDetails(data, id) {
   try {
     const result = await apiClient.post(`/updateUserInfo/${id}`, data);

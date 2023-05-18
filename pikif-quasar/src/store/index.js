@@ -35,6 +35,10 @@ const store = createStore({
       return state.fName;
     },
 
+    getUID: (state) => {
+      return state.uid;
+    },
+
     getBasicDetails: (state) => {
       const dataObj = {
         firstName: state.fName,

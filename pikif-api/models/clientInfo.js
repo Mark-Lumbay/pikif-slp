@@ -3,8 +3,27 @@ import pkg from "firebase-admin";
 const { firestore, auth } = pkg;
 
 class ClientModel {
-  async addClientInfo(collectionName, data) {
+  async auditAction(userDetails, action) {
+    const auditReport = {
+      uid: userDetails.uid,
+      email: userDetails.email,
+      name: `${userDetails.firstName} ${userDetails.lastName}`,
+      action: action,
+      timestamp: firestore.FieldValue.serverTimestamp(),
+    };
+    console.log("YAWA");
+
+    try {
+      await firestore().collection("auditLog").add(auditReport);
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  async addClientInfo(collectionName, data, userData) {
     const result = await firestore().collection(collectionName).add(data);
+    const action = `User ${userData.firstName} ${userData.lastName} with id of ${userData.uid} Added data with id of ${result.id}`;
+    this.auditAction(userData, action);
     return result;
   }
 
@@ -36,7 +55,7 @@ class ClientModel {
     }
   }
 
-  addInfo(data) {
+  addInfo(data, userData) {
     // Perform checks here before creating
     const clientInfoSchema = Joi.object({
       clientInfo: Joi.object({
@@ -95,10 +114,12 @@ class ClientModel {
         otherInc: Joi.string().required(),
         otherIncOthers: Joi.string().allow(""),
         monthlyInc: Joi.string().required(),
+        probsOthers: Joi.string().allow(""),
         probs: Joi.object()
           .pattern(Joi.number().integer(), Joi.string())
           .required(),
       }).required(),
+
       initialFindings: Joi.array().items(
         Joi.object({
           date: Joi.string().required(),
@@ -116,8 +137,7 @@ class ClientModel {
       return false;
     }
 
-    console.log("LAHOS YAWA");
-    return this.addClientInfo("clientInfo", data);
+    return this.addClientInfo("clientInfo", data, userData);
   }
 
   getClientInfo(data) {

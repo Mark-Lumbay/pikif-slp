@@ -27,8 +27,9 @@ router.get("/test", async (req, res) => {
 // Completed
 router.post("/addClientInfo", async (req, res) => {
   try {
-    const info = req.body;
-    const clientInfo = await ClientModel.addInfo(info);
+    const data = req.body.data;
+    const userData = req.body.accInfo;
+    const clientInfo = await ClientModel.addInfo(data, userData);
     clientId = clientInfo.id;
 
     if (!clientInfo) res.status(400).send("Request Incomplete");

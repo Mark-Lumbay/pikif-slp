@@ -32,117 +32,121 @@
         </div>
 
         <div class="w-[50%] flex justify-end">
-          <div class="relative inline-block text-left">
-            <div>
-              <button
-                type="button"
-                class="inline-flex w-full justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
-                id="menu-button"
-                aria-expanded="true"
-                aria-haspopup="true"
-                @click="toggleDropDown"
+          <q-btn-dropdown color="primary" label="Dropdown Button">
+            <q-list>
+              <q-item
+                clickable
+                v-close-popup
+                @click="changeFilter('Pre-school')"
               >
-                Filter: {{ filterOption }}
-              </button>
-            </div>
+                <q-item-section>
+                  <q-item-label>Pre-School</q-item-label>
+                </q-item-section>
+              </q-item>
 
-            <div
-              class="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
-              role="menu"
-              aria-orientation="vertical"
-              aria-labelledby="menu-button"
-              tabindex="-1"
-              v-if="sortState"
-            >
-              <div class="py-1" role="none">
-                <!-- Active: "bg-gray-100 text-gray-900", Not Active: "text-gray-700" -->
-                <a
-                  href="#"
-                  class="text-gray-700 block px-4 py-2 text-sm"
-                  role="menuitem"
-                  tabindex="-1"
-                  id="menu-item-0"
-                  @click="changeFilter('Needly Adult')"
-                  >Needly Adult
-                </a>
-                <a
-                  href="#"
-                  class="text-gray-700 block px-4 py-2 text-sm"
-                  role="menuitem"
-                  tabindex="-1"
-                  id="menu-item-1"
-                  @click="changeFilter('Survivor')"
-                  >Survivor
-                </a>
-                <a
-                  href="#"
-                  class="text-gray-700 block px-4 py-2 text-sm"
-                  role="menuitem"
-                  tabindex="-1"
-                  id="menu-item-2"
-                  @click="changeFilter('Needly Youth')"
-                  >Needly Youth
-                </a>
-                <a
-                  href="#"
-                  class="text-gray-700 block px-4 py-2 text-sm"
-                  role="menuitem"
-                  tabindex="-1"
-                  id="menu-item-2"
-                  @click="changeFilter('Needly Senior Citizen')"
-                  >Needly Senior Citizen
-                </a>
-                <a
-                  href="#"
-                  class="text-gray-700 block px-4 py-2 text-sm"
-                  role="menuitem"
-                  tabindex="-1"
-                  id="menu-item-2"
-                  @click="changeFilter('CICL')"
-                  >CICL
-                </a>
+              <q-item
+                clickable
+                v-close-popup
+                @click="changeFilter('Elementary')"
+              >
+                <q-item-section>
+                  <q-item-label>Elementary</q-item-label>
+                </q-item-section>
+              </q-item>
 
-                <a
-                  href="#"
-                  class="text-gray-700 block px-4 py-2 text-sm"
-                  role="menuitem"
-                  tabindex="-1"
-                  id="menu-item-2"
-                  @click="changeFilter('CEDC')"
-                  >CEDC
-                </a>
+              <q-item
+                clickable
+                v-close-popup
+                @click="changeFilter('High School')"
+              >
+                <q-item-section>
+                  <q-item-label>High School</q-item-label>
+                </q-item-section>
+              </q-item>
 
-                <a
-                  href="#"
-                  class="text-gray-700 block px-4 py-2 text-sm"
-                  role="menuitem"
-                  tabindex="-1"
-                  id="menu-item-2"
-                  @click="changeFilter('C/PWD')"
-                  >C/PWD
-                </a>
+              <q-item
+                clickable
+                v-close-popup
+                @click="changeFilter('Senior High School')"
+              >
+                <q-item-section>
+                  <q-item-label>Senior High School</q-item-label>
+                </q-item-section>
+              </q-item>
 
-                <a
-                  href="#"
-                  class="text-gray-700 block px-4 py-2 text-sm"
-                  role="menuitem"
-                  tabindex="-1"
-                  id="menu-item-2"
-                  @click="changeFilter('WEDC')"
-                  >WEDC
-                </a>
-                <a
-                  href="#"
-                  class="text-gray-700 block px-4 py-2 text-sm"
-                  role="menuitem"
-                  tabindex="-1"
-                  id="menu-item-2"
-                  @click="changeFilter('None')"
-                  >None
-                </a>
-              </div>
-            </div>
-          </div>
+              <q-item clickable v-close-popup @click="changeFilter('College')">
+                <q-item-section>
+                  <q-item-label>College</q-item-label>
+                </q-item-section>
+              </q-item>
+
+              <q-item
+                clickable
+                v-close-popup
+                @click="changeFilter('Needly Adult')"
+              >
+                <q-item-section>
+                  <q-item-label>Needly Adult</q-item-label>
+                </q-item-section>
+              </q-item>
+
+              <q-item
+                clickable
+                v-close-popup
+                @click="changeFilter('Needly Youth')"
+              >
+                <q-item-section>
+                  <q-item-label>Needly Youth</q-item-label>
+                </q-item-section>
+              </q-item>
+
+              <q-item
+                clickable
+                v-close-popup
+                @click="changeFilter('Needly Senior Citizen')"
+              >
+                <q-item-section>
+                  <q-item-label>Needly Senior Citizen</q-item-label>
+                </q-item-section>
+              </q-item>
+
+              <q-item clickable v-close-popup @click="changeFilter('Survivor')">
+                <q-item-section>
+                  <q-item-label>Survivor</q-item-label>
+                </q-item-section>
+              </q-item>
+
+              <q-item clickable v-close-popup @click="changeFilter('CICL')">
+                <q-item-section>
+                  <q-item-label>CICL</q-item-label>
+                </q-item-section>
+              </q-item>
+
+              <q-item clickable v-close-popup @click="changeFilter('CEDC')">
+                <q-item-section>
+                  <q-item-label>CEDC</q-item-label>
+                </q-item-section>
+              </q-item>
+
+              <q-item clickable v-close-popup @click="changeFilter('C/PWD')">
+                <q-item-section>
+                  <q-item-label>C/PWD</q-item-label>
+                </q-item-section>
+              </q-item>
+
+              <q-item clickable v-close-popup @click="changeFilter('WEDC')">
+                <q-item-section>
+                  <q-item-label>WEDC</q-item-label>
+                </q-item-section>
+              </q-item>
+
+              <q-item clickable v-close-popup @click="changeFilter('None')">
+                <q-item-section>
+                  <q-item-label>None</q-item-label>
+                </q-item-section>
+              </q-item>
+            </q-list>
+          </q-btn-dropdown>
         </div>
       </div>
       <div class="flex h-[88%]">
@@ -159,7 +163,6 @@
       </div>
     </div>
 
-    <!-- /generate report modal -->
     <div class="shadow-md sm:rounded-lg flex-3 p-6 bg-white ml-6">
       <div class="flex flex-row items-center mx-10">
         <q-icon
@@ -245,6 +248,11 @@ export default {
     const search = ref("");
     const selectedRow = ref([]);
     const options = [
+      "Pre-school",
+      "Elementary",
+      "High School",
+      "Senior High School",
+      "College",
       "Survivor",
       "Needly Youth",
       "Needly Adult",
@@ -344,351 +352,36 @@ export default {
       },
     ];
 
-    // const csvCols = [
-    //   {
-    //     name: "active",
-    //     label: "Client Active Status",
-    //     field: (row) => row.clientInfo.active,
-    //     format: (val) => `${val}`,
-    //     align: "left",
-    //     sortable: true,
-    //   },
-
-    //   {
-    //     name: "interviewDate",
-    //     label: "Client Interview Date",
-    //     field: (row) => row.clientInfo.interviewDate,
-    //     format: (val) => `${val}`,
-    //     align: "left",
-    //     sortable: true,
-    //   },
-    //   {
-    //     name: "Client firstName",
-    //     label: "Client First Name",
-    //     field: (row) => row.clientInfo.firstName,
-    //     format: (val) => `${val}`,
-    //     align: "left",
-    //     sortable: true,
-    //   },
-    //   {
-    //     name: "middleName",
-    //     label: "Client Middle Name",
-    //     field: (row) => row.clientInfo.middleName,
-    //     format: (val) => `${val}`,
-    //     align: "left",
-    //     sortable: true,
-    //   },
-    //   {
-    //     name: "lastName",
-    //     label: "Client Last Name",
-    //     field: (row) => row.clientInfo.lastName,
-    //     format: (val) => `${val}`,
-    //     align: "left",
-    //     sortable: true,
-    //   },
-    //   {
-    //     name: "status",
-    //     label: "Client Status",
-    //     field: (row) => row.clientInfo.status,
-    //     format: (val) => `${val}`,
-    //     sortable: true,
-    //   },
-    //   {
-    //     name: "age",
-    //     label: "Client Age",
-    //     field: (row) => row.clientInfo.age,
-    //     sortable: true,
-    //   },
-    //   {
-    //     name: "sex",
-    //     label: "Client Sex",
-    //     field: (row) => row.clientInfo.sex,
-    //     format: (val) => `${val}`,
-    //     sortable: true,
-    //   },
-    //   {
-    //     name: "address",
-    //     label: "Client Address",
-    //     field: (row) => row.clientInfo.address,
-    //     format: (val) => `${val}`,
-    //     sortable: true,
-    //   },
-    //   {
-    //     name: "birthDate",
-    //     label: "Client Birth Date",
-    //     field: (row) => row.clientInfo.birthDate,
-    //     format: (val) => `${val}`,
-    //   },
-    //   {
-    //     name: "birthPlace",
-    //     label: "Client Birth Place",
-    //     field: (row) => row.clientInfo.birthPlace,
-    //     format: (val) => `${val}`,
-    //   },
-    //   {
-    //     name: "religion",
-    //     label: "Client Religion",
-    //     field: (row) => row.clientInfo.religion,
-    //     format: (val) => `${val}`,
-    //   },
-    //   {
-    //     name: "contactNum",
-    //     label: "Client Contact Number",
-    //     field: (row) => row.clientInfo.contactNum,
-    //     format: (val) => `${val}`,
-    //   },
-    //   {
-    //     name: "educAttn",
-    //     label: "Client Educational Attainment",
-    //     field: (row) => row.clientInfo.educAttn,
-    //     format: (val) => `${val}`,
-    //     sortable: true,
-    //   },
-    //   {
-    //     name: "category",
-    //     label: "Client Category",
-    //     field: (row) => row.clientInfo.category,
-    //     format: (val) => `${val}`,
-    //     sortable: true,
-    //   },
-    //   {
-    //     name: "condition",
-    //     label: "Client Housing Condition",
-    //     field: (row) =>
-    //       row.clientInfo.condition === "Others"
-    //         ? row.clientInfo.conditionOthers
-    //         : row.clientInfo.condition,
-    //     format: (val) => `${val}`,
-    //     sortable: false,
-    //   },
-    //   {
-    //     name: "materials.roof",
-    //     label: "Client Roof Material",
-    //     field: (row) =>
-    //       row.clientInfo.materials.roof === "Others"
-    //         ? row.clientInfo.materials.roofOthers
-    //         : row.clientInfo.materials.roof,
-    //     format: (val) => `${val}`,
-    //     sortable: false,
-    //   },
-    //   {
-    //     name: "materials.walls",
-    //     label: "Client Wall Material",
-    //     field: (row) =>
-    //       row.clientInfo.materials.walls === "Others"
-    //         ? row.clientInfo.materials.wallOthers
-    //         : row.clientInfo.materials.walls,
-    //     format: (val) => `${val}`,
-    //     sortable: false,
-    //   },
-    //   {
-    //     name: "materials.floor",
-    //     label: "Client Floor Material",
-    //     field: (row) =>
-    //       row.clientInfo.materials.floor === "Others"
-    //         ? row.clientInfo.materials.floorOthers
-    //         : row.clientInfo.materials.floor,
-    //     format: (val) => `${val}`,
-    //     sortable: false,
-    //   },
-    //   {
-    //     name: "appliances",
-    //     label: "Client Appliances",
-    //     field: (row) => row.clientInfo.appliances,
-    //     format: (val) => `${val}`,
-    //     sortable: true,
-    //   },
-
-    //   {
-    //     name: "active",
-    //     label: "Informant Active Status",
-    //     field: (row) => row.informantInfo.active,
-    //     format: (val) => `${val}`,
-    //     align: "left",
-    //     sortable: true,
-    //   },
-
-    //   {
-    //     name: "interviewDate",
-    //     label: "Informant Interview Date",
-    //     field: (row) => row.informantInfo.interviewDate,
-    //     format: (val) => `${val}`,
-    //     align: "left",
-    //     sortable: true,
-    //   },
-    //   {
-    //     name: "Client firstName",
-    //     label: "Informant First Name",
-    //     field: (row) => row.informantInfo.firstName,
-    //     format: (val) => `${val}`,
-    //     align: "left",
-    //     sortable: true,
-    //   },
-    //   {
-    //     name: "middleName",
-    //     label: "Informant Middle Name",
-    //     field: (row) => row.informantInfo.middleName,
-    //     format: (val) => `${val}`,
-    //     align: "left",
-    //     sortable: true,
-    //   },
-    //   {
-    //     name: "lastName",
-    //     label: "Informant Last Name",
-    //     field: (row) => row.informantInfo.lastName,
-    //     format: (val) => `${val}`,
-    //     align: "left",
-    //     sortable: true,
-    //   },
-    //   {
-    //     name: "status",
-    //     label: "Informant Status",
-    //     field: (row) => row.informantInfo.status,
-    //     format: (val) => `${val}`,
-    //     sortable: true,
-    //   },
-    //   {
-    //     name: "age",
-    //     label: "Informant Age",
-    //     field: (row) => row.informantInfo.age,
-    //     sortable: true,
-    //   },
-    //   {
-    //     name: "sex",
-    //     label: "Informant Sex",
-    //     field: (row) => row.informantInfo.sex,
-    //     format: (val) => `${val}`,
-    //     sortable: true,
-    //   },
-    //   {
-    //     name: "address",
-    //     label: "Informant Address",
-    //     field: (row) => row.informantInfo.address,
-    //     format: (val) => `${val}`,
-    //     sortable: true,
-    //   },
-    //   {
-    //     name: "birthDate",
-    //     label: "Informant Birth Date",
-    //     field: (row) => row.informantInfo.birthDate,
-    //     format: (val) => `${val}`,
-    //   },
-    //   {
-    //     name: "birthPlace",
-    //     label: "Informant Birth Place",
-    //     field: (row) => row.informantInfo.birthPlace,
-    //     format: (val) => `${val}`,
-    //   },
-    //   {
-    //     name: "religion",
-    //     label: "Informant Religion",
-    //     field: (row) => row.informantInfo.religion,
-    //     format: (val) => `${val}`,
-    //   },
-    //   {
-    //     name: "contactNum",
-    //     label: "Informant Contact Number",
-    //     field: (row) => row.informantInfo.contactNum,
-    //     format: (val) => `${val}`,
-    //   },
-    //   {
-    //     name: "occupation",
-    //     label: "Informant Occupation",
-    //     field: (row) =>
-    //       row.informantInfo.occupation === "Others"
-    //         ? row.informantInfo.occupationOthers
-    //         : row.informantInfo.occupation,
-    //     format: (val) => `${val}`,
-    //   },
-    //   {
-    //     name: "type",
-    //     label: "Informant Income Type",
-    //     field: (row) => row.informantInfo.income.type,
-    //     format: (val) => `${val}`,
-    //   },
-    //   {
-    //     name: "amount",
-    //     label: "Informant Income Amount",
-    //     field: (row) => row.informantInfo.income.amount,
-    //     format: (val) => `${val}`,
-    //   },
-    //   {
-    //     name: "employment",
-    //     label: "Informant Employment",
-    //     field: (row) => row.informantInfo.employment,
-    //     format: (val) => `${val}`,
-    //   },
-    //   {
-    //     name: "employmentStat",
-    //     label: "Informant Employment Status",
-    //     field: (row) => row.informantInfo.employmentStat,
-    //     format: (val) => `${val}`,
-    //   },
-    //   {
-    //     name: "employerName",
-    //     label: "Informant Employer Name",
-    //     field: (row) => row.informantInfo.employerName,
-    //     format: (val) => `${val}`,
-    //   },
-    //   {
-    //     name: "workAdd",
-    //     label: "Informant Work Address",
-    //     field: (row) => row.informantInfo.workAdd,
-    //     format: (val) => `${val}`,
-    //   },
-    //   {
-    //     name: "educAttn",
-    //     label: "Informant Educational Level",
-    //     field: (row) => row.informantInfo.educAttn,
-    //     format: (val) => `${val}`,
-    //   },
-    //   {
-    //     name: "assistance",
-    //     label: "Informant Government Assistance",
-    //     field: (row) => row.informantInfo.assistance,
-    //     format: (val) => `${val}`,
-    //   },
-    //   {
-    //     name: "otherInc",
-    //     label: "Other Income Sources",
-    //     field: (row) =>
-    //       row.informantInfo.otherInc === "Others"
-    //         ? row.informantInfo.otherIncOthers
-    //         : row.informantInfo.otherInc,
-    //     format: (val) => `${val}`,
-    //   },
-    //   {
-    //     name: "monthlyInc",
-    //     label: "Monthly Income",
-    //     field: (row) => row.informantInfo.monthlyInc,
-    //     format: (val) => `${val}`,
-    //   },
-    // ];
-
     const rowDesign = computed(() => {
       return (index) => {
         return index % 2 === 0 ? "bg-gray-100" : "bg-white";
       };
     });
+
     function searchStudent() {
       filterTable(true);
     }
+
     async function getData() {
       const data = await loadDashboard();
       return data;
     }
+
     function toggleDropDown() {
       showSortMenu.value = !showSortMenu.value;
     }
+
     function changeFilter(filter) {
       filterOption.value = filter;
       filterTable();
       toggleDropDown();
     }
+
     function updateFil(newFilter) {
       filterOption.value = newFilter;
       filterTable();
     }
+
     function viewRow(evt, row) {
       const id = row.id;
       console.log(id);
@@ -697,6 +390,7 @@ export default {
         params: { id: id },
       });
     }
+
     function filterTable(isSearch = false) {
       if (isSearch == true) {
         const tempResults = [];
@@ -716,7 +410,10 @@ export default {
           }
           if (filterStr.value === option) {
             filteredArr.value = rows.value.filter(
-              (row) => row.category == filterStr.value
+              (row) =>
+                row.educAttn == filterStr.value ||
+                row.category == filterStr.value ||
+                row.active == filterStr.value
             );
             return filteredArr.value;
           }

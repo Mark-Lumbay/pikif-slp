@@ -159,7 +159,13 @@
           :pagination="initialPagination"
           class="flex-1"
           @row-click="viewRow"
-        />
+        >
+          <template v-slot:body-cell-actions="{ rows }">
+            <div class="w-full flex justify-center pt-2">
+              <q-btn icon="edit" @click.stop="editRow(rows)" dense round flat />
+            </div>
+          </template>
+        </q-table>
       </div>
     </div>
 
@@ -264,6 +270,15 @@ export default {
       "None",
     ];
     const columns = [
+      {
+        name: "actions",
+        label: "Actions",
+        field: (row) => "",
+        format: (val) => `${val}`,
+        align: "center",
+        sortable: false,
+        "q-table-column": "name",
+      },
       {
         name: "fullName",
         label: "Name",

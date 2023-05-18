@@ -9,7 +9,7 @@
             route.name
           }}</q-toolbar-title>
 
-          <button class="inline-flex">
+          <button class="inline-flex text-base">
             <q-menu>
               <q-list style="min-width: 100px">
                 <q-item clickable v-close-popup>

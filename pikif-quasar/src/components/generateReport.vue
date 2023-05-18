@@ -1,17 +1,12 @@
 <template>
-
-<div>
-  <q-dialog v-model="prompt" persistent>
+  <div>
+    <q-dialog v-model="prompt" persistent>
       <q-card class="w-full">
         <div class="w-full h-14 bg-primaryHovBtn flex items-center px-4">
-          <p class="block text-white text-xl font-semibold">
-            Generate Report
-          </p>
+          <p class="block text-white text-xl font-semibold">Generate Report</p>
         </div>
         <div class="px-4">
-          <q-card-section class="mt-4">
-
-          </q-card-section>
+          <q-card-section class="mt-4"> </q-card-section>
 
           <q-card-section class="q-pt-none">
             <q-input
@@ -23,13 +18,9 @@
             />
           </q-card-section>
 
-          <q-card-section>
+          <q-card-section> </q-card-section>
 
-          </q-card-section>
-
-          <q-card-section class="q-pt-none">
-
-          </q-card-section>
+          <q-card-section class="q-pt-none"> </q-card-section>
 
           <q-card-actions
             align="right"
@@ -55,13 +46,11 @@
         </div>
       </q-card>
     </q-dialog>
-
-
-</div>
-
+  </div>
 </template>
 
 <script>
+import { ref, watch } from "vue";
 export default {
   emits: ["closeModal", "updateEmail", "updatePass"],
   props: {
@@ -82,7 +71,6 @@ export default {
       newText: "",
     });
 
-    const store = useStore();
     const email = ref("");
     const showErr = ref(false);
     const formContents = ref({
@@ -122,22 +110,22 @@ export default {
 
     const closeModal = () => emit("closeModal");
     const closeErr = () => (showErr.value = false);
-    const submitUpdate = () => {
-      if (text.value.currText !== "" && text.value.newText !== "") {
-        if (props.modalType === 1) {
-          emit("updateEmail", text.value);
-          closeModal();
-        } else {
-          emit("updatePass", text.value);
-          closeModal();
-        }
+    // const submitUpdate = () => {
+    //   if (text.value.currText !== "" && text.value.newText !== "") {
+    //     if (props.modalType === 1) {
+    //       emit("updateEmail", text.value);
+    //       closeModal();
+    //     } else {
+    //       emit("updatePass", text.value);
+    //       closeModal();
+    //     }
 
-        text.value.currText = "";
-        text.value.newText = "";
-      } else {
-        showErr.value = true;
-      }
-    };
+    //     text.value.currText = "";
+    //     text.value.newText = "";
+    //   } else {
+    //     showErr.value = true;
+    //   }
+    // };
 
     return {
       prompt,
@@ -146,7 +134,6 @@ export default {
       email,
       formContents,
       showErr,
-      submitUpdate,
       closeErr,
     };
   },

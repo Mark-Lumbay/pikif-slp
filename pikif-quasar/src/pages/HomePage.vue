@@ -152,7 +152,6 @@
       </div>
       <div class="flex h-[88%]">
         <q-table
-          flat
           bordered
           title="Students"
           :rows="returnFiltered"
@@ -161,15 +160,7 @@
           :pagination="initialPagination"
           class="flex-1"
           @row-click="viewRow"
-        >
-          <template v-slot:body-cell-button="props">
-            <!-- Accessing the provided props -->
-            <q-td :props="props">
-              <!-- Content for the cell -->
-              <q-btn icon="edit" dense round flat />
-            </q-td>
-          </template>
-        </q-table>
+        />
       </div>
     </div>
 
@@ -192,6 +183,8 @@
       </div>
     </div>
     <!-- /generate report modal -->
+
+    <GenerateReport v-if="openModal"></GenerateReport>
   </div>
 </template>
 
@@ -201,6 +194,7 @@ import { loadDashboard } from "../services/services";
 import { useRoute, useRouter } from "vue-router";
 import generateReport from "src/components/generateReport.vue";
 import store from "../store";
+import GenerateReport from "src/components/generateReport.vue";
 
 export default {
   props: {
@@ -211,7 +205,6 @@ export default {
       generateReport,
     },
   },
-
   setup(props) {
     const rows = ref([]);
     const route = useRoute();
@@ -220,7 +213,6 @@ export default {
     const nameHolder = ref("");
     const openModal = ref(false);
     const modalType = ref(0);
-
     //MGA MODAL
     const closeModal = () => {
       openModal.value = false;
@@ -229,7 +221,6 @@ export default {
       modalType.value = type;
       openModal.value = true;
     };
-
     watch(
       () => nameHolder.value,
       (username) => {
@@ -238,23 +229,19 @@ export default {
         console.log(firstName.value);
       }
     );
-
     onMounted(async () => {
       rows.value = await getData();
       nameHolder.value = await store.getters.getFirstName;
       filterTable();
     });
-
     const getName = computed(() => {
       return firstName.value;
     });
-
     const showSortMenu = ref(false);
     const filterOption = ref("None");
     const filteredArr = ref([]);
     const search = ref("");
     const selectedRow = ref([]);
-
     const options = [
       "Survivor",
       "Needly Youth",
@@ -266,7 +253,6 @@ export default {
       "C/PWD",
       "None",
     ];
-
     const columns = [
       {
         name: "fullName",
@@ -274,7 +260,6 @@ export default {
         field: (row) => row.fullName,
         format: (val) => `${val}`,
         align: "left",
-
         sortable: true,
       },
       {
@@ -288,7 +273,6 @@ export default {
         label: "Sex",
         field: (row) => row.sex,
         format: (val) => `${val}`,
-
         sortable: true,
       },
       {
@@ -302,7 +286,6 @@ export default {
         label: "Educational Attainment",
         field: (row) => row.educAttn,
         format: (val) => `${val}`,
-
         sortable: true,
       },
       {
@@ -313,26 +296,26 @@ export default {
         sortable: true,
       },
     ];
-
+    const rowDesign = computed(() => {
+      return (index) => {
+        return index % 2 === 0 ? "bg-gray-100" : "bg-white";
+      };
+    });
     function searchStudent() {
       filterTable(true);
     }
-
     async function getData() {
       const data = await loadDashboard();
       return data;
     }
-
     function toggleDropDown() {
       showSortMenu.value = !showSortMenu.value;
     }
-
     function changeFilter(filter) {
       filterOption.value = filter;
       filterTable();
       toggleDropDown();
     }
-
     function viewRow(evt, row) {
       const id = row.id;
       console.log(id);
@@ -341,7 +324,6 @@ export default {
         params: { id: id },
       });
     }
-
     function filterTable(isSearch = false) {
       if (isSearch == true) {
         const tempResults = [];
@@ -351,7 +333,6 @@ export default {
           }
         }
         filteredArr.value = tempResults;
-
         return filteredArr;
       } else {
         for (const option of options) {
@@ -359,7 +340,6 @@ export default {
             filteredArr.value = rows.value;
             return filteredArr.value;
           }
-
           if (filterStr.value === option) {
             filteredArr.value = rows.value.filter(
               (row) => row.category == filterStr.value
@@ -369,19 +349,15 @@ export default {
         }
       }
     }
-
     const returnFiltered = computed(() => {
       return filteredArr.value;
     });
-
     const sortState = computed(() => {
       return showSortMenu.value;
     });
-
     const filterStr = computed(() => {
       return filterOption.value;
     });
-
     return {
       initialPagination: {
         sortBy: "name",
@@ -410,7 +386,9 @@ export default {
       generateReport,
       showModal,
       closeModal,
+      rowDesign,
     };
   },
+  components: { GenerateReport },
 };
 </script>

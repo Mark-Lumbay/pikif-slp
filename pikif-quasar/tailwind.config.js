@@ -17,6 +17,7 @@ module.exports = {
         lightGray: "#cedfdb",
         navBar: "#16252d",
         sideBar: "#29353b",
+        primaryYellow: "#f0ed1e",
       },
     },
   },

@@ -1,9 +1,4 @@
 <template>
-  <generateReport
-    :open-modal="openModal"
-    @close-modal="closeModal"
-    :modal-type="modalType"
-  ></generateReport>
   <div class="flex space-y-4 p-6">
     <div
       class="flex w-full h-[10vh] bg-white shadow-md sm:rounded-lg items-center px-6"
@@ -180,40 +175,34 @@
         >
           Generate Report
         </button>
-
-        <button
-          class="px-4 py-2 bg-primaryRed text-white text-base font-medium rounded-md w-full shadow-sm hover:bg-primaryRedHover focus:outline-none focus:ring-2 focus:ring-green-300"
-          @click.prevent="exportToPDFBasic"
-        >
-          TEST export to pdf
-        </button>
       </div>
     </div>
-    <!-- /generate report modal -->
-
-    <GenerateReport v-if="openModal"></GenerateReport>
   </div>
+  <GenerateReport
+    :open-modal="openModal"
+    @change-filter="updateFil"
+    @close-modal="closeModal"
+  ></GenerateReport>
 </template>
 
 <script>
 import { computed, ref, onMounted, watch } from "vue";
 import { loadDashboard } from "../services/services";
 import { useRoute, useRouter } from "vue-router";
-import generateReport from "src/components/generateReport.vue";
 import store from "../store";
-import GenerateReport from "src/components/generateReport.vue";
 import { jsPDF } from "jspdf";
 import autoTable from "jspdf-autotable";
 import { useStore } from "vuex";
+import GenerateReport from "src/components/GenerateReport.vue";
 
 export default {
   props: {
     userName: {
       type: String,
     },
-    components: {
-      generateReport,
-    },
+  },
+  components: {
+    GenerateReport,
   },
   setup(props) {
     const rows = ref([]);
@@ -224,13 +213,11 @@ export default {
     const openModal = ref(false);
     const modalType = ref(0);
     const store2 = useStore();
-
     //MGA MODAL
     const closeModal = () => {
       openModal.value = false;
     };
-    const showModal = (type) => {
-      modalType.value = type;
+    const showModal = () => {
       openModal.value = true;
     };
     watch(
@@ -328,6 +315,10 @@ export default {
       filterTable();
       toggleDropDown();
     }
+    function updateFil(newFilter) {
+      filterOption.value = newFilter;
+      filterTable();
+    }
     function viewRow(evt, row) {
       const id = row.id;
       console.log(id);
@@ -351,7 +342,6 @@ export default {
           if (filterStr.value === "None") {
             filteredArr.value = rows.value;
             console.log(filteredArr.value);
-
             return filteredArr.value;
           }
           if (filterStr.value === option) {
@@ -363,10 +353,8 @@ export default {
         }
       }
     }
-
     const exportToPDFBasic = () => {
       const doc = new jsPDF();
-
       const headers = [
         "Full Name",
         "Age",
@@ -375,7 +363,6 @@ export default {
         "Educational Level",
         "Status",
       ];
-
       const data = filteredArr.value.map((row) => [
         row.fullName,
         row.age,
@@ -384,15 +371,12 @@ export default {
         row.educAttn,
         row.status,
       ]);
-
       doc.autoTable({
         head: [headers],
         body: data,
       });
-
       doc.save("Export.pdf");
     };
-
     // const exportToPDFAll = () => {
     //   const doc = new jsPDF();
     //   const temp = store.getters.getData;
@@ -445,7 +429,6 @@ export default {
     //     "Informant Problems Presented",
     //     "Findings",
     //   ];
-
     //   const data = temp.map((row) => [
     //     row.clientInfo.firstName,
     //     row.clientInfo.middleName,
@@ -493,15 +476,12 @@ export default {
     //     row.informantInfo.monthlyInc,
     //     row.initialFindings.findings,
     //   ]);
-
     //   doc.autoTable({
     //     head: [headers],
     //     body: data,
     //   });
-
     //   doc.save("ExportALL.pdf");
     // };
-
     const returnFiltered = computed(() => {
       return filteredArr.value;
     });
@@ -519,6 +499,7 @@ export default {
         rowsPerPage: 5,
         // rowsNumber: xx if getting data from a server
       },
+      GenerateReport,
       props,
       toggleDropDown,
       sortState,
@@ -536,14 +517,12 @@ export default {
       firstName,
       getName,
       openModal,
-      generateReport,
       showModal,
       closeModal,
       rowDesign,
       exportToPDFBasic,
-      exportToPDFAll,
+      updateFil,
     };
   },
-  components: { GenerateReport },
 };
 </script>

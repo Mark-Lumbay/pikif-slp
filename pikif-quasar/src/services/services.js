@@ -15,10 +15,15 @@ export async function testCall(token) {
   return response.data;
 }
 
+// Add to audit log
 export async function toggleActive(id) {
   const uid = id;
+  const data = store.getters.getBasicDetails;
+  const details = {
+    accInfo: data,
+  };
   try {
-    const result = await apiClient.post(`/setInactive/toggle/${uid}`);
+    const result = await apiClient.post(`/setInactive/toggle/${uid}`, details);
     return result;
   } catch (err) {
     return err;

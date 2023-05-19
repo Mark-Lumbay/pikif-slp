@@ -275,7 +275,7 @@ class ClientModel {
     }
   }
 
-  async toggleStatus(id) {
+  async toggleStatus(id, userData) {
     const docRef = firestore().collection("clientInfo").doc(id);
 
     try {
@@ -290,7 +290,9 @@ class ClientModel {
       updatePayload.clientInfo.active = !updatePayload.clientInfo.active;
 
       const updateReq = await docRef.set(updatePayload);
-      // return updateReq;
+      const action = `User ${userData.firstName} ${userData.lastName} with id of ${userData.uid} Modified active status of ${id}`;
+      await this.auditAction(userData, action);
+      return updateReq;
     } catch (error) {
       console.error(error);
       return { status: false, message: "Internal Server Error" };

@@ -54,8 +54,9 @@ router.post("/register", async (req, res) => {
 // Completed
 router.post("/setInactive/toggle/:id", async (req, res) => {
   const id = req.params.id;
+  const userData = req.body.accInfo;
   try {
-    await ClientModel.toggleStatus(id);
+    await ClientModel.toggleStatus(id, userData);
     res.send({ success: true });
   } catch (error) {
     res.status(500).send({ success: false });

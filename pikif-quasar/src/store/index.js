@@ -53,6 +53,10 @@ const store = createStore({
       return state.studentData;
     },
 
+    getAuthLevel: (state) => {
+      return state.auth;
+    },
+
     getOneUser: (state) => {
       const data = this.getters.getData;
       const info = data.find((item) => item.id === id);
@@ -133,10 +137,20 @@ const store = createStore({
       context.commit("setIndivData", data);
     },
 
+    storeAuthLevel(context, level) {
+      store.commit("setAuth", level);
+    },
+
     getClientInfo(context, id) {
       const data = this.getters.getData;
       const info = data.find((item) => item.id === id);
       return info;
+    },
+
+    getYourAuth(context, id) {
+      const auth_level = this.getters.getAuthLevel;
+      console.log(auth_level);
+      return auth_level;
     },
 
     async logout(context) {
@@ -158,7 +172,6 @@ auth.onAuthStateChanged(async (newUser) => {
 
     const fName = user.claims.firstName;
     const lName = user.claims.lastName;
-
     const details = {
       newUser,
       fName,

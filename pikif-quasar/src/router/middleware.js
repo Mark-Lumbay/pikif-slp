@@ -35,6 +35,7 @@
 // }
 import store from "../store";
 import { auth } from "../firebase.js";
+import { getUserAuth } from "src/services/services.js";
 let user = store.getters.getState;
 
 function getAuthState() {
@@ -63,8 +64,12 @@ async function runCheck() {
     };
 
     const token = user.token;
+
     store.dispatch("storeUser", userDetails);
     store.dispatch("storeUserToken", token);
+
+    const authLevel = await getUserAuth(userDetails.uid);
+    store.dispatch("storeAuthLevel", authLevel.data.auth);
   }
 }
 

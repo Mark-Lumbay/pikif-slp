@@ -170,8 +170,13 @@
                 "
                 @click.stop="
                   () => {
-                    props.row.status = !props.row.status;
-                    changeStatus(props.key);
+                    if (authLevel !== 'Read') {
+                      toggleAlert();
+                      return;
+                    } else {
+                      props.row.status = !props.row.status;
+                      changeStatus(props.key);
+                    }
                   }
                 "
                 class="text-black cursor-pointer"
@@ -223,6 +228,8 @@
     @export-pdf="exportToPDFBasic"
     @export-csv="exportToCSV"
   ></GenerateReport>
+
+  <AlertBox :show-alert="showAlert" @toggle-alert="toggleAlert"></AlertBox>
 </template>
 
 <script>
@@ -235,6 +242,7 @@ import autoTable from "jspdf-autotable";
 import { useStore } from "vuex";
 import GenerateReport from "src/components/GenerateReport.vue";
 import { exportFile, useQuasar } from "quasar";
+import AlertBox from "src/components/AlertBox.vue";
 
 export default {
   props: {
@@ -244,6 +252,7 @@ export default {
   },
   components: {
     GenerateReport,
+    AlertBox,
   },
   setup(props) {
     const rows = ref([]);
@@ -254,6 +263,9 @@ export default {
     const openModal = ref(false);
     const modalType = ref(0);
     const store2 = useStore();
+    const authLevel = ref("");
+    const showAlert = ref(false);
+
     //MGA MODAL
     const closeModal = () => {
       openModal.value = false;
@@ -261,6 +273,10 @@ export default {
     const showModal = () => {
       openModal.value = true;
     };
+    const toggleAlert = () => {
+      showAlert.value = !showAlert.value;
+    };
+
     watch(
       () => nameHolder.value,
       (username) => {
@@ -269,11 +285,15 @@ export default {
         console.log(firstName.value);
       }
     );
+
     onMounted(async () => {
       rows.value = await getData();
       nameHolder.value = await store.getters.getFirstName;
+      authLevel.value = store.getters.getAuthLevel;
+
       filterTable();
     });
+
     const getName = computed(() => {
       return firstName.value;
     });
@@ -281,6 +301,7 @@ export default {
     const getStatusColor = (status) => {
       return status === true ? "text-btnGreen" : "text-primaryRed";
     };
+
     const showSortMenu = ref(false);
     const filterOption = ref("None");
     const filteredArr = ref([]);
@@ -590,6 +611,7 @@ export default {
         // rowsNumber: xx if getting data from a server
       },
       GenerateReport,
+      AlertBox,
       props,
       toggleDropDown,
       sortState,
@@ -616,6 +638,9 @@ export default {
       toggleStatus,
       getStatusColor,
       changeStatus,
+      authLevel,
+      showAlert,
+      toggleAlert,
     };
   },
 };

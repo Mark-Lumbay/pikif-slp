@@ -284,21 +284,13 @@ class ClientModel {
         res.status(404).send("Client not found");
         return;
       }
+      console.log(doc.data);
 
-      // "true" to "active" and "false" to "inactive"
-      const activeStatus = doc.data().clientInfo.active;
-      const newActiveStatus = !activeStatus; // Toggle the value of the "active" field
-      console.log(newActiveStatus);
-      const updatePayload = {
-        clientInfo: {
-          active: newActiveStatus,
-        },
-      };
+      const updatePayload = doc.data();
+      updatePayload.clientInfo.active = !updatePayload.clientInfo.active;
 
-      const active = newActiveStatus;
-
-      const updateReq = await docRef.update({ active });
-      return updateReq;
+      const updateReq = await docRef.set(updatePayload);
+      // return updateReq;
     } catch (error) {
       console.error(error);
       return { status: false, message: "Internal Server Error" };

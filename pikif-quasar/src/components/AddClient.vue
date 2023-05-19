@@ -573,7 +573,7 @@
                 placeholder="Other options"
                 :disabled="
                   clientPersonalInfo.clientInfo.materials.floor != 'Others' ||
-                  !editMode
+                  editMode
                 "
                 v-model="clientPersonalInfo.clientInfo.materials.floorOthers"
               />

@@ -15,7 +15,9 @@ app.use(json());
 app.use(cors());
 app.use(async (req, res, next) => {
   const header = req.headers.authorization;
-  console.log(header);
+  if (req.path === "/login" || req.path === "/registration") {
+    return next();
+  }
   if (header) {
     try {
       const token = header.split("Bearer ")[1];

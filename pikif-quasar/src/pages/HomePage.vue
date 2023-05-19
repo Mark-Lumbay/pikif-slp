@@ -157,7 +157,7 @@
           :columns="columns"
           row-key="id"
           :pagination="initialPagination"
-          class="flex-1"
+          class="w-full"
           @row-click="viewRow"
         >
           <template v-slot:body-cell-actions="props">

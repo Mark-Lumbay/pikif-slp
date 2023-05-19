@@ -48,7 +48,7 @@
         :mini-width="100"
       >
         <q-scroll-area style="height: calc(100% - 150px)">
-          <q-list padding>
+          <q-list padding class="ml-2">
             <q-item clickable v-ripple @click="router.push('/')">
               <q-item-section avatar>
                 <div
@@ -114,7 +114,7 @@
                 >
                   <div class="flex flex-row items-center space-x-4">
                     <q-icon
-                      name="las la-user-cog"
+                      name="las la-cog"
                       size="45px"
                       :class="
                         route.name === 'Account Settings'

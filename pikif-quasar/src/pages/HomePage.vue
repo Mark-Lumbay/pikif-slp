@@ -160,10 +160,39 @@
           class="flex-1"
           @row-click="viewRow"
         >
-          <template v-slot:body-cell-actions="{ rows }">
-            <div class="w-full flex justify-center pt-2">
-              <q-btn icon="edit" @click.stop="editRow(rows)" dense round flat />
+          <template v-slot:body-cell-actions="props">
+            <div class="w-full h-full flex justify-center items-center pt-2">
+              <q-btn
+                :icon="
+                  props.row.status === true
+                    ? 'las la-chevron-up'
+                    : 'las la-chevron-down'
+                "
+                @click.stop="
+                  () => {
+                    props.row.status = !props.row.status;
+                    changeStatus(props.key);
+                  }
+                "
+                class="text-black cursor-pointer"
+                dense
+                round
+                flat
+              ></q-btn>
             </div>
+          </template>
+
+          <template v-slot:body-cell-status="props">
+            <q-td
+              key="id"
+              :props="props"
+              @row-click="viewRow"
+              :class="getStatusColor(props.row.status)"
+              class="text-center font-semibold"
+            >
+              {{ props.row.status === true ? "Active" : "Inactive" }}
+            </q-td>
+            <!-- Other columns... -->
           </template>
         </q-table>
       </div>
@@ -198,7 +227,7 @@
 
 <script>
 import { computed, ref, onMounted, watch } from "vue";
-import { loadDashboard } from "../services/services";
+import { loadDashboard, toggleActive } from "../services/services";
 import { useRoute, useRouter } from "vue-router";
 import store from "../store";
 import { jsPDF } from "jspdf";
@@ -248,6 +277,10 @@ export default {
     const getName = computed(() => {
       return firstName.value;
     });
+
+    const getStatusColor = (status) => {
+      return status === true ? "text-btnGreen" : "text-primaryRed";
+    };
     const showSortMenu = ref(false);
     const filterOption = ref("None");
     const filteredArr = ref([]);
@@ -373,6 +406,15 @@ export default {
       };
     });
 
+    const changeStatus = async (id) => {
+      try {
+        const req = await toggleActive(id);
+        console.log(req);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+
     function searchStudent() {
       filterTable(true);
     }
@@ -405,6 +447,10 @@ export default {
         params: { id: id },
       });
     }
+
+    const toggleStatus = (docID) => {
+      console.log(docID);
+    };
 
     function filterTable(isSearch = false) {
       if (isSearch == true) {
@@ -477,7 +523,7 @@ export default {
         row.sex,
         row.category,
         row.educAttn,
-        row.status,
+        row.status == true ? "Active" : "Inactive",
         row.condition === "Others" ? row.conditionOthers : row.condition,
         row.roof === "Others" ? row.materials.roofOthers : row.materials.roof,
         row.walls === "Others" ? row.materials.wallOthers : row.materials.walls,
@@ -567,6 +613,9 @@ export default {
       exportToPDFBasic,
       exportToCSV,
       updateFil,
+      toggleStatus,
+      getStatusColor,
+      changeStatus,
     };
   },
 };

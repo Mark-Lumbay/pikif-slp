@@ -295,8 +295,10 @@ class ClientModel {
         },
       };
 
-      await docRef.update(updatePayload);
-      return;
+      const active = newActiveStatus;
+
+      const updateReq = await docRef.update({ active });
+      return updateReq;
     } catch (error) {
       console.error(error);
       return { status: false, message: "Internal Server Error" };

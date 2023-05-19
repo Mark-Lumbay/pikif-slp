@@ -15,6 +15,16 @@ export async function testCall(token) {
   return response.data;
 }
 
+export async function toggleActive(id) {
+  const uid = id;
+  try {
+    const result = await apiClient.post(`/setInactive/toggle/${uid}`);
+    return result;
+  } catch (err) {
+    return err;
+  }
+}
+
 export async function register(data) {
   try {
     await apiClient.post("/register", data);

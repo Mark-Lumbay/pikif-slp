@@ -17,13 +17,18 @@ export async function testCall(token) {
 
 // Add to audit log
 export async function toggleActive(id) {
+  const token = store.getters.getToken;
   const uid = id;
   const data = store.getters.getBasicDetails;
   const details = {
     accInfo: data,
   };
   try {
-    const result = await apiClient.post(`/setInactive/toggle/${uid}`, details);
+    const result = await apiClient.post(`/setInactive/toggle/${uid}`, details, {
+      headers: {
+        authorization: `Bearer ${token}`,
+      },
+    });
     return result;
   } catch (err) {
     return err;
@@ -31,6 +36,8 @@ export async function toggleActive(id) {
 }
 
 export async function register(data) {
+  const token = store.getters.getToken;
+
   try {
     await apiClient.post("/register", data);
     return { success: true };
@@ -40,10 +47,15 @@ export async function register(data) {
 }
 
 export async function loadDashboard() {
-  const store = useStore();
+  const token = store.getters.getToken;
+  const store2 = useStore();
 
   try {
-    const result = await apiClient.get("/loadDashboard");
+    const result = await apiClient.get("/loadDashboard", {
+      headers: {
+        authorization: `Bearer ${token}`,
+      },
+    });
     const basicInfo = [];
     const fullInfo = [];
 
@@ -70,7 +82,7 @@ export async function loadDashboard() {
       });
     }
 
-    store.dispatch("storeData", fullInfo);
+    store2.dispatch("storeData", fullInfo);
     return basicInfo;
   } catch (err) {
     return { success: false, message: err.message };
@@ -78,8 +90,14 @@ export async function loadDashboard() {
 }
 
 export async function getOneStudent(id) {
+  const token = store.getters.getToken;
+
   try {
-    const studentInfo = await apiClient.get(`/getClient/${id}`);
+    const studentInfo = await apiClient.get(`/getClient/${id}`, {
+      headers: {
+        authorization: `Bearer ${token}`,
+      },
+    });
     return studentInfo.data.data;
   } catch (err) {
     return { success: false, message: `Error ${err.message}` };
@@ -89,13 +107,19 @@ export async function getOneStudent(id) {
 // Add audit log func
 // Complete
 export async function addStudent(data) {
+  const token = store.getters.getToken;
+
   const accInfo = store.getters.getBasicDetails;
   const payload = {
     accInfo,
     data,
   };
   try {
-    await apiClient.post("/addClientInfo", payload);
+    await apiClient.post("/addClientInfo", payload, {
+      headers: {
+        authorization: `Bearer ${token}`,
+      },
+    });
     return { success: true };
   } catch (err) {
     return { success: false, message: err.message };
@@ -105,6 +129,8 @@ export async function addStudent(data) {
 // Add audit log func
 // Completed
 export async function updateInfo(data, id) {
+  const token = store.getters.getToken;
+
   const accInfo = store.getters.getBasicDetails;
   console.log(accInfo);
   const payload = {
@@ -112,7 +138,11 @@ export async function updateInfo(data, id) {
     data,
   };
   try {
-    const res = await apiClient.put(`/updateInfo/${id}`, payload);
+    const res = await apiClient.put(`/updateInfo/${id}`, payload, {
+      headers: {
+        authorization: `Bearer ${token}`,
+      },
+    });
     if (res.data.success) {
       return true;
     } else {
@@ -123,13 +153,19 @@ export async function updateInfo(data, id) {
 
 // Add audit log func
 export async function addFindings(findings, id) {
+  const token = store.getters.getToken;
+
   const accInfo = store.getters.getBasicDetails;
   const payload = {
     accInfo,
     findings,
   };
   try {
-    const addRes = await apiClient.post(`/addFindings/${id}`, payload);
+    const addRes = await apiClient.post(`/addFindings/${id}`, payload, {
+      headers: {
+        authorization: `Bearer ${token}`,
+      },
+    });
 
     if (addRes) return true;
     return false;
@@ -139,11 +175,17 @@ export async function addFindings(findings, id) {
 }
 
 export async function checkUserExists(data) {
+  const token = store.getters.getToken;
+
   try {
     const searchRes = await apiClient.get("/search", {
       params: {
         firstName: data.firstName,
         lastName: data.lastName,
+      },
+
+      headers: {
+        authorization: `Bearer ${token}`,
       },
     });
     return searchRes;
@@ -153,8 +195,14 @@ export async function checkUserExists(data) {
 }
 
 export async function getUserDetails(id) {
+  const token = store.getters.getToken;
+
   try {
-    const userDetails = await apiClient.get(`/getUserDetails/${id}`);
+    const userDetails = await apiClient.get(`/getUserDetails/${id}`, {
+      headers: {
+        authorization: `Bearer ${token}`,
+      },
+    });
     return userDetails.data.data.customClaims;
   } catch (err) {
     return { status: false };
@@ -162,8 +210,14 @@ export async function getUserDetails(id) {
 }
 
 export async function updateUserDetails(data, id) {
+  const token = store.getters.getToken;
+
   try {
-    const result = await apiClient.post(`/updateUserInfo/${id}`, data);
+    const result = await apiClient.post(`/updateUserInfo/${id}`, data, {
+      headers: {
+        authorization: `Bearer ${token}`,
+      },
+    });
     return { status: false, data: result.data.data.data };
   } catch (err) {
     console.log(err);
@@ -172,8 +226,14 @@ export async function updateUserDetails(data, id) {
 }
 
 export async function updateUserEmail(emailData, id) {
+  const token = store.getters.getToken;
+
   try {
-    const res = await apiClient.put(`/updateEmail/${id}`, emailData);
+    const res = await apiClient.put(`/updateEmail/${id}`, emailData, {
+      headers: {
+        authorization: `Bearer ${token}`,
+      },
+    });
     return res;
   } catch (err) {
     return { status: false, message: "Something went wrong!" };
@@ -181,8 +241,14 @@ export async function updateUserEmail(emailData, id) {
 }
 
 export async function updateUserPassword(passData, id) {
+  const token = store.getters.getToken;
+
   try {
-    const result = await apiClient.put(`/updatePassword/${id}`, passData);
+    const result = await apiClient.put(`/updatePassword/${id}`, passData, {
+      headers: {
+        authorization: `Bearer ${token}`,
+      },
+    });
     console.log(`Result is ${result}`);
     return true;
   } catch (err) {
@@ -191,8 +257,14 @@ export async function updateUserPassword(passData, id) {
 }
 
 export async function getUserAuth(id) {
+  const token = store.getters.getToken;
+
   try {
-    const result = await apiClient.get(`/getUserAuth/${id}`);
+    const result = await apiClient.get(`/getUserAuth/${id}`, {
+      headers: {
+        authorization: `Bearer ${token}`,
+      },
+    });
     return result.data;
   } catch (err) {
     return false;

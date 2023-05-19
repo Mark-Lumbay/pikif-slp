@@ -62,8 +62,9 @@ async function runCheck() {
       uid: user.claims.user_id,
     };
 
-    console.log(user);
+    const token = user.token;
     store.dispatch("storeUser", userDetails);
+    store.dispatch("storeUserToken", token);
   }
 }
 

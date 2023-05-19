@@ -117,6 +117,10 @@ const store = createStore({
       }
     },
 
+    async storeUserToken(context, token) {
+      context.commit("setUserToken", token);
+    },
+
     async storeUser(context, details) {
       context.commit("setUser", details);
     },

@@ -81,9 +81,6 @@
                 v-model="clientPersonalInfo.clientInfo.address"
                 :disabled="textField"
               />
-              <!-- <p class="text-red-500 text-xs italic">
-              Please fill out this field.
-            </p> -->
             </div>
             <div class="w-full md:w-1/6 px-3 mb-6 md:mb-0">
               <label
@@ -398,10 +395,7 @@
                 id="grid-other"
                 type="text"
                 placeholder="Other options"
-                :disabled="
-                  clientPersonalInfo.clientInfo.condition != 'Others' ||
-                  !editMode
-                "
+                :disabled="clientPersonalInfo.clientInfo.condition !== 'Others'"
                 v-model="clientPersonalInfo.clientInfo.conditionOthers"
               />
             </div>
@@ -462,8 +456,7 @@
                 type="text"
                 placeholder="Other options"
                 :disabled="
-                  clientPersonalInfo.clientInfo.materials.roof != 'Others' ||
-                  editMode
+                  clientPersonalInfo.clientInfo.materials.roof !== 'Others'
                 "
                 v-model="clientPersonalInfo.clientInfo.materials.roofOthers"
               />
@@ -517,8 +510,7 @@
                 type="text"
                 placeholder="Other options"
                 :disabled="
-                  clientPersonalInfo.clientInfo.materials.walls != 'Others' ||
-                  editMode
+                  clientPersonalInfo.clientInfo.materials.walls !== 'Others'
                 "
                 v-model="clientPersonalInfo.clientInfo.materials.wallOthers"
               />
@@ -572,8 +564,7 @@
                 type="text"
                 placeholder="Other options"
                 :disabled="
-                  clientPersonalInfo.clientInfo.materials.floor != 'Others' ||
-                  editMode
+                  clientPersonalInfo.clientInfo.materials.floor !== 'Others'
                 "
                 v-model="clientPersonalInfo.clientInfo.materials.floorOthers"
               />

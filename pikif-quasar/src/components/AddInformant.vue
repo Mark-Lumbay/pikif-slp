@@ -26,9 +26,6 @@
                 v-model="informantPersonalInfo.informantInfo.firstName"
                 :disabled="textField"
               />
-              <!-- <p class="text-red-500 text-xs italic">
-              Please fill out this field.
-            </p> -->
             </div>
             <div class="w-full md:w-1/3 px-3">
               <label
@@ -170,8 +167,7 @@
                 placeholder="Specify job"
                 v-model="informantPersonalInfo.informantInfo.occupationOthers"
                 :disabled="
-                  informantPersonalInfo.informantInfo.occupation != 'Others' ||
-                  !editMode
+                  informantPersonalInfo.informantInfo.occupation !== 'Others'
                 "
               />
             </div>
@@ -605,8 +601,7 @@
                 type="text"
                 placeholder="Other options"
                 :disabled="
-                  informantPersonalInfo.informantInfo.otherInc != 'Others' ||
-                  !editMode
+                  informantPersonalInfo.informantInfo.otherInc !== 'Others'
                 "
                 v-model="informantPersonalInfo.informantInfo.otherIncOthers"
               />

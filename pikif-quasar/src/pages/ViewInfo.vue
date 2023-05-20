@@ -36,7 +36,7 @@
         ></AddFindings>
       </div>
 
-      <div class="flex w-full justify-end space-x-4 mt-4 px-3">
+      <div class="flex w-full justify-end space-x-4 mt-4 px-3" v-if="hasUpdate">
         <button
           class="bg-primaryRed mb-2 w-[12vw] hover:bg-primaryRedHover text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline h-14 transition-all ease-in-out"
           @click.prevent="updateData"
@@ -62,7 +62,7 @@ import AddFindings from "src/components/AddFindings.vue";
 import MessagePage from "src/components/MessagePage.vue";
 
 import { useStore } from "vuex";
-import { ref, reactive } from "vue";
+import { ref, reactive, computed } from "vue";
 import { useRoute } from "vue-router";
 import { updateInfo, addFindings } from "src/services/services";
 
@@ -93,6 +93,13 @@ export default {
       clientFindings: null,
     });
     const id = route.params.id;
+
+    const hasUpdate = computed(() => {
+      if (!data.clientInfo && !data.informantInfo && !data.initialFindings) {
+        return false;
+      }
+      return true;
+    });
 
     // Methods:
 
@@ -137,6 +144,7 @@ export default {
       updateData,
       showMsg,
       message,
+      hasUpdate,
     };
   },
 };

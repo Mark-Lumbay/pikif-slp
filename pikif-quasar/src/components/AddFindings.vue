@@ -108,6 +108,7 @@
         <button
           class="bg-primaryBtn mb-2 w-[12vw] hover:bg-primaryHovBtn text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline h-14 transition-all ease-in-out"
           @click.prevent="setupEditMode"
+          :class="disableClass"
         >
           Edit
         </button>
@@ -205,13 +206,17 @@
       </div>
     </div>
   </div>
+
+  <AlertBox :show-alert="showAlert" @toggle-alert="toggleAlert"></AlertBox>
 </template>
 
 <script>
-import { ref, defineEmits, onMounted } from "vue";
+import { ref, defineEmits, onMounted, computed } from "vue";
 import { useStore } from "vuex";
 import { useRoute } from "vue-router";
 import { getOneStudent } from "../services/services";
+import store from "../store";
+import AlertBox from "src/components/AlertBox.vue";
 
 export default {
   emits: [
@@ -226,8 +231,11 @@ export default {
       required: false,
     },
   },
+  components: {
+    AlertBox,
+  },
   setup(props, { emit }) {
-    const store = useStore();
+    const storeFunc = useStore();
     const route = useRoute();
     const lackingErr = ref(false);
     const readOnly = ref(false);
@@ -236,10 +244,14 @@ export default {
     const updateMode = ref(false);
     const iterateMode = ref(false);
     const addNewFindingsMode = ref(false);
+    const showAlert = ref(false);
+    const authLevel = ref("");
 
     onMounted(async () => {
+      authLevel.value = store.getters.getAuthLevel;
+
       if (props.withProp) {
-        let data = await store.dispatch("getClientInfo", route.params.id);
+        let data = await storeFunc.dispatch("getClientInfo", route.params.id);
 
         if (!data) {
           const data = await getOneStudent(route.params.id);
@@ -258,6 +270,14 @@ export default {
       date: "",
       findings: "",
     });
+
+    const disableClass = computed(() => {
+      return authLevel.value !== "Admin" ? "disabled" : "";
+    });
+
+    const toggleAlert = () => {
+      showAlert.value = !showAlert.value;
+    };
 
     const submitClientFindings = () => {
       if (updateMode.value == true) {
@@ -314,9 +334,13 @@ export default {
     };
 
     const setupEditMode = () => {
-      textField.value = false;
-      editMode.value = true;
-      updateMode.value = true;
+      if (authLevel.value !== "Admin") {
+        toggleAlert();
+      } else {
+        textField.value = false;
+        editMode.value = true;
+        updateMode.value = true;
+      }
     };
 
     const setupCancelEdit = () => {
@@ -350,6 +374,10 @@ export default {
       newClientFindings,
       cancelNewFindings,
       submitNewFindings,
+      toggleAlert,
+      showAlert,
+      AlertBox,
+      disableClass,
     };
   },
 };

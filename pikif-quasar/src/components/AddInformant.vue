@@ -684,6 +684,7 @@
         <button
           class="bg-primaryBtn mb-2 w-[12vw] hover:bg-primaryHovBtn text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline h-14 transition-all ease-in-out"
           @click.prevent="setupEditMode"
+          :class="disableClass"
         >
           Edit
         </button>
@@ -706,6 +707,8 @@
       </div>
     </div>
   </div>
+
+  <AlertBox :show-alert="showAlert" @toggle-alert="toggleAlert"></AlertBox>
 </template>
 
 <script>
@@ -713,6 +716,8 @@ import { ref, defineEmits, computed, onMounted } from "vue";
 import { useStore } from "vuex";
 import { useRoute } from "vue-router";
 import { getOneStudent } from "../services/services";
+import store from "../store";
+import AlertBox from "src/components/AlertBox.vue";
 
 export default {
   emits: ["informantInfoSubmit", "goBack", "informantInfoUpdate"],
@@ -722,15 +727,20 @@ export default {
       required: false,
     },
   },
-
+  components: {
+    AlertBox,
+  },
   setup(props, { emit }) {
-    const store = useStore();
+    const storeFunc = useStore();
     const route = useRoute();
     const probs = [];
+    const authLevel = ref("");
 
     onMounted(async () => {
+      authLevel.value = store.getters.getAuthLevel;
+
       if (props.withProp) {
-        let data = await store.dispatch("getClientInfo", route.params.id);
+        let data = await storeFunc.dispatch("getClientInfo", route.params.id);
 
         if (!data) {
           const data = await getOneStudent(route.params.id);
@@ -794,6 +804,7 @@ export default {
     const textField = ref(false);
     const editMode = ref(false);
     const updateMode = ref(false);
+    const showAlert = ref(false);
 
     const occupation = ref("Laborer");
     const occupationOthers = ref("");
@@ -881,7 +892,15 @@ export default {
       },
     });
 
+    const disableClass = computed(() => {
+      return authLevel.value !== "Admin" ? "disabled" : "";
+    });
+
     // Functions
+    const toggleAlert = () => {
+      showAlert.value = !showAlert.value;
+    };
+
     const clearErr = () => {
       lackingErr.value = false;
     };
@@ -894,9 +913,13 @@ export default {
     };
 
     const setupEditMode = () => {
-      textField.value = false;
-      editMode.value = true;
-      updateMode.value = true;
+      if (authLevel.value !== "Admin") {
+        toggleAlert();
+      } else {
+        textField.value = false;
+        editMode.value = true;
+        updateMode.value = true;
+      }
     };
 
     const setupCancelEdit = () => {
@@ -1005,6 +1028,10 @@ export default {
       updateMode,
       setupEditMode,
       setupCancelEdit,
+      toggleAlert,
+      showAlert,
+      AlertBox,
+      disableClass,
     };
   },
 };

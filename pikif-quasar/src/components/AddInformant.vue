@@ -954,7 +954,7 @@ export default {
           } else {
             continue;
           }
-        } else if (!field == "occupationOthers" || !field == "otherIncOthers") {
+        } else if (field !== "occupationOthers" && field !== "otherIncOthers") {
           if (
             informantPersonalInfo.value.informantInfo[field] === "" ||
             typeof informantPersonalInfo.value.informantInfo[field] === "number"

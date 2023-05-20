@@ -573,7 +573,7 @@
         </form>
       </div>
       <div
-        class="mb-5 w-full bg-red-500 p-2 text-white font-semibold rounded"
+        class="mb-5 bg-red-500 p-2 text-white font-semibold rounded"
         @click.prevent="clearErr"
         v-if="lackingErr"
       >
@@ -765,9 +765,9 @@ export default {
             continue;
           }
         } else if (
-          !field === "materials" ||
-          !field === "conditions" ||
-          !field === "conditionOthers"
+          field !== "materials" &&
+          field !== "conditions" &&
+          field !== "conditionOthers"
         ) {
           if (
             clientPersonalInfo.value.clientInfo[field] === "" ||

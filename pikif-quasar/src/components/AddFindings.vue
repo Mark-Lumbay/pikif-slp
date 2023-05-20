@@ -256,9 +256,11 @@ export default {
         if (!data) {
           const data = await getOneStudent(route.params.id);
           clientFindingsInfo.value = data.initialFindings;
+          originalObj.value.clientFindings = data.initialFindings;
           setupViewOnly();
         } else {
           clientFindingsInfo.value = data.initialFindings;
+          originalObj.value.clientFindings = data.initialFindings;
           setupViewOnly();
         }
       }
@@ -269,6 +271,9 @@ export default {
     const newClientFindings = ref({
       date: "",
       findings: "",
+    });
+    const originalObj = ref({
+      clientFindings: {},
     });
 
     const disableClass = computed(() => {
@@ -281,16 +286,10 @@ export default {
 
     const submitClientFindings = () => {
       if (updateMode.value == true) {
-        // if (
-        //   clientFindingsInfo.value.findings.trim() == "" ||
-        //   clientFindingsInfo.value.date === ""
-        // ) {
-        //   lackingErr.value = true;
-        // } else {
-        // }
-        emit("clientFindingsUpdate", clientFindingsInfo.value);
+        if (originalObj.value.clientFindings !== clientFindingsInfo.value) {
+          emit("clientFindingsUpdate", clientFindingsInfo.value);
+        }
       } else {
-        console.log("TEST");
         if (
           newClientFindings.value.findings.trim() == "" ||
           newClientFindings.value.date === ""

@@ -746,10 +746,13 @@ export default {
           const data = await getOneStudent(route.params.id);
           informantPersonalInfo.value.id = route.params.id;
           informantPersonalInfo.value.informantInfo = data.informantInfo;
+          originalObj.value.informantInfo = data.informantInfo;
           setupViewOnly();
         } else {
           informantPersonalInfo.value.id = route.params.id;
           informantPersonalInfo.value.informantInfo = data.informantInfo;
+          originalObj.value.informantInfo = data.informantInfo;
+
           setupViewOnly();
         }
 
@@ -797,6 +800,10 @@ export default {
             .map((checkbox) => checkbox.text);
         });
       }
+    });
+
+    const originalObj = ref({
+      informantInfo: {},
     });
 
     const lackingErr = ref(false);
@@ -954,11 +961,16 @@ export default {
           } else {
             continue;
           }
-        } else if (field !== "occupationOthers" && field !== "otherIncOthers") {
+        } else if (
+          field !== "occupationOthers" &&
+          field !== "otherIncOthers" &&
+          field !== "probsOthers"
+        ) {
           if (
             informantPersonalInfo.value.informantInfo[field] === "" ||
             typeof informantPersonalInfo.value.informantInfo[field] === "number"
           ) {
+            console.log(field);
             return false;
           }
         }
@@ -985,13 +997,20 @@ export default {
 
       if (validate()) {
         const plainObj = toRawObject(informantPersonalInfo.value.informantInfo);
-        if (updateMode.value == false) {
-          emit("informantInfoSubmit", plainObj);
-        } else {
-          setupViewOnly();
-          console.log(typeof checkBoxes.value);
-          emit("informantInfoUpdate", plainObj);
+        if (
+          originalObj.value.informantInfo !==
+          informantPersonalInfo.value.informantInfo
+        ) {
+          emit(
+            `${
+              updateMode.value === false
+                ? "informantInfoSubmit"
+                : "informantInfoUpdate"
+            }`,
+            plainObj
+          );
         }
+        if (updateMode.value === true) setupViewOnly();
       } else {
         lackingErr.value = true;
       }

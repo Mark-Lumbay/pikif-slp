@@ -653,10 +653,12 @@ export default {
           const data = await getOneStudent(route.params.id);
           clientPersonalInfo.value.id = route.params.id;
           clientPersonalInfo.value.clientInfo = data.clientInfo;
+          originalObj.value.clientInfo = data.clientInfo;
           setupViewOnly();
         } else {
           clientPersonalInfo.value.id = route.params.id;
           clientPersonalInfo.value.clientInfo = data.clientInfo;
+          originalObj.value.clientInfo = data.clientInfo;
           setupViewOnly();
         }
       }
@@ -669,6 +671,9 @@ export default {
     const updateMode = ref(false);
     const showAlert = ref(false);
 
+    const originalObj = ref({
+      clientInfo: {},
+    });
     const clientPersonalInfo = ref({
       clientInfo: {
         active: true,
@@ -798,14 +803,20 @@ export default {
       }
 
       if (validate()) {
-        console.log(clientPersonalInfo.value.clientInfo);
-        if (updateMode.value == false) {
-          emit("clientInfoSubmit", clientPersonalInfo.value.clientInfo);
-        } else {
-          setupViewOnly();
-
-          emit("clientInfoUpdate", clientPersonalInfo.value.clientInfo);
+        if (
+          originalObj.value.clientInfo !== clientPersonalInfo.value.clientInfo
+        ) {
+          emit(
+            `${
+              updateMode.value === false
+                ? "clientInfoSubmit"
+                : "clientInfoUpdate"
+            }`,
+            clientPersonalInfo.value.clientInfo
+          );
         }
+
+        if (updateMode.value === true) setupViewOnly();
       } else {
         lackingErr.value = true;
       }

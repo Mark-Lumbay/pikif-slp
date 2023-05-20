@@ -34,6 +34,18 @@
         <div class="w-[50%] flex justify-end">
           <q-btn-dropdown color="primary" :label="`Filter: ${filterStr}`">
             <q-list>
+              <q-item clickable v-close-popup @click="changeFilter(true)">
+                <q-item-section>
+                  <q-item-label>Active</q-item-label>
+                </q-item-section>
+              </q-item>
+
+              <q-item clickable v-close-popup @click="changeFilter(false)">
+                <q-item-section>
+                  <q-item-label>Inactive</q-item-label>
+                </q-item-section>
+              </q-item>
+
               <q-item
                 clickable
                 v-close-popup
@@ -171,11 +183,11 @@
                 @click.stop="
                   () => {
                     if (authLevel !== 'Read') {
-                      toggleAlert();
-                      return;
-                    } else {
                       props.row.status = !props.row.status;
                       changeStatus(props.key);
+                      return;
+                    } else {
+                      toggleAlert();
                     }
                   }
                 "
@@ -290,7 +302,6 @@ export default {
       rows.value = await getData();
       nameHolder.value = await store.getters.getFirstName;
       authLevel.value = store.getters.getAuthLevel;
-
       filterTable();
     });
 
@@ -308,6 +319,8 @@ export default {
     const search = ref("");
     const selectedRow = ref([]);
     const options = [
+      true,
+      false,
       "Pre-school",
       "Elementary",
       "High School",
@@ -462,7 +475,6 @@ export default {
 
     function viewRow(evt, row) {
       const id = row.id;
-      console.log(id);
       router.push({
         name: "View Student Info",
         params: { id: id },
@@ -481,13 +493,13 @@ export default {
             tempResults.push(row);
           }
         }
+
         filteredArr.value = tempResults;
         return filteredArr;
       } else {
         for (const option of options) {
           if (filterStr.value === "None") {
             filteredArr.value = rows.value;
-            console.log(filteredArr.value);
             return filteredArr.value;
           }
           if (filterStr.value === option) {
@@ -495,7 +507,7 @@ export default {
               (row) =>
                 row.educAttn == filterStr.value ||
                 row.category == filterStr.value ||
-                row.active == filterStr.value
+                row.status == filterStr.value
             );
             return filteredArr.value;
           }

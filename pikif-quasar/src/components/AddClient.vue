@@ -463,7 +463,7 @@
                 placeholder="Other options"
                 :disabled="
                   clientPersonalInfo.clientInfo.materials.roof != 'Others' ||
-                  !editMode
+                  editMode
                 "
                 v-model="clientPersonalInfo.clientInfo.materials.roofOthers"
               />
@@ -518,7 +518,7 @@
                 placeholder="Other options"
                 :disabled="
                   clientPersonalInfo.clientInfo.materials.walls != 'Others' ||
-                  !editMode
+                  editMode
                 "
                 v-model="clientPersonalInfo.clientInfo.materials.wallOthers"
               />

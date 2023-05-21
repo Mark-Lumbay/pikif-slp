@@ -57,7 +57,7 @@
                   <div class="flex flex-row items-center space-x-4">
                     <q-icon
                       name="las la-home"
-                      size="45px"
+                      size="43px"
                       :class="
                         route.name === 'Home' ? 'text-btnGreen' : 'text-white'
                       "
@@ -82,7 +82,7 @@
                   <div class="flex flex-row items-center space-x-4">
                     <q-icon
                       name="las la-user-plus"
-                      size="45px"
+                      size="43px"
                       :class="
                         route.name === 'Add Student'
                           ? 'text-btnGreen'
@@ -115,7 +115,7 @@
                   <div class="flex flex-row items-center space-x-4">
                     <q-icon
                       name="las la-cog"
-                      size="45px"
+                      size="43px"
                       :class="
                         route.name === 'Account Settings'
                           ? 'text-btnGreen'
@@ -135,6 +135,39 @@
                 "
               >
                 Account Settings
+              </q-item-section>
+            </q-item>
+
+            <q-item
+              clickable
+              v-ripple
+              @click="router.push('/account-settings')"
+            >
+              <q-item-section avatar>
+                <div
+                  class="hover:bg-secondaryDarker transition-all ease-in-out cursor-pointer"
+                >
+                  <div class="flex flex-row items-center space-x-4">
+                    <q-icon
+                      name="las la-file-signature"
+                      size="43px"
+                      :class="
+                        route.name === 'Audit Log'
+                          ? 'text-btnGreen'
+                          : 'text-white'
+                      "
+                    ></q-icon>
+                  </div>
+                </div>
+              </q-item-section>
+
+              <q-item-section
+                class="text-lg font-semibold"
+                :class="
+                  route.name === 'Audit Log' ? 'text-btnGreen' : 'text-white'
+                "
+              >
+                Audit Log
               </q-item-section>
             </q-item>
           </q-list>

@@ -79,7 +79,7 @@ class ClientModel {
         materials: Joi.object({
           roof: Joi.string().required(),
           roofOthers: Joi.string().allow(""),
-          walls: Joi.string().required(),
+          wall: Joi.string().required(),
           wallOthers: Joi.string().allow(""),
           floor: Joi.string().required(),
           floorOthers: Joi.string().allow(""),

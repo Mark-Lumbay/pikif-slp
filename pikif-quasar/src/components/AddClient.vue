@@ -473,7 +473,7 @@
                 <select
                   class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                   id="grid-wall"
-                  v-model="clientPersonalInfo.clientInfo.materials.walls"
+                  v-model="clientPersonalInfo.clientInfo.materials.wall"
                   :disabled="textField"
                 >
                   <option value="Nipa">Nipa</option>
@@ -510,7 +510,7 @@
                 type="text"
                 placeholder="Other options"
                 :disabled="
-                  clientPersonalInfo.clientInfo.materials.walls !== 'Others'
+                  clientPersonalInfo.clientInfo.materials.wall !== 'Others'
                 "
                 v-model="clientPersonalInfo.clientInfo.materials.wallOthers"
               />
@@ -696,7 +696,7 @@ export default {
         materials: {
           roof: "Nipa",
           roofOthers: "",
-          walls: "Nipa",
+          wall: "Nipa",
           wallOthers: "",
           floor: "Soil",
           floorOthers: "",
@@ -704,6 +704,9 @@ export default {
         appliances: "",
       },
     });
+
+    const othersFields = ["condition", "materials"];
+    const nestedOb = ["roof", "wall", "floor"];
 
     const disableClass = computed(() => {
       return authLevel.value !== "Admin" ? "disabled" : "";
@@ -786,21 +789,70 @@ export default {
     };
 
     const submitPersonInfo = () => {
-      if (clientPersonalInfo.value.clientInfo.condition !== "Others") {
-        clientPersonalInfo.value.clientInfo.conditionOthers = "";
+      for (const field of othersFields) {
+        if (field !== "materials") {
+          if (clientPersonalInfo.value.clientInfo.condition !== "Others") {
+            clientPersonalInfo.value.clientInfo.conditionOthers = "";
+          } else {
+            if (clientPersonalInfo.value.clientInfo.conditionOthers === "") {
+              lackingErr.value = true;
+              return;
+            }
+          }
+        } else {
+          for (const subField of nestedOb) {
+            const property = `${subField}Others`;
+            if (
+              clientPersonalInfo.value.clientInfo.materials[subField] !==
+              "Others"
+            ) {
+              clientPersonalInfo.value.clientInfo.materials[property] == "";
+            } else {
+              if (
+                clientPersonalInfo.value.clientInfo.materials[property] === ""
+              ) {
+                lackingErr.value = true;
+                return;
+              }
+            }
+          }
+        }
       }
+      // if (clientPersonalInfo.value.clientInfo.condition !== "Others") {
+      //   clientPersonalInfo.value.clientInfo.conditionOthers = "";
+      // } else {
+      //   if (clientPersonalInfo.value.clientInfo.conditionOthers === "") {
+      //     lackingErr.value = true;
+      //     return;
+      //   }
+      // }
 
-      if (clientPersonalInfo.value.clientInfo.materials.roof !== "Others") {
-        clientPersonalInfo.value.clientInfo.materials.roofOthers = "";
-      }
+      // if (clientPersonalInfo.value.clientInfo.materials.roof !== "Others") {
+      //   clientPersonalInfo.value.clientInfo.materials.roofOthers = "";
+      // } else {
+      //   if (clientPersonalInfo.value.clientInfo.materials.roofOthers === "") {
+      //     lackingErr.value = true;
+      //     return;
+      //   }
+      // }
 
-      if (clientPersonalInfo.value.clientInfo.materials.walls !== "Others") {
-        clientPersonalInfo.value.clientInfo.materials.wallOthers = "";
-      }
+      // if (clientPersonalInfo.value.clientInfo.materials.walls !== "Others") {
+      //   clientPersonalInfo.value.clientInfo.materials.wallOthers = "";
+      // } else {
+      //   if (clientPersonalInfo.value.clientInfo.materials.wallOthers === "") {
+      //     lackingErr.value = true;
+      //     return;
+      //   }
+      // }
 
-      if (clientPersonalInfo.value.clientInfo.materials.floor !== "Others") {
-        clientPersonalInfo.value.clientInfo.materials.floorOthers = "";
-      }
+      // if (clientPersonalInfo.value.clientInfo.materials.floor !== "Others") {
+      //   clientPersonalInfo.value.clientInfo.materials.floorOthers = "";
+      // } else {
+      //   if (clientPersonalInfo.value.clientInfo.materials.floorOthers === "") {
+      //     lackingErr.value = true;
+      //     return;
+      //   }
+      // }
 
       if (validate()) {
         if (

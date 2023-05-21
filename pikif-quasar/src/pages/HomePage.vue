@@ -406,10 +406,10 @@ export default {
         sortable: false,
       },
       {
-        name: "walls",
+        name: "wall",
         label: "Wall Material",
         field: (row) =>
-          row.materials.walls === "Others"
+          row.materials.wall === "Others"
             ? row.materials.wallOthers
             : row.materials.walls,
         format: (val) => `${val}`,

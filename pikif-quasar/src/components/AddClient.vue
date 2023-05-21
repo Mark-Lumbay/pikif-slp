@@ -794,7 +794,9 @@ export default {
           if (clientPersonalInfo.value.clientInfo.condition !== "Others") {
             clientPersonalInfo.value.clientInfo.conditionOthers = "";
           } else {
-            if (clientPersonalInfo.value.clientInfo.conditionOthers === "") {
+            if (
+              clientPersonalInfo.value.clientInfo.conditionOthers.trim() === ""
+            ) {
               lackingErr.value = true;
               return;
             }
@@ -809,7 +811,9 @@ export default {
               clientPersonalInfo.value.clientInfo.materials[property] == "";
             } else {
               if (
-                clientPersonalInfo.value.clientInfo.materials[property] === ""
+                clientPersonalInfo.value.clientInfo.materials[
+                  property
+                ].trim() === ""
               ) {
                 lackingErr.value = true;
                 return;

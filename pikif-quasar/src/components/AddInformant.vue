@@ -652,7 +652,7 @@
                 type="text"
                 placeholder="Specify Other Problems:"
                 v-model="informantPersonalInfo.informantInfo.probsOthers"
-                :disabled="!checkBoxes[7].checked || !editMode"
+                :disabled="!checkBoxes[7].checked"
               />
             </div>
           </div>
@@ -844,6 +844,7 @@ export default {
       { text: "Others", checked: false },
     ]);
     const checkBoxesOthers = ref("");
+    const othersFields = ["occupation", "otherInc"];
 
     const informantPersonalInfo = ref({
       informantInfo: {
@@ -852,7 +853,7 @@ export default {
         middleName: "",
         lastName: "",
         status: "Single",
-        age: 0,
+        age: "",
         sex: "Female",
         address: "",
         birthDate: "",
@@ -979,12 +980,18 @@ export default {
     };
 
     const submitInformantInfo = () => {
-      if (informantPersonalInfo.value.informantInfo.occupation !== "Others") {
-        informantPersonalInfo.value.informantInfo.occupationOthers = "";
-      }
-
-      if (informantPersonalInfo.value.informantInfo.otherInc !== "Others") {
-        informantPersonalInfo.value.informantInfo.otherIncOthers = "";
+      for (const field of othersFields) {
+        const property = `${field}Others`;
+        if (informantPersonalInfo.value.informantInfo[field] !== "Others") {
+          informantPersonalInfo.value.informantInfo[property] = "";
+        } else {
+          if (
+            informantPersonalInfo.value.informantInfo[property].trim() === ""
+          ) {
+            lackingErr.value = true;
+            return;
+          }
+        }
       }
 
       const othersCheckbox = checkBoxes.value.find(
@@ -993,7 +1000,30 @@ export default {
 
       if (othersCheckbox && !othersCheckbox.checked) {
         informantPersonalInfo.value.informantInfo.probsOthers = "";
+      } else {
+        if (
+          informantPersonalInfo.value.informantInfo.probsOthers.trim() === ""
+        ) {
+          lackingErr.value = true;
+          return;
+        }
       }
+
+      // if (informantPersonalInfo.value.informantInfo.occupation !== "Others") {
+      //   informantPersonalInfo.value.informantInfo.occupationOthers = "";
+      // }
+
+      // if (informantPersonalInfo.value.informantInfo.otherInc !== "Others") {
+      //   informantPersonalInfo.value.informantInfo.otherIncOthers = "";
+      // }
+
+      // const othersCheckbox = checkBoxes.value.find(
+      //   (checkbox) => checkbox.text === "Others"
+      // );
+
+      // if (othersCheckbox && !othersCheckbox.checked) {
+      //   informantPersonalInfo.value.informantInfo.probsOthers = "";
+      // }
 
       if (validate()) {
         const plainObj = toRawObject(informantPersonalInfo.value.informantInfo);

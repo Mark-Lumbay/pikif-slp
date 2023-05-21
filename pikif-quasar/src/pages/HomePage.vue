@@ -241,7 +241,11 @@
     @export-csv="exportToCSV"
   ></GenerateReport>
 
-  <AlertBox :show-alert="showAlert" @toggle-alert="toggleAlert"></AlertBox>
+  <AlertBox
+    :show-alert="showAlert"
+    @toggle-alert="toggleAlert"
+    :message-obj="textDetails"
+  ></AlertBox>
 </template>
 
 <script>
@@ -277,6 +281,12 @@ export default {
     const store2 = useStore();
     const authLevel = ref("");
     const showAlert = ref(false);
+    const textDetails = ref({
+      type: 0,
+      header: "Notice",
+      bodyText:
+        "You lack the access previliges to perform this action. If you think that this is a mistake, please contact an administrator",
+    });
 
     //MGA MODAL
     const closeModal = () => {
@@ -653,6 +663,7 @@ export default {
       authLevel,
       showAlert,
       toggleAlert,
+      textDetails,
     };
   },
 };

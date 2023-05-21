@@ -708,7 +708,11 @@
     </div>
   </div>
 
-  <AlertBox :show-alert="showAlert" @toggle-alert="toggleAlert"></AlertBox>
+  <AlertBox
+    :show-alert="showAlert"
+    @toggle-alert="toggleAlert"
+    :message-obj="textDetails"
+  ></AlertBox>
 </template>
 
 <script>
@@ -735,6 +739,12 @@ export default {
     const route = useRoute();
     const probs = [];
     const authLevel = ref("");
+    const textDetails = ref({
+      type: 0,
+      header: "Notice",
+      bodyText:
+        "You lack the access previliges to perform this action. If you think that this is a mistake, please contact an administrator",
+    });
 
     onMounted(async () => {
       authLevel.value = store.getters.getAuthLevel;
@@ -1081,6 +1091,7 @@ export default {
       showAlert,
       AlertBox,
       disableClass,
+      textDetails,
     };
   },
 };

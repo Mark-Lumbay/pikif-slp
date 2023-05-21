@@ -152,13 +152,19 @@
       </div>
     </div>
   </div>
+
+  <AlertBox
+    :show-alert="showAlert"
+    @toggle-alert="toggleAlert"
+    :message-obj="textDetails"
+  ></AlertBox>
 </template>
 
 <script>
 import { useRouter } from "vue-router";
 import { ref } from "vue";
 import { useStore } from "vuex";
-import { register, resetPass } from "../services/services";
+import { register } from "../services/services";
 import { auth } from "../firebase.js";
 import { fetchSignInMethodsForEmail } from "@firebase/auth";
 
@@ -179,6 +185,17 @@ export default {
     const err = ref(false);
     const passModal = ref(false);
     const errModals = [fieldsErr, err, passModal];
+    const showAlert = ref(false);
+
+    const textDetails = ref({
+      type: 1,
+      header: "Error",
+      bodyText: "Email is already in use",
+    });
+
+    const toggleAlert = () => {
+      showAlert.value = !showAlert.value;
+    };
 
     const reg = async () => {
       if (!fName.value || !lName.value || !email.value || !password.value) {
@@ -247,6 +264,9 @@ export default {
       resetModal,
       closeResetModal,
       forgetPass,
+      textDetails,
+      showAlert,
+      toggleAlert,
     };
   },
 };

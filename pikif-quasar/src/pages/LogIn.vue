@@ -49,7 +49,9 @@
             </div>
 
             <div class="mb-2 space-y-2 mt-4 w-full text-right">
-              <a href="#" class="text-s underline">Forgot Password?</a>
+              <a class="text-s underline" @click.prevent="showResetModal"
+                >Forgot Password?</a
+              >
             </div>
 
             <div class="mb-2 space-y-2 mt-14">
@@ -67,19 +69,39 @@
                 Sign Up
               </button>
             </div>
+
+            <div
+              class="mb-5 w-full bg-red-500 p-2 text-white font-semibold rounded"
+              v-if="incorrect"
+              @click.prevent="closeModal"
+            >
+              <h3 class="text-sm">
+                Account with the same email already exists
+              </h3>
+            </div>
           </form>
         </div>
       </div>
     </div>
   </div>
+
+  <ForgetPassword
+    :open-modal="resetModal"
+    @close-modal="closeResetModal"
+    @reset-pass="forgetPass"
+  ></ForgetPassword>
 </template>
 
 <script>
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 import { useStore } from "vuex";
+import { resetPass } from "../services/services";
+import { auth } from "../firebase.js";
+import ForgetPassword from "src/components/ForgetPassword.vue";
 
 export default {
+  components: { ForgetPassword },
   setup() {
     const email = ref("");
     const password = ref("");
@@ -87,7 +109,10 @@ export default {
     const router = useRouter();
 
     const incorrect = ref(false);
+    const resetModal = ref(false);
 
+    const closeResetModal = () => (resetModal.value = false);
+    const showResetModal = () => (resetModal.value = true);
     const loginUser = async () => {
       try {
         await store.dispatch("login", {
@@ -104,7 +129,26 @@ export default {
       incorrect.value = false;
     };
 
-    return { loginUser, email, password, router, incorrect, closeModal };
+    const forgetPass = async (email) => {
+      try {
+        await resetPass(email);
+      } catch (err) {
+        console.log(err.message);
+      }
+    };
+
+    return {
+      loginUser,
+      email,
+      password,
+      router,
+      incorrect,
+      closeModal,
+      forgetPass,
+      closeResetModal,
+      showResetModal,
+      resetModal,
+    };
   },
 };
 </script>

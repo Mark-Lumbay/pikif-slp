@@ -175,11 +175,9 @@ export default {
 
     const passErr = ref(false);
     const confirmModal = ref(false);
-
     const fieldsErr = ref(false);
     const err = ref(false);
     const passModal = ref(false);
-
     const errModals = [fieldsErr, err, passModal];
 
     const reg = async () => {
@@ -187,30 +185,26 @@ export default {
         fieldsErr.value = true;
         return;
       }
-
       if (password.value != confirmPass.value) {
         err.value = true;
         return;
       }
-
       passCheck(password.value);
       if (passErr.value) {
         passModal.value = true;
         return;
       }
-
       const emailCheck = await fetchSignInMethodsForEmail(auth, email.value);
       if (emailCheck.length) {
         console.log("Email exists");
         return;
       }
-
       const creds = {
         email: email.value,
         firstName: fName.value,
         lastName: lName.value,
         password: password.value,
-        authorization: "Read",
+        authorization: "Partial-Update",
       };
 
       const regReq = await register(creds);
@@ -221,28 +215,21 @@ export default {
         console.log(`Internal Server Error ${regReq.message}`);
       }
     };
-
     const clearErr = () => {
       for (const modal of errModals) {
         if (modal.value) modal.value = false;
       }
     };
-
     const passCheck = (pass) => {
       const passwordRegex =
         /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d!@#$%^&*_]{8,}$/;
       const result = passwordRegex.test(pass);
-
       if (!result) {
         passErr.value = true;
       } else {
         passErr.value = false;
       }
     };
-
-    const forgetPass = (() => {
-      
-    })
 
     return {
       reg,
@@ -257,6 +244,9 @@ export default {
       passModal,
       router,
       confirmModal,
+      resetModal,
+      closeResetModal,
+      forgetPass,
     };
   },
 };

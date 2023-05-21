@@ -15,7 +15,11 @@ app.use(json());
 app.use(cors());
 app.use(async (req, res, next) => {
   const header = req.headers.authorization;
-  if (req.path === "/login" || req.path === "/registration") {
+  console.log(req.path);
+  if (
+    req.path === "/island-kids/login" ||
+    req.path === "/island-kids/register"
+  ) {
     return next();
   }
   if (header) {

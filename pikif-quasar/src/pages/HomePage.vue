@@ -182,7 +182,7 @@
                 "
                 @click.stop="
                   () => {
-                    if (authLevel !== 'Read') {
+                    if (authLevel !== 'Partial-Update') {
                       props.row.status = !props.row.status;
                       changeStatus(props.key);
                       return;

@@ -37,8 +37,6 @@ export async function toggleActive(id) {
 }
 
 export async function register(data) {
-  const token = store.getters.getToken;
-
   try {
     await apiClient.post("/register", data);
     return { success: true };

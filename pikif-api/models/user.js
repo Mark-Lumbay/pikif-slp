@@ -22,6 +22,7 @@ class userModel {
       console.log(validate.error.details[0].message);
       return false;
     }
+
     const { email, password, firstName, lastName, authorization } = credentials;
     try {
       const user = await auth().createUser({
@@ -40,8 +41,8 @@ class userModel {
         lastName: lastName,
       });
       return true;
-    } catch {
-      return false;
+    } catch (err) {
+      return { msg: err.message };
     }
   }
 

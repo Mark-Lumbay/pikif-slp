@@ -57,9 +57,9 @@ export default {
     );
 
     onMounted(() => {
-      textDetails.value.type = messageObj.type;
-      textDetails.value.header = messageObj.header;
-      textDetails.value.bodyText = messageObj.bodyText;
+      textDetails.value.type = props.messageObj.type;
+      textDetails.value.header = props.messageObj.header;
+      textDetails.value.bodyText = props.messageObj.bodyText;
       alertStyle.value =
         textDetails.value.type == 0 ? "bg-primaryYellow" : "bg-primaryRed";
     });

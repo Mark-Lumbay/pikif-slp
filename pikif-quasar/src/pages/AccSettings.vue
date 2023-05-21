@@ -226,7 +226,6 @@ export default {
 
     onMounted(async () => {
       const basicDetails = await store.getters.getBasicDetails;
-      console.log(await store.getters.getState);
 
       tempFName.value = basicDetails.firstName;
       tempLName.value = basicDetails.lastName;

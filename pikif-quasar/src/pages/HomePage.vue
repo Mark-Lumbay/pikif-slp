@@ -411,7 +411,7 @@ export default {
         field: (row) =>
           row.materials.wall === "Others"
             ? row.materials.wallOthers
-            : row.materials.walls,
+            : row.materials.wall,
         format: (val) => `${val}`,
         sortable: false,
       },

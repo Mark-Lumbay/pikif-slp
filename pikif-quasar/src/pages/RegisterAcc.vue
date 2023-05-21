@@ -158,7 +158,7 @@
 import { useRouter } from "vue-router";
 import { ref } from "vue";
 import { useStore } from "vuex";
-import { register } from "../services/services";
+import { register, resetPass } from "../services/services";
 import { auth } from "../firebase.js";
 import { fetchSignInMethodsForEmail } from "@firebase/auth";
 
@@ -239,6 +239,10 @@ export default {
         passErr.value = false;
       }
     };
+
+    const forgetPass = (() => {
+      
+    })
 
     return {
       reg,

@@ -1,7 +1,8 @@
 import axios from "axios";
 import { useStore } from "vuex";
 import store from "../store";
-
+import { auth } from "../firebase.js";
+import { sendPasswordResetEmail } from "firebase/auth";
 const apiClient = axios.create({
   baseURL: "http://localhost:8080/island-kids", // Replace with your API endpoint
 });
@@ -268,5 +269,13 @@ export async function getUserAuth(id) {
     return result.data;
   } catch (err) {
     return false;
+  }
+}
+
+export async function resetPass(email) {
+  try {
+    await sendPasswordResetEmail(auth, email);
+  } catch (err) {
+    console.log(err.message);
   }
 }

@@ -178,8 +178,6 @@ class userModel {
       const accRef = firestore().collection("users").doc(id);
       accRef.set(update, { merge: true });
 
-      const action = `User ${accInfo.firstName} ${accInfo.lastName} Updated role of data with id of ${accRef.id}`;
-      await ClientModel.auditAction(accInfo, action);
       return { success: true };
     } catch (err) {
       return { success: false, message: err };

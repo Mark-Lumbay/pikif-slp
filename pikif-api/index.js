@@ -5,17 +5,19 @@ import cors from "cors";
 import { port } from "./config.js";
 import "./db.js";
 import pkg from "firebase-admin";
+import ClientModel from "./models/clientInfo.js";
+
 const { firestore, auth } = pkg;
 
 import path from "./routes/route.js";
 
 const app = express();
+const methods = ["GET", "PATCH", "PUT", "POST"];
 
 app.use(json());
 app.use(cors());
 app.use(async (req, res, next) => {
   const header = req.headers.authorization;
-  console.log(req.path);
   if (
     req.path === "/island-kids/login" ||
     req.path === "/island-kids/register"
@@ -25,8 +27,22 @@ app.use(async (req, res, next) => {
   if (header) {
     try {
       const token = header.split("Bearer ")[1];
-
       const result = await auth().verifyIdToken(token);
+      const uid = result.uid;
+      const user = await auth().getUser(uid);
+      const action = `${user.customClaims.firstName} ${user.customClaims.lastName} performed the operaton ${req.method} on ${req.path}`;
+      const name = `${user.customClaims.firstName} ${user.customClaims.lastName}`;
+      console.log(name);
+
+      const accInfo = {
+        uid: uid,
+        email: user.email,
+        name: name,
+        timestamp: firestore.FieldValue.serverTimestamp(),
+      };
+
+      await ClientModel.auditAction(accInfo, action);
+
       req.isAuthenticated = true;
       req.token = result;
 

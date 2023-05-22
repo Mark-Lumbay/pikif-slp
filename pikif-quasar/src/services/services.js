@@ -47,10 +47,11 @@ export async function register(data) {
 
 export async function loadDashboard() {
   const token = store.getters.getToken;
+
   const store2 = useStore();
 
   try {
-    const result = await apiClient.get("/loadDashboard", {
+    const result = await apiClient.get(`/loadDashboard`, {
       headers: {
         authorization: `Bearer ${token}`,
       },

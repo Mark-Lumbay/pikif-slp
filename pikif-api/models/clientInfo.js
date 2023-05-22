@@ -7,7 +7,7 @@ class ClientModel {
     const auditReport = {
       uid: userDetails.uid,
       email: userDetails.email,
-      name: `${userDetails.firstName} ${userDetails.lastName}`,
+      name: userDetails.name,
       action: action,
       timestamp: firestore.FieldValue.serverTimestamp(),
     };
@@ -22,8 +22,6 @@ class ClientModel {
 
   async addClientInfo(collectionName, data, userData) {
     const result = await firestore().collection(collectionName).add(data);
-    const action = `User ${userData.firstName} ${userData.lastName} with id of ${userData.uid} Added data with id of ${result.id}`;
-    this.auditAction(userData, action);
     return result;
   }
 
@@ -198,9 +196,6 @@ class ClientModel {
           informantInfo,
           initialFindings,
         });
-
-        const action = `User ${userInfo.firstName} ${userInfo.lastName} with id of ${userInfo.uid} Updated data with id of ${id}`;
-        this.auditAction(userInfo, action);
       }
 
       return { success: true };
@@ -229,6 +224,7 @@ class ClientModel {
           // educAttn: data.clientInfo.educAttn,
         });
       });
+
       return { status: true, data: documents };
     } catch (error) {
       return { status: false, message: "Internal Server Error" };
@@ -249,8 +245,6 @@ class ClientModel {
       await docRef.update({
         initialFindings: updatedFindings,
       });
-      const action = `User ${userData.firstName} ${userData.lastName} with id of ${userData.uid} Added findings to document with id of ${id}`;
-      this.auditAction(userData, action);
 
       return { success: true, message: "Data Added" };
     } catch (err) {
@@ -290,8 +284,6 @@ class ClientModel {
       updatePayload.clientInfo.active = !updatePayload.clientInfo.active;
 
       const updateReq = await docRef.set(updatePayload);
-      const action = `User ${userData.firstName} ${userData.lastName} with id of ${userData.uid} Modified active status of ${id}`;
-      await this.auditAction(userData, action);
       return updateReq;
     } catch (error) {
       console.error(error);

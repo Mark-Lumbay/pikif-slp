@@ -255,4 +255,13 @@ router.get("/loadAuditLog", async (req, res) => {
     res.status(500).send(err);
   }
 });
+
+router.get("/loadAccessLvl", async (req, res) => {
+  try {
+    const result = await userModel.getAccessLvl();
+    res.status(200).send(result.data);
+  } catch (err) {
+    res.status(500).send(err);
+  }
+});
 export default router;

@@ -19,7 +19,8 @@ app.use(async (req, res, next) => {
   if (
     req.path === "/island-kids/login" ||
     req.path === "/island-kids/register" ||
-    req.path === "/island-kids/loadAuditLog"
+    req.path === "/island-kids/loadAuditLog" ||
+    req.path === "/island-kids/loadAccessLvl"
   ) {
     return next();
   }

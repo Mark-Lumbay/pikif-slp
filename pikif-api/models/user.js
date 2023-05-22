@@ -25,6 +25,25 @@ class userModel {
     }
   }
 
+  async getAccessLvl() {
+    try {
+      const docRef = firestore().collection("users");
+      const snapshot = await docRef.get();
+      const users = [];
+
+      snapshot.forEach((user) => {
+        const userDetail = user.data();
+
+        users.push({
+          id: user.id,
+          ...userDetail,
+        });
+      });
+
+      return { status: true, data: users };
+    } catch {}
+  }
+
   async register(credentials) {
     const userSchema = Joi.object({
       email: Joi.string().required(),

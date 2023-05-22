@@ -74,7 +74,19 @@
               </q-item-section>
             </q-item>
 
-            <q-item clickable v-ripple @click="router.push('/addStudent')">
+            <q-item
+              clickable
+              v-ripple
+              @click="
+                () => {
+                  if (!showAddStud) {
+                    toggleAlert();
+                  } else {
+                    router.push('/addStudent');
+                  }
+                }
+              "
+            >
               <q-item-section avatar>
                 <div
                   class="hover:bg-secondaryDarker transition-all ease-in-out cursor-pointer"
@@ -167,7 +179,19 @@
               </q-item-section>
             </q-item>
 
-            <q-item clickable v-ripple @click="router.push('/admin-dashboard')">
+            <q-item
+              clickable
+              v-ripple
+              @click="
+                () => {
+                  if (!showAdmin) {
+                    toggleAlert();
+                  } else {
+                    router.push('/admin-dashboard');
+                  }
+                }
+              "
+            >
               <q-item-section avatar>
                 <div
                   class="hover:bg-secondaryDarker transition-all ease-in-out cursor-pointer"
@@ -209,112 +233,11 @@
     </q-layout>
   </div>
 
-  <!-- old code here -->
-  <!-- <q-layout view="hHh lpR fFf" class="w-[100vw] h-full bg-slate-100">
-    <q-header class="bg-navBar text-white flex w-full h-[7%]">
-      <q-toolbar class="flex items-center justify-center">
-        <q-btn dense flat round icon="menu" @click="drawerState" />
-
-        <q-toolbar-title class="text-white">
-          {{ route.name }}
-        </q-toolbar-title>
-        <button class="inline-flex">
-          <q-menu>
-            <q-list style="min-width: 100px">
-              <q-item clickable v-close-popup>
-                <q-item-section @click="settingsPage">Settings</q-item-section>
-              </q-item>
-              <q-item clickable v-close-popup>
-                <q-item-section @click="logout">Log Out</q-item-section>
-              </q-item>
-              <q-separator />
-            </q-list>
-          </q-menu>
-          {{ userName }}
-          <svg
-            class="w-5 h-5 ml-1"
-            aria-hidden="true"
-            fill="currentColor"
-            viewBox="0 0 20 20"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              fill-rule="evenodd"
-              d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-              clip-rule="evenodd"
-            ></path>
-          </svg>
-        </button>
-      </q-toolbar>
-    </q-header>
-
-    <div class="flex flex-row w-full h-full">
-      <div class="flex-row mt-16" :class="classWidth">
-        <div class="h-full bg-navBar" :class="classWidth">
-          <a @click="router.push('/')">
-            <div
-              class="hover:bg-secondaryDarker p-4 px-6 transition-all ease-in-out cursor-pointer"
-            >
-              <div class="flex flex-row items-center space-x-4">
-                <q-icon
-                  name="las la-home"
-                  size="32px"
-                  class="text-white"
-                ></q-icon>
-                <span
-                  class="text-lg font-semibold text-white"
-                  v-if="leftDrawerOpen"
-                  >Home</span
-                >
-              </div>
-            </div>
-          </a>
-
-          <a @click="router.push('/addStudent')">
-            <div
-              class="hover:bg-secondaryDarker p-4 px-6 transition-all ease-in-out cursor-pointer"
-            >
-              <div class="flex flex-row items-center space-x-4">
-                <q-icon
-                  name="las la-user-plus"
-                  size="32px"
-                  class="text-white"
-                ></q-icon>
-                <span
-                  class="text-lg font-semibold text-white"
-                  v-if="leftDrawerOpen"
-                  >Add Student</span
-                >
-              </div>
-            </div>
-          </a>
-
-          <a @click="router.push('/account-settings')">
-            <div
-              class="hover:bg-secondaryDarker p-4 px-6 transition-all ease-in-out cursor-pointer"
-            >
-              <div class="flex flex-row items-center space-x-4">
-                <q-icon
-                  name="las la-user-cog"
-                  size="32px"
-                  class="text-white"
-                ></q-icon>
-                <span
-                  class="text-lg font-semibold text-white"
-                  v-if="leftDrawerOpen"
-                  >Account Settings</span
-                >
-              </div>
-            </div>
-          </a>
-        </div>
-      </div>
-
-      <div class="flex flex-col mt-16 items-center" :class="contentWidth">
-        <router-view :userName="userName"></router-view>
-      </div>
-    </div>
-  </q-layout> -->
+  <AlertBox
+    :show-alert="showAlert"
+    :message-obj="textDetails"
+    @toggle-alert="toggleAlert"
+  ></AlertBox>
 </template>
 
 <script>
@@ -322,13 +245,26 @@ import { ref, computed, onMounted, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { useStore } from "vuex";
 
+import AlertBox from "src/components/AlertBox.vue";
+
 import store from "../store";
 
 export default {
+  components: {
+    AlertBox,
+  },
   setup() {
     const width = ref("w-[17vw]");
     const contentWidth = ref("w-[83vw]");
     const leftDrawerOpen = ref(true);
+    const showAlert = ref(false);
+
+    const textDetails = ref({
+      type: 0,
+      header: "Notice",
+      bodyText:
+        "You lack the access previliges to perform this action. If you think that this is a mistake, please contact an administrator",
+    });
 
     const route = useRoute();
     const router = useRouter();
@@ -337,8 +273,11 @@ export default {
     const name = ref("");
     const nameHolder = ref("");
 
+    const authLevel = ref("");
+
     onMounted(async () => {
       nameHolder.value = await store.getters.getFirstName;
+      authLevel.value = await store.getters.getAuthLevel;
     });
 
     watch(
@@ -347,6 +286,10 @@ export default {
         name.value = username;
       }
     );
+
+    const toggleAlert = () => {
+      showAlert.value = !showAlert.value;
+    };
 
     const drawerState = () => {
       leftDrawerOpen.value = !leftDrawerOpen.value;
@@ -367,6 +310,14 @@ export default {
         console.log(err);
       }
     };
+
+    const showAdmin = computed(() => {
+      return authLevel.value === "Admin" ? true : false;
+    });
+
+    const showAddStud = computed(() => {
+      return authLevel.value === "Partial-Update" ? false : true;
+    });
 
     const settingsPage = async () => {
       router.push("/account-settings");
@@ -390,7 +341,13 @@ export default {
       router,
       logout,
       settingsPage,
+      showAdmin,
+      showAlert,
+      textDetails,
       drawer: ref(false),
+      toggleAlert,
+      authLevel,
+      showAddStud,
     };
   },
 };

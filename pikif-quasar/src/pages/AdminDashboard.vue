@@ -16,11 +16,42 @@
 
 <script>
 import { ref, onMounted } from "vue";
+import { getAccessLvl } from "../services/services";
 
 export default {
   setup() {
     const rows = ref([]);
-    const columns = [];
+    const columns = [
+      {
+        name: "id",
+        label: "User ID",
+        field: (row) => row.id,
+        format: (val) => `${val}`,
+        align: "left",
+        sortable: false,
+      },
+      {
+        name: "name",
+        label: "Name",
+        field: (row) => `${row.firstName} ${row.lastName}`,
+        format: (val) => `${val}`,
+        align: "left",
+        sortable: false,
+      },
+      {
+        name: "role",
+        label: "Role",
+        field: (row) => row.role,
+        format: (val) => `${val}`,
+        align: "left",
+        sortable: false,
+      },
+    ];
+
+    onMounted(async () => {
+      rows.value = await getAccessLvl();
+      console.log(rows.value);
+    });
 
     return {
       rows,

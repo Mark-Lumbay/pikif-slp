@@ -289,6 +289,20 @@ export async function getAudit() {
 
     return data.data;
   } catch (err) {
-    console.log(err);
+    return { status: false, message: err };
+  }
+}
+
+export async function getAccessLvl() {
+  const token = store.getters.getToken;
+  try {
+    const levels = await apiClient.get("/loadAccessLvl", {
+      headers: {
+        authorization: `Bearer ${token}`,
+      },
+    });
+    return levels.data;
+  } catch (err) {
+    return { status: false, message: err };
   }
 }

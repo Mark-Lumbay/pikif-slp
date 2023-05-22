@@ -24,7 +24,6 @@ export default {
 
     onMounted(async () => {
       rows.value = await getAudit();
-      console.log(rows.value);
     });
 
     const columns = [

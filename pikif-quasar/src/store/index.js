@@ -19,6 +19,7 @@ const store = createStore({
     email: null,
     uid: null,
     isActive: null,
+    authError: false,
     studentData: [],
     indivStudData: [],
   },
@@ -67,6 +68,10 @@ const store = createStore({
       const info = data.find((item) => item.id === id);
       return info;
     },
+
+    getAuthErr: (state) => {
+      return state.authError;
+    },
   },
 
   mutations: {
@@ -102,6 +107,10 @@ const store = createStore({
 
     setAuth(state, authLevel) {
       state.auth = authLevel;
+    },
+
+    setAuthErr(state) {
+      state.authError = true;
     },
 
     removeUserToken(state) {
@@ -142,6 +151,10 @@ const store = createStore({
 
     async storeUser(context, details) {
       context.commit("setUser", details);
+    },
+
+    setAuthErr(context) {
+      context.commit("setAuthErr");
     },
 
     storeData(context, data) {

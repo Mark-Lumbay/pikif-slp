@@ -93,12 +93,13 @@
 </template>
 
 <script>
-import { ref } from "vue";
+import { ref, onMounted, watch } from "vue";
 import { useRouter } from "vue-router";
 import { useStore } from "vuex";
 import { resetPass } from "../services/services";
 import { auth } from "../firebase.js";
 import ForgetPassword from "src/components/ForgetPassword.vue";
+import store from "../store/index";
 
 export default {
   components: { ForgetPassword },
@@ -110,6 +111,19 @@ export default {
 
     const incorrect = ref(false);
     const resetModal = ref(false);
+    const authErr = ref(false);
+
+    onMounted(() => {
+      authErr.value = store.getters.getAuthErr;
+      console.log(authErr.value);
+    });
+
+    watch(
+      () => authErr.value,
+      (auth) => {
+        console.log(auth);
+      }
+    );
 
     const closeResetModal = () => (resetModal.value = false);
     const showResetModal = () => (resetModal.value = true);

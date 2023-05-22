@@ -16,6 +16,7 @@ apiClient.interceptors.response.use(
   },
   (err) => {
     if (err.response.status === 401) {
+      console.log("test");
       router.push("/login");
     }
   }

@@ -268,8 +268,9 @@ router.get("/loadAccessLvl", async (req, res) => {
 router.patch("/updateUserRole/:id", async (req, res) => {
   const id = req.params.id;
   const newRole = req.body.newRole;
+  const accInfo = req.body.accInfo;
   try {
-    const result = await userModel.updateRole(newRole, id);
+    const result = await userModel.updateRole(newRole, id, accInfo);
     res.status(200).send(result.data);
   } catch (err) {
     res.status(500).send(err);

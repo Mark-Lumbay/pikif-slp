@@ -3,6 +3,7 @@ import pkg from "firebase-admin";
 const { firestore, auth } = pkg;
 import { auth2 } from "../firebase.js";
 import { signInWithEmailAndPassword } from "firebase/auth";
+import ClientModel from "../models/clientInfo.js";
 
 class userModel {
   async getAuditLog() {
@@ -168,7 +169,7 @@ class userModel {
     }
   }
 
-  async updateRole(newRole, id) {
+  async updateRole(newRole, id, accInfo) {
     console.log(id);
     const update = {
       role: newRole,
@@ -176,6 +177,9 @@ class userModel {
     try {
       const accRef = firestore().collection("users").doc(id);
       accRef.set(update, { merge: true });
+
+      const action = `User ${accInfo.firstName} ${accInfo.lastName} Updated role of data with id of ${accRef.id}`;
+      await ClientModel.auditAction(accInfo, action);
       return { success: true };
     } catch (err) {
       return { success: false, message: err };

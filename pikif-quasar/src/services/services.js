@@ -309,16 +309,18 @@ export async function getAccessLvl() {
 
 export async function updateRole(newRole, id) {
   const token = store.getters.getToken;
+  const accInfo = store.getters.getBasicDetails;
+
+  const payload = {
+    accInfo,
+    newRole: newRole,
+  };
   try {
-    await apiClient.patch(
-      `/updateUserRole/${id}`,
-      { newRole: newRole },
-      {
-        headers: {
-          authorization: `Bearer ${token}`,
-        },
-      }
-    );
+    await apiClient.patch(`/updateUserRole/${id}`, payload, {
+      headers: {
+        authorization: `Bearer ${token}`,
+      },
+    });
   } catch (err) {
     return { status: false, message: err };
   }

@@ -55,7 +55,7 @@ class userModel {
       firstName: Joi.string().required(),
       lastName: Joi.string().required(),
       password: Joi.string().required(),
-      authorization: Joi.string().required(),
+      role: Joi.string().required(),
     });
 
     const validate = userSchema.validate(credentials, {
@@ -67,7 +67,7 @@ class userModel {
       return false;
     }
 
-    const { email, password, firstName, lastName, authorization } = credentials;
+    const { email, password, firstName, lastName, role } = credentials;
     try {
       const user = await auth().createUser({
         email,
@@ -75,10 +75,23 @@ class userModel {
       });
 
       const uid = user.uid;
-      await firestore()
-        .collection("users")
-        .doc(uid)
-        .set({ firstName: firstName, lastName: lastName, auth: authorization });
+      let authorization = "";
+
+      if (role === "Administrator") {
+        authorization = "Admin";
+      }
+      if (role === "Social Development Worker") {
+        authorization = "Full-Update";
+      }
+      if (role === "Teacher") {
+        authorization = "Partial-Update";
+      }
+      await firestore().collection("users").doc(uid).set({
+        firstName: firstName,
+        lastName: lastName,
+        auth: authorization,
+        role: role,
+      });
 
       await auth().setCustomUserClaims(uid, {
         firstName: firstName,
@@ -171,8 +184,21 @@ class userModel {
 
   async updateRole(newRole, id, accInfo) {
     console.log(id);
+    let authorization = "";
+
+    if (newRole === "Administrator") {
+      authorization = "Admin";
+    }
+    if (newRole === "Social Development Worker") {
+      authorization = "Full-Update";
+    }
+    if (newRole === "Teacher") {
+      authorization = "Partial-Update";
+    }
+
     const update = {
       role: newRole,
+      auth: authorization,
     };
     try {
       const accRef = firestore().collection("users").doc(id);

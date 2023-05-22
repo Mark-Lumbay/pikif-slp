@@ -221,7 +221,7 @@ export default {
         firstName: fName.value,
         lastName: lName.value,
         password: password.value,
-        authorization: "Partial-Update",
+        role: "Teacher",
       };
 
       const regReq = await register(creds);

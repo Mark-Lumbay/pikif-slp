@@ -166,6 +166,37 @@
                 Audit Log
               </q-item-section>
             </q-item>
+
+            <q-item clickable v-ripple @click="router.push('/admin-dashboard')">
+              <q-item-section avatar>
+                <div
+                  class="hover:bg-secondaryDarker transition-all ease-in-out cursor-pointer"
+                >
+                  <div class="flex flex-row items-center space-x-4">
+                    <q-icon
+                      name="las la-tools"
+                      size="43px"
+                      :class="
+                        route.name === 'Admin Dashboard'
+                          ? 'text-btnGreen'
+                          : 'text-white'
+                      "
+                    ></q-icon>
+                  </div>
+                </div>
+              </q-item-section>
+
+              <q-item-section
+                class="text-lg font-semibold"
+                :class="
+                  route.name === 'Admin Dashboard'
+                    ? 'text-btnGreen'
+                    : 'text-white'
+                "
+              >
+                Admin Dashboard
+              </q-item-section>
+            </q-item>
           </q-list>
         </q-scroll-area>
       </q-drawer>

@@ -75,7 +75,7 @@ export default {
         sortBy: "name",
         descending: false,
         page: 1,
-        rowsPerPage: 5,
+        rowsPerPage: 10,
       },
       columns,
       rows,

@@ -91,6 +91,22 @@ const routes = [
   },
 
   {
+    path: "/admin-dashboard",
+    meta: {
+      requiresAuth: true,
+    },
+
+    component: () => import("layouts/NavBar.vue"),
+    children: [
+      {
+        path: "/admin-dashboard",
+        name: "Admin Dashboard",
+        component: () => import("pages/AdminDashboard.vue"),
+      },
+    ],
+  },
+
+  {
     path: "/login",
     children: [{ path: "", component: () => import("pages/LogIn.vue") }],
   },

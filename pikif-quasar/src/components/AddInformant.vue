@@ -911,7 +911,7 @@ export default {
     });
 
     const disableClass = computed(() => {
-      return authLevel.value !== "Admin" ? "disabled" : "";
+      return authLevel.value === "Partial-Update" ? "disabled" : "";
     });
 
     // Functions
@@ -931,7 +931,7 @@ export default {
     };
 
     const setupEditMode = () => {
-      if (authLevel.value !== "Admin") {
+      if (authLevel.value !== "Admin" && authLevel.value !== "Full-Update") {
         toggleAlert();
       } else {
         textField.value = false;

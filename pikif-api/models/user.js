@@ -5,6 +5,26 @@ import { auth2 } from "../firebase.js";
 import { signInWithEmailAndPassword } from "firebase/auth";
 
 class userModel {
+  async getAuditLog() {
+    try {
+      const docRef = firestore().collection("auditLog");
+      const snapshot = await docRef.get();
+      const logs = [];
+
+      snapshot.forEach((log) => {
+        const logEntry = log.data();
+
+        logs.push({
+          ...logEntry,
+        });
+      });
+
+      return { status: true, data: logs };
+    } catch (err) {
+      return { status: false, message: `Server Error: ${err}` };
+    }
+  }
+
   async register(credentials) {
     const userSchema = Joi.object({
       email: Joi.string().required(),

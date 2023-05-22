@@ -246,4 +246,13 @@ router.get("/getUserAuth/:id", async (req, res) => {
     return res.status(500).send({ success: false, message: err });
   }
 });
+
+router.get("/loadAuditLog", async (req, res) => {
+  try {
+    const result = await userModel.getAuditLog();
+    res.status(200).send(result.data);
+  } catch (err) {
+    res.status(500).send(err);
+  }
+});
 export default router;

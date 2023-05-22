@@ -167,6 +167,20 @@ class userModel {
       return { success: false, message: err };
     }
   }
+
+  async updateRole(newRole, id) {
+    console.log(id);
+    const update = {
+      role: newRole,
+    };
+    try {
+      const accRef = firestore().collection("users").doc(id);
+      accRef.set(update, { merge: true });
+      return { success: true };
+    } catch (err) {
+      return { success: false, message: err };
+    }
+  }
 }
 
 export default new userModel();

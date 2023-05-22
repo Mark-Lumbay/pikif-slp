@@ -27,7 +27,7 @@
 
 <script>
 import { ref, onMounted } from "vue";
-import { getAccessLvl } from "../services/services";
+import { getAccessLvl, updateRole } from "../services/services";
 
 export default {
   setup() {
@@ -66,8 +66,8 @@ export default {
       },
     ];
 
-    const changeRole = (newRole, id) => {
-      console.log(newRole, id);
+    const changeRole = async (newRole, id) => {
+      await updateRole(newRole, id);
     };
 
     onMounted(async () => {

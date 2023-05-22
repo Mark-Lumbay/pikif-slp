@@ -306,3 +306,20 @@ export async function getAccessLvl() {
     return { status: false, message: err };
   }
 }
+
+export async function updateRole(newRole, id) {
+  const token = store.getters.getToken;
+  try {
+    await apiClient.patch(
+      `/updateUserRole/${id}`,
+      { newRole: newRole },
+      {
+        headers: {
+          authorization: `Bearer ${token}`,
+        },
+      }
+    );
+  } catch (err) {
+    return { status: false, message: err };
+  }
+}

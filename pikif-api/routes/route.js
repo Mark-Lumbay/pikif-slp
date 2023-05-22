@@ -264,4 +264,15 @@ router.get("/loadAccessLvl", async (req, res) => {
     res.status(500).send(err);
   }
 });
+
+router.patch("/updateUserRole/:id", async (req, res) => {
+  const id = req.params.id;
+  const newRole = req.body.newRole;
+  try {
+    const result = await userModel.updateRole(newRole, id);
+    res.status(200).send(result.data);
+  } catch (err) {
+    res.status(500).send(err);
+  }
+});
 export default router;

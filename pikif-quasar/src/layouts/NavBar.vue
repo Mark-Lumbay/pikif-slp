@@ -138,11 +138,7 @@
               </q-item-section>
             </q-item>
 
-            <q-item
-              clickable
-              v-ripple
-              @click="router.push('/account-settings')"
-            >
+            <q-item clickable v-ripple @click="router.push('/audit-log')">
               <q-item-section avatar>
                 <div
                   class="hover:bg-secondaryDarker transition-all ease-in-out cursor-pointer"

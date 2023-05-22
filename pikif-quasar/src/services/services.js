@@ -277,3 +277,18 @@ export async function resetPass(email) {
     console.log(err.message);
   }
 }
+
+export async function getAudit() {
+  const token = store.getters.getToken;
+  try {
+    const data = await apiClient.get("/loadAuditLog", {
+      headers: {
+        authorization: `Bearer ${token}`,
+      },
+    });
+
+    return data.data;
+  } catch (err) {
+    console.log(err);
+  }
+}

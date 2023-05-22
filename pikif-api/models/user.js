@@ -13,9 +13,13 @@ class userModel {
 
       snapshot.forEach((log) => {
         const logEntry = log.data();
-
+        const date = logEntry.timestamp.toDate().toString();
         logs.push({
-          ...logEntry,
+          uid: logEntry.uid,
+          name: logEntry.name,
+          email: logEntry.email,
+          action: logEntry.action,
+          timestamp: date,
         });
       });
 

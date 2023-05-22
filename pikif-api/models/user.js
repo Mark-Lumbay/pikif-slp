@@ -6,6 +6,20 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import ClientModel from "../models/clientInfo.js";
 
 class userModel {
+  async changeUserStatus(newStatus, id) {
+    const updateData = {
+      isActive: newStatus,
+    };
+    try {
+      const user = firestore().collection("users").doc(id);
+      user.set(updateData, { merge: true });
+
+      return { success: true };
+    } catch (err) {
+      return { success: false, message: err };
+    }
+  }
+
   async getAuditLog() {
     try {
       const docRef = firestore().collection("auditLog");

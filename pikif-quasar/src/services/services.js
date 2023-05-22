@@ -326,3 +326,20 @@ export async function updateRole(newRole, id) {
     return { status: false, message: err };
   }
 }
+
+export async function updateStatus(newStatus, id) {
+  const token = store.getters.getToken;
+  try {
+    await apiClient.patch(
+      `/updateUserStatus/${id}`,
+      { newStatus: newStatus },
+      {
+        headers: {
+          authorization: `Bearer ${token}`,
+        },
+      }
+    );
+  } catch (err) {
+    return { status: false, message: err };
+  }
+}

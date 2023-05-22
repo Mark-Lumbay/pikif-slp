@@ -276,4 +276,15 @@ router.patch("/updateUserRole/:id", async (req, res) => {
     res.status(500).send(err);
   }
 });
+
+router.patch("/updateUserStatus/:id", async (req, res) => {
+  const id = req.params.id;
+  const newStatus = req.body.newStatus;
+  try {
+    const result = await userModel.changeUserStatus(newStatus, id);
+    res.status(200);
+  } catch (err) {
+    res.status(500).send({ message: err });
+  }
+});
 export default router;

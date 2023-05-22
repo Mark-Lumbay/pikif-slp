@@ -20,6 +20,18 @@
             />
           </q-td>
         </template>
+
+        <template v-slot:body-cell-isActive="props">
+          <q-td key="id" :props="props" @row-click="viewRow" class="">
+            <q-toggle
+              v-model="props.row.isActive"
+              @update:model-value="
+                () => changeAccStatus(props.row.isActive, props.row.id)
+              "
+            />
+          </q-td>
+          <!-- Other columns... -->
+        </template>
       </q-table>
     </div>
   </div>
@@ -27,12 +39,13 @@
 
 <script>
 import { ref, onMounted } from "vue";
-import { getAccessLvl, updateRole } from "../services/services";
+import { getAccessLvl, updateRole, updateStatus } from "../services/services";
 
 export default {
   setup() {
     const rows = ref([]);
     const selectedRole = ref("");
+    const accStatus = ["Active", "Inactive"];
     const roleRef = ref([
       "Teacher",
       "Social Development Worker",
@@ -56,6 +69,15 @@ export default {
         sortable: false,
       },
       {
+        name: "isActive",
+        label: "Account Status",
+        selected: (row) => row.isActive,
+        field: (row) => row.isActive,
+        format: (val) => `${val}`,
+        align: "left",
+        sortable: false,
+      },
+      {
         name: "role",
         label: "Role",
         selected: (row) => row.role,
@@ -65,6 +87,11 @@ export default {
         sortable: false,
       },
     ];
+
+    const changeAccStatus = async (newStatus, id) => {
+      console.log(newStatus);
+      await updateStatus(newStatus, id);
+    };
 
     const changeRole = async (newRole, id) => {
       await updateRole(newRole, id);
@@ -81,6 +108,8 @@ export default {
       roleRef,
       selectedRole,
       changeRole,
+      accStatus,
+      changeAccStatus,
     };
   },
 };

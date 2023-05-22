@@ -11,7 +11,6 @@ class ClientModel {
       action: action,
       timestamp: firestore.FieldValue.serverTimestamp(),
     };
-    console.log(userDetails);
 
     try {
       await firestore().collection("auditLog").add(auditReport);
@@ -164,9 +163,7 @@ class ClientModel {
         return { status: false, message: "No Matching Documents" };
       }
       const user = snapshot.docs[0].data();
-      console.log(user);
       const personId = snapshot.docs[0].id;
-      console.log(personId);
       const docRef = firestore().collection("clientFindings").doc(personId);
       const result = await docRef.update(data);
       return result;
@@ -278,7 +275,6 @@ class ClientModel {
         res.status(404).send("Client not found");
         return;
       }
-      console.log(doc.data);
 
       const updatePayload = doc.data();
       updatePayload.clientInfo.active = !updatePayload.clientInfo.active;

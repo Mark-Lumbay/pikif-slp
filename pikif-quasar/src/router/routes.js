@@ -107,6 +107,22 @@ const routes = [
   },
 
   {
+    path: "/system-message",
+    meta: {
+      requiresAuth: false,
+    },
+
+    component: () => import("layouts/NavBar.vue"),
+    children: [
+      {
+        path: "/system-message",
+        name: "System Message",
+        component: () => import("pages/ErrorNotFound.vue"),
+      },
+    ],
+  },
+
+  {
     path: "/login",
     children: [{ path: "", component: () => import("pages/LogIn.vue") }],
   },

@@ -6,13 +6,11 @@ import { port } from "./config.js";
 import "./db.js";
 import pkg from "firebase-admin";
 import ClientModel from "./models/clientInfo.js";
-
-const { firestore, auth } = pkg;
-
+import userModel from "./models/user.js";
 import path from "./routes/route.js";
 
+const { firestore, auth } = pkg;
 const app = express();
-const methods = ["GET", "PATCH", "PUT", "POST"];
 
 app.use(json());
 app.use(cors());
@@ -20,19 +18,28 @@ app.use(async (req, res, next) => {
   const header = req.headers.authorization;
   if (
     req.path === "/island-kids/login" ||
-    req.path === "/island-kids/register"
+    req.path === "/island-kids/register" ||
+    req.path === "/island-kids/system-message"
   ) {
     return next();
   }
   if (header) {
     try {
       const token = header.split("Bearer ")[1];
+
       const result = await auth().verifyIdToken(token);
       const uid = result.uid;
+
+      const userStatus = await userModel.getActiveStatus(uid);
+
+      // if (!userStatus.data) {
+      //   console.log("FALSE");
+      //   return res.redirect("/system-message");
+      // }
+
       const user = await auth().getUser(uid);
       const action = `${user.customClaims.firstName} ${user.customClaims.lastName} performed the operaton ${req.method} on ${req.path}`;
       const name = `${user.customClaims.firstName} ${user.customClaims.lastName}`;
-      console.log(name);
 
       const accInfo = {
         uid: uid,
@@ -48,7 +55,6 @@ app.use(async (req, res, next) => {
 
       next();
     } catch (err) {
-      console.log(err);
       return res.status(404).send("Could not verify token");
     }
   } else {

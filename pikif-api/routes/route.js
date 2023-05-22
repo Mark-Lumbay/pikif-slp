@@ -10,7 +10,6 @@ const { firestore, auth } = pkg;
 let clientId = 0;
 
 router.get("/test", async (req, res) => {
-  console.log("I was called");
   try {
     const header = req.headers.authorization;
     const token = header.split("Bearer ")[1];
@@ -125,9 +124,7 @@ router.put("/updateFindings", async (req, res) => {
         return { status: false, message: "No Matching Documents" };
       }
       const user = snapshot.docs[0].data();
-      console.log(user);
       const personId = snapshot.docs[0].id;
-      console.log(personId);
       res.status(200).json({
         success: true,
         result,
@@ -283,6 +280,16 @@ router.patch("/updateUserStatus/:id", async (req, res) => {
   try {
     const result = await userModel.changeUserStatus(newStatus, id);
     res.status(200);
+  } catch (err) {
+    res.status(500).send({ message: err });
+  }
+});
+
+router.get("/getActiveStatus/:id", async (req, res) => {
+  const id = req.params.id;
+  try {
+    const result = await userModel.getActiveStatus(id);
+    res.status(200).send({ data: result.data });
   } catch (err) {
     res.status(500).send({ message: err });
   }

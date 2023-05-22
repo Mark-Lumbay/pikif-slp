@@ -3,7 +3,6 @@ import pkg from "firebase-admin";
 const { firestore, auth } = pkg;
 import { auth2 } from "../firebase.js";
 import { signInWithEmailAndPassword } from "firebase/auth";
-import ClientModel from "../models/clientInfo.js";
 
 class userModel {
   async changeUserStatus(newStatus, id) {
@@ -12,9 +11,22 @@ class userModel {
     };
     try {
       const user = firestore().collection("users").doc(id);
-      user.set(updateData, { merge: true });
+      await user.set(updateData, { merge: true });
+      await auth().revokeRefreshTokens(id);
 
       return { success: true };
+    } catch (err) {
+      return { success: false, message: err };
+    }
+  }
+
+  async getActiveStatus(id) {
+    try {
+      const userRef = firestore().collection("users").doc(id);
+      const doc = await userRef.get();
+
+      const isActive = doc.data().isActive;
+      return { success: true, data: isActive };
     } catch (err) {
       return { success: false, message: err };
     }
@@ -138,9 +150,7 @@ class userModel {
 
   async updateUserDetails(data, id) {
     try {
-      console.log(data);
       const res = await auth().setCustomUserClaims(id, data);
-      console.log(res);
       return res;
     } catch (err) {
       return { success: false, message: `Internal server error 2 ${err}` };
@@ -159,7 +169,6 @@ class userModel {
       }
 
       const res = await auth().updateUser(id, { email: newEmail });
-      console.log(res);
       return { success: true, data: res };
     } catch (err) {
       return { success: false, message: err };
@@ -197,7 +206,6 @@ class userModel {
   }
 
   async updateRole(newRole, id, accInfo) {
-    console.log(id);
     let authorization = "";
 
     if (newRole === "Administrator") {

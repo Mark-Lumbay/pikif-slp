@@ -343,3 +343,18 @@ export async function updateStatus(newStatus, id) {
     return { status: false, message: err };
   }
 }
+
+export async function getUserStatus(id) {
+  const token = store.getters.getToken;
+  try {
+    const status = await apiClient.get(`/getActiveStatus/${id}`, {
+      headers: {
+        authorization: `Bearer ${token}`,
+      },
+    });
+
+    return status.data;
+  } catch (err) {
+    return { status: false, message: err };
+  }
+}

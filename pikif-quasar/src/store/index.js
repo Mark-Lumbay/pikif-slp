@@ -7,7 +7,7 @@ import {
   setPersistence,
   browserSessionPersistence,
 } from "firebase/auth";
-import { getUserAuth } from "src/services/services.js";
+import { getUserAuth, getUserStatus } from "src/services/services.js";
 
 const store = createStore({
   state: {
@@ -18,6 +18,7 @@ const store = createStore({
     token: null,
     email: null,
     uid: null,
+    isActive: null,
     studentData: [],
     indivStudData: [],
   },
@@ -37,6 +38,10 @@ const store = createStore({
 
     getUID: (state) => {
       return state.uid;
+    },
+
+    getActiveStatus: (state) => {
+      return state.isActive;
     },
 
     getBasicDetails: (state) => {
@@ -72,12 +77,14 @@ const store = createStore({
         state.lName = details.lName;
         state.email = details.email;
         state.uid = details.uid;
+        state.isActive = details.isActive;
       } else {
         state.user = details;
         state.fName = details;
         state.lName = details;
         state.email = details;
         state.uid = details;
+        state.isActive = details;
       }
     },
 
@@ -95,6 +102,10 @@ const store = createStore({
 
     setAuth(state, authLevel) {
       state.auth = authLevel;
+    },
+
+    removeUserToken(state) {
+      state.token = null;
     },
   },
   actions: {
@@ -123,6 +134,10 @@ const store = createStore({
 
     async storeUserToken(context, token) {
       context.commit("setUserToken", token);
+    },
+
+    async revokeToken(context) {
+      context.commit("removeUserToken");
     },
 
     async storeUser(context, details) {
@@ -169,6 +184,7 @@ auth.onAuthStateChanged(async (newUser) => {
     const user = await newUser.getIdTokenResult();
     const token = await newUser.getIdToken(true);
     const authLevel = await getUserAuth(user.claims.user_id);
+    const status = await getUserStatus(user.claims.user_id);
 
     const fName = user.claims.firstName;
     const lName = user.claims.lastName;
@@ -178,6 +194,7 @@ auth.onAuthStateChanged(async (newUser) => {
       lName,
       email: user.claims.email,
       uid: user.claims.user_id,
+      isActive: status.data,
     };
 
     store.commit("setUser", details);

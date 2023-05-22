@@ -3,9 +3,23 @@ import { useStore } from "vuex";
 import store from "../store";
 import { auth } from "../firebase.js";
 import { sendPasswordResetEmail } from "firebase/auth";
+import { useRouter } from "vue-router";
+
+const router = useRouter();
 const apiClient = axios.create({
   baseURL: "http://localhost:8080/island-kids", // Replace with your API endpoint
 });
+
+apiClient.interceptors.response.use(
+  (response) => {
+    return response;
+  },
+  (err) => {
+    if (err.response.status === 401) {
+      router.push("/login");
+    }
+  }
+);
 
 export async function testCall(token) {
   const response = await apiClient.get("/test", {

@@ -32,10 +32,10 @@ app.use(async (req, res, next) => {
 
       const userStatus = await userModel.getActiveStatus(uid);
 
-      // if (!userStatus.data) {
-      //   console.log("FALSE");
-      //   return res.redirect("/system-message");
-      // }
+      if (!userStatus.data) {
+        console.log("FALSE");
+        return res.status(401).send({ message: "Please login again" });
+      }
 
       const user = await auth().getUser(uid);
       const action = `${user.customClaims.firstName} ${user.customClaims.lastName} performed the operaton ${req.method} on ${req.path}`;

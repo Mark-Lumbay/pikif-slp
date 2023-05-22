@@ -1,6 +1,6 @@
 <template>
-  <div class="flex justify-center items-center">
-    <div class="w-[88%] flex mt-8">
+  <div class="flex justify-center items-center p-8">
+    <div class="w-full flex">
       <q-table
         bordered
         title="Audit Log"

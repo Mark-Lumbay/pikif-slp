@@ -5,7 +5,7 @@ import { auth } from "../firebase.js";
 import { sendPasswordResetEmail } from "firebase/auth";
 
 const apiClient = axios.create({
-  baseURL: "pikif-slp-production.up.railway.app/island-kids", // Replace with your API endpoint
+  baseURL: "https://pikif-slp-production.up.railway.app/island-kids", // Replace with your API endpoint
 });
 
 apiClient.interceptors.response.use(

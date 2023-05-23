@@ -256,7 +256,7 @@ import store from "../store";
 import { jsPDF } from "jspdf";
 import autoTable from "jspdf-autotable";
 import { useStore } from "vuex";
-import GenerateReport from "../components/GenerateReport.vue";
+import GenerateReport from "src/components/GenerateReport.vue";
 import { exportFile, useQuasar } from "quasar";
 import AlertBox from "src/components/AlertBox.vue";
 

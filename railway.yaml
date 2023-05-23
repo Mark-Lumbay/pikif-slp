@@ -9,5 +9,8 @@ services:
     env:
       - PORT=4000
   - name: pikif-app-serve
-    command: |
-      npx http-server dist/spa -p $PORT
+    image: nginx
+    ports:
+      - 80:80
+    volumes:
+      - ./dist/spa:/usr/share/nginx/html

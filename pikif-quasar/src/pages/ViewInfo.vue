@@ -5,6 +5,19 @@
       v-if="!showMsg"
     >
       <div>
+        <h1>Generate Report</h1>
+      </div>
+
+      <div>
+        <button></button>
+      </div>
+    </div>
+
+    <div
+      class="w-[90%] flex flex-col shadow-md rounded-xl p-4 space-x-4 bg-white"
+      v-if="!showMsg"
+    >
+      <div>
         <AddClient
           :withProp="prop"
           @client-info-update="saveUpdatedClientInfo"
@@ -62,9 +75,11 @@ import AddFindings from "src/components/AddFindings.vue";
 import MessagePage from "src/components/MessagePage.vue";
 
 import { useStore } from "vuex";
-import { ref, reactive, computed } from "vue";
+import { ref, reactive, computed, onMounted } from "vue";
 import { useRoute } from "vue-router";
 import { updateInfo, addFindings } from "src/services/services";
+
+import store from "../store/index";
 
 export default {
   components: {
@@ -75,9 +90,14 @@ export default {
   },
 
   setup() {
-    const prop = true;
     const route = useRoute();
+    const id = route.params.id;
+
+    onMounted(() => {});
+
+    const prop = true;
     const showMsg = ref(false);
+    const studentData = ref([]);
     const message = ref({
       messageType: "",
       messageBody: "",
@@ -92,7 +112,6 @@ export default {
     const newFindings = reactive({
       clientFindings: null,
     });
-    const id = route.params.id;
 
     const hasUpdate = computed(() => {
       if (!data.clientInfo && !data.informantInfo && !data.initialFindings) {

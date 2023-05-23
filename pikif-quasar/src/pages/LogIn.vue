@@ -70,7 +70,7 @@
               </button>
             </div>
 
-            <div
+            <!-- <div
               class="mb-5 w-full bg-red-500 p-2 text-white font-semibold rounded"
               v-if="incorrect"
               @click.prevent="closeModal"
@@ -78,7 +78,7 @@
               <h3 class="text-sm">
                 Account with the same email already exists
               </h3>
-            </div>
+            </div> -->
           </form>
         </div>
       </div>

@@ -64,7 +64,7 @@ const store = createStore({
     },
 
     getOneUser: (state) => {
-      const data = this.getters.getData;
+      const data = state.studentData;
       const info = data.find((item) => item.id === id);
       return info;
     },
@@ -136,9 +136,7 @@ const store = createStore({
         } else {
           throw new Error("login failed");
         }
-      } catch {
-        throw new Error();
-      }
+      } catch {}
     },
 
     async storeUserToken(context, token) {

@@ -545,8 +545,9 @@ export default {
     };
 
     const exportToPDFBasic = () => {
-      const doc = new jsPDF();
+      const doc = new jsPDF("landscape");
       // const data = filteredArr.value;
+
       const headers = [
         "Full Name",
         "Age",
@@ -560,6 +561,7 @@ export default {
         "Floor Material",
         "Findings",
       ];
+
       const data = filteredArr.value.map((row) => [
         row.fullName,
         row.age,
@@ -569,7 +571,7 @@ export default {
         row.status == true ? "Active" : "Inactive",
         row.condition === "Others" ? row.conditionOthers : row.condition,
         row.roof === "Others" ? row.materials.roofOthers : row.materials.roof,
-        row.walls === "Others" ? row.materials.wallOthers : row.materials.walls,
+        row.wall === "Others" ? row.materials.wallOthers : row.materials.wall,
         row.floor === "Others"
           ? row.materials.floorOthers
           : row.materials.floor,

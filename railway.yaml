@@ -7,7 +7,7 @@ services:
   - name: pikif-app
     command:
       - npm install
-      - quasar dev
+      - quasar serve
 
     env:
       - PORT=4000

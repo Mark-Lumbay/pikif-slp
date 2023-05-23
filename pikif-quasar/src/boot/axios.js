@@ -8,7 +8,7 @@ import axios from "axios";
 // "export default () => {}" function below (which runs individually
 // for each client)
 const api = axios.create({
-  baseURL: "https://pikif-slp-production.up.railway.app",
+  baseURL: "pikif-slp-production.up.railway.app/island-kids",
 });
 
 export default boot(({ app }) => {

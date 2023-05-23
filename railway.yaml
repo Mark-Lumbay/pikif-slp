@@ -3,7 +3,7 @@ services:
   - name: pikif-api
     command: npm start
     env:
-      - PORT=8080
+      - PORT=3000
   - name: pikif-app
     command: npx quasar serve
     env:

@@ -1,20 +1,37 @@
 <template>
   <div class="px-6 py-8 flex items-center justify-center h-full">
     <div
-      class="w-[90%] flex flex-col shadow-md rounded-xl p-4 space-x-4 bg-white"
+      class="w-[90%] flex flex-col shadow-md rounded-xl p-8 space-x-4 bg-white"
       v-if="!showMsg"
     >
-      <div>
-        <h1>Generate Report</h1>
+      <div class="w-full flex justify-center items-center">
+        <h1 class="text-2xl font-bold">Generate Report</h1>
       </div>
 
-      <div>
-        <button></button>
+      <div class="w-full flex justify-center items-center space-x-4 mt-6">
+        <button
+          flat
+          label="Cancel"
+          class="text-primaryRed h-12 hover:text-white hover:bg-primaryRed hover:border-transparent font-semibold py-2 px-6 border border-primaryRed rounded"
+          @click="exportToPDFBasic"
+        >
+          <q-icon name="las la-file-pdf" size="32px"></q-icon>
+          Export as PDF
+        </button>
+        <button
+          flat
+          label="Cancel"
+          class="text-btnGreen h-12 hover:text-white hover:bg-btnGreen hover:border-transparent font-semibold py-2 px-6 border border-btnGreen rounded"
+          @click="exportToCSV"
+        >
+          <q-icon name="las la-file-csv" size="32px"></q-icon>
+          Export as CSV
+        </button>
       </div>
     </div>
 
     <div
-      class="w-[90%] flex flex-col shadow-md rounded-xl p-4 space-x-4 bg-white"
+      class="w-[90%] flex flex-col shadow-md rounded-xl p-4 space-x-4 bg-white mt-8"
       v-if="!showMsg"
     >
       <div>
@@ -78,7 +95,9 @@ import { useStore } from "vuex";
 import { ref, reactive, computed, onMounted } from "vue";
 import { useRoute } from "vue-router";
 import { updateInfo, addFindings } from "src/services/services";
-
+import { getOneStudent } from "../services/services";
+import { jsPDF } from "jspdf";
+import autoTable from "jspdf-autotable";
 import store from "../store/index";
 
 export default {
@@ -92,12 +111,18 @@ export default {
   setup() {
     const route = useRoute();
     const id = route.params.id;
+    const studentData = ref([]);
 
-    onMounted(() => {});
+    onMounted(async () => {
+      const data = await getOneStudent(route.params.id);
+      studentData.value.id = route.params.id;
+      studentData.value.clientInfo = data.clientInfo;
+      studentData.value.informantInfo = data.informantInfo;
+      studentData.value.initialFindings = data.initialFindings;
+    });
 
     const prop = true;
     const showMsg = ref(false);
-    const studentData = ref([]);
     const message = ref({
       messageType: "",
       messageBody: "",
@@ -142,6 +167,44 @@ export default {
       const addFindingsReq = await addFindings(newFindings.clientFindings, id);
     };
 
+    const exportToPDFBasic = () => {
+      const doc = new jsPDF();
+      const data = studentData.value;
+      console.log(data.clientInfo);
+    };
+
+    function wrapCsvValue(val, formatFn, row) {
+      let formatted = formatFn !== void 0 ? formatFn(val, row) : val;
+
+      formatted =
+        formatted === void 0 || formatted === null ? "" : String(formatted);
+
+      formatted = formatted.split('"').join('""');
+      return `"${formatted}"`;
+    }
+
+    const exportToCSV = () => {
+      const content = [columns.map((col) => wrapCsvValue(col.label))]
+        .concat(
+          filteredArr.value.map((row) =>
+            columns
+              .map((col) =>
+                wrapCsvValue(
+                  typeof col.field === "function"
+                    ? col.field(row)
+                    : row[col.field === void 0 ? col.name : col.field],
+                  col.format,
+                  row
+                )
+              )
+              .join(",")
+          )
+        )
+        .join("\r\n");
+
+      exportFile("table-export.csv", content, "text/csv");
+    };
+
     const updateData = async () => {
       const updateReq = await updateInfo(data, id);
       if (updateReq) {
@@ -164,6 +227,8 @@ export default {
       showMsg,
       message,
       hasUpdate,
+      exportToPDFBasic,
+      exportToCSV,
     };
   },
 };

@@ -142,7 +142,7 @@
 
               <button
                 class="bg-primaryBtn mb-2 hover:bg-primaryHovBtn text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full h-14 transition-all ease-in-out"
-                @click.prevent="router.push('/login')"
+                @click.prevent="goLogin"
               >
                 Login
               </button>
@@ -192,6 +192,8 @@ export default {
       header: "Error",
       bodyText: "Email is already in use",
     });
+
+    const goLogin = () => router.push("/login");
 
     const toggleAlert = () => {
       showAlert.value = !showAlert.value;
@@ -261,12 +263,10 @@ export default {
       passModal,
       router,
       confirmModal,
-      resetModal,
-      closeResetModal,
-      forgetPass,
       textDetails,
       showAlert,
       toggleAlert,
+      goLogin,
     };
   },
 };

@@ -1,0 +1,10 @@
+version: 2
+services:
+  - name: pikif-api
+    command: npm start
+    env:
+      - PORT=8080
+  - name: pikif-quasar
+    command: npx quasar dev
+    env:
+      - PORT=9000

@@ -5,6 +5,6 @@ services:
     env:
       - PORT=8080
   - name: pikif-quasar
-    command: npx quasar serve
+    command: $ quasar serve
     env:
       - PORT=3000

@@ -28,20 +28,6 @@ const routes = [
       },
     ],
   },
-  {
-    path: "/test",
-    meta: {
-      requiresAuth: false,
-    },
-    component: () => import("layouts/NavBar.vue"),
-    children: [
-      {
-        path: "/test",
-        name: "test",
-        component: () => import("pages/TestPage.vue"),
-      },
-    ],
-  },
 
   {
     path: "/viewInfo/:id",

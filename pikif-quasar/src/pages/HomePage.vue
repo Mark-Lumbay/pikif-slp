@@ -233,13 +233,13 @@
       </div>
     </div>
   </div>
-  <!-- <GenerateReport
+  <GenerateReport
     :open-modal="openModal"
     @change-filter="updateFil"
     @close-modal="closeModal"
     @export-pdf="exportToPDFBasic"
     @export-csv="exportToCSV"
-  ></GenerateReport> -->
+  ></GenerateReport>
 
   <AlertBox
     :show-alert="showAlert"
@@ -256,7 +256,7 @@ import store from "../store";
 import { jsPDF } from "jspdf";
 import autoTable from "jspdf-autotable";
 import { useStore } from "vuex";
-// import GenerateReport from "src/components/GenerateReport.vue";
+import GenerateReport from "src/components/GenerateReport.vue";
 import { exportFile, useQuasar } from "quasar";
 import AlertBox from "src/components/AlertBox.vue";
 
@@ -267,7 +267,7 @@ export default {
     },
   },
   components: {
-    // GenerateReport,
+    GenerateReport,
     AlertBox,
   },
   setup(props) {

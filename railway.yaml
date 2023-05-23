@@ -5,6 +5,6 @@ services:
     env:
       - PORT=3000
   - name: pikif-app
-    command: node_modules/.bin/quasar serve
+    command: quasar serve
     env:
       - PORT=9000

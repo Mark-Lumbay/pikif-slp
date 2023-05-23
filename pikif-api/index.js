@@ -33,7 +33,6 @@ app.use(async (req, res, next) => {
       const userStatus = await userModel.getActiveStatus(uid);
 
       if (!userStatus.data) {
-        console.log("FALSE");
         return res.status(401).send({ message: "Please login again" });
       }
 

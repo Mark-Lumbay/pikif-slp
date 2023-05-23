@@ -36,7 +36,11 @@
 import store from "../store";
 import { auth } from "../firebase.js";
 import { getUserAuth } from "src/services/services.js";
+import { apiClient } from "../services/services";
+import { useRouter } from "vue-router";
+
 let user = store.getters.getState;
+const router = useRouter();
 
 function getAuthState() {
   return new Promise((resolve) => {
@@ -74,6 +78,17 @@ async function runCheck() {
 }
 
 export default async function middleware(to, from, next) {
+  // apiClient.interceptors.response.use(
+  //   (response) => {
+  //     return;
+  //   },
+  //   (err) => {
+  //     if (err.response.status === 401) {
+  //       router.push("/login");
+  //     }
+  //   }
+  // );
+
   if (!to.meta.requiresAuth) {
     return next();
   } else {

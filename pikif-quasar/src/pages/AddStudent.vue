@@ -169,7 +169,7 @@ export default {
       messageBody: "",
     });
 
-    const currPage = ref(1);
+    const currPage = ref(0);
     const data = reactive({
       clientInfo: null,
       informantInfo: null,

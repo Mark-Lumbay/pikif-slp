@@ -3,9 +3,7 @@ import { useStore } from "vuex";
 import store from "../store";
 import { auth } from "../firebase.js";
 import { sendPasswordResetEmail } from "firebase/auth";
-import { useRouter } from "vue-router";
 
-const router = useRouter();
 const apiClient = axios.create({
   baseURL: "http://localhost:8080/island-kids", // Replace with your API endpoint
 });
@@ -16,8 +14,7 @@ apiClient.interceptors.response.use(
   },
   (err) => {
     if (err.response.status === 401) {
-      console.log("test");
-      router.push("/login");
+      window.location.href = "/login";
     }
   }
 );
@@ -100,6 +97,7 @@ export async function loadDashboard() {
     store2.dispatch("storeData", fullInfo);
     return basicInfo;
   } catch (err) {
+    console.log(`nag error yawa ${err}`);
     return { success: false, message: err.message };
   }
 }
@@ -373,3 +371,5 @@ export async function getUserStatus(id) {
     return { status: false, message: err };
   }
 }
+
+export { apiClient };

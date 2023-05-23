@@ -65,6 +65,6 @@ app.listen(port, () => {
   console.log(`Listening on url http://localhost${port}`);
 });
 
-// app.use("/island-kids", path);
+app.use("/island-kids", path);
 
 export default app;

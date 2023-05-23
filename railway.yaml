@@ -4,13 +4,10 @@ services:
     command: npm start
     env:
       - PORT=3000
-  - name: pikif-app-build
-    command: quasar build
+  - name: pikif-app
+    command:
+      - npm install
+      - quasar dev
+
     env:
       - PORT=4000
-  - name: pikif-app-serve
-    image: nginx
-    ports:
-      - 80:80
-    volumes:
-      - ./dist/spa:/usr/share/nginx/html

@@ -1,36 +1,6 @@
 <template>
   <div class="px-6 py-8 flex items-center justify-center h-full">
     <div
-      class="w-[90%] flex flex-col shadow-md rounded-xl p-8 space-x-4 bg-white"
-      v-if="!showMsg"
-    >
-      <div class="w-full flex justify-center items-center">
-        <h1 class="text-2xl font-bold">Generate Report</h1>
-      </div>
-
-      <div class="w-full flex justify-center items-center space-x-4 mt-6">
-        <button
-          flat
-          label="Cancel"
-          class="text-primaryRed h-12 hover:text-white hover:bg-primaryRed hover:border-transparent font-semibold py-2 px-6 border border-primaryRed rounded"
-          @click="exportToPDFBasic"
-        >
-          <q-icon name="las la-file-pdf" size="32px"></q-icon>
-          Export as PDF
-        </button>
-        <button
-          flat
-          label="Cancel"
-          class="text-btnGreen h-12 hover:text-white hover:bg-btnGreen hover:border-transparent font-semibold py-2 px-6 border border-btnGreen rounded"
-          @click="exportToCSV"
-        >
-          <q-icon name="las la-file-csv" size="32px"></q-icon>
-          Export as CSV
-        </button>
-      </div>
-    </div>
-
-    <div
       class="w-[90%] flex flex-col shadow-md rounded-xl p-4 space-x-4 bg-white mt-8"
       v-if="!showMsg"
     >

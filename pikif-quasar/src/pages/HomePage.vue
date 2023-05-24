@@ -545,7 +545,7 @@ export default {
     };
 
     const exportToPDFBasic = () => {
-      const doc = new jsPDF("landscape");
+      const docu = new jsPDF("landscape");
       // const data = filteredArr.value;
 
       const headers = [
@@ -578,11 +578,11 @@ export default {
         row.findings.map((item) => item.findings).join(", "),
       ]);
 
-      doc.autoTable({
+      docu.autoTable({
         head: [headers],
         body: data,
       });
-      doc.save("Export.pdf");
+      docu.save("Export.pdf");
     };
 
     function wrapCsvValue(val, formatFn, row) {

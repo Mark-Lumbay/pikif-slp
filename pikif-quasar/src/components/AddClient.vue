@@ -395,7 +395,10 @@
                 id="grid-other"
                 type="text"
                 placeholder="Other options"
-                :disabled="clientPersonalInfo.clientInfo.condition !== 'Others'"
+                :disabled="
+                  clientPersonalInfo.clientInfo.condition !== 'Others' ||
+                  !editMode
+                "
                 v-model="clientPersonalInfo.clientInfo.conditionOthers"
               />
             </div>
@@ -456,7 +459,9 @@
                 type="text"
                 placeholder="Other options"
                 :disabled="
-                  clientPersonalInfo.clientInfo.materials.roof !== 'Others'
+                  clientPersonalInfo.clientInfo.materials.roof !== 'Others' ||
+                  !editMode ||
+                  !addMode
                 "
                 v-model="clientPersonalInfo.clientInfo.materials.roofOthers"
               />
@@ -742,6 +747,7 @@ export default {
     const textField = ref(false);
     const editMode = ref(false);
     const updateMode = ref(false);
+    const addMode = ref(true);
     const showAlert = ref(false);
 
     const originalObj = ref({
@@ -993,6 +999,7 @@ export default {
       disableClass,
       AlertBox,
       textDetails,
+      addMode,
     };
   },
 };

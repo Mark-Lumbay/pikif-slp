@@ -681,7 +681,28 @@
       </div>
 
       <div class="flex w-full justify-end" v-if="readOnly && !editMode">
-        <div class="w-full flex justify-end">
+        <div class="w-[50%] flex justify-start space-x-4 mt-6">
+          <button
+            flat
+            label="Cancel"
+            class="text-primaryRed h-12 hover:text-white hover:bg-primaryRed hover:border-transparent font-semibold py-2 px-6 border border-primaryRed rounded"
+            @click="exportToPDFBasic"
+          >
+            <q-icon name="las la-file-pdf" size="32px"></q-icon>
+            Export as PDF
+          </button>
+          <button
+            flat
+            label="Cancel"
+            class="text-btnGreen h-12 hover:text-white hover:bg-btnGreen hover:border-transparent font-semibold py-2 px-6 border border-btnGreen rounded"
+            @click="exportToCSV"
+          >
+            <q-icon name="las la-file-csv" size="32px"></q-icon>
+            Export as CSV
+          </button>
+        </div>
+
+        <div class="w-[50%] flex justify-end">
           <button
             class="bg-primaryBtn mb-2 w-[12vw] hover:bg-primaryHovBtn text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline h-14 transition-all ease-in-out"
             @click.prevent="setupEditMode"
@@ -724,6 +745,9 @@ import { useRoute } from "vue-router";
 import { getOneStudent } from "../services/services";
 import store from "../store";
 import AlertBox from "src/components/AlertBox.vue";
+import { jsPDF } from "jspdf";
+import autoTable from "jspdf-autotable";
+import { exportFile } from "quasar";
 
 export default {
   emits: ["informantInfoSubmit", "goBack", "informantInfoUpdate"],
@@ -741,6 +765,8 @@ export default {
     const route = useRoute();
     const probs = [];
     const authLevel = ref("");
+    const exportObj = ref([]);
+    const fullName = ref("");
     const textDetails = ref({
       type: 0,
       header: "Notice",
@@ -759,14 +785,37 @@ export default {
           informantPersonalInfo.value.id = route.params.id;
           informantPersonalInfo.value.informantInfo = data.informantInfo;
           originalObj.value.informantInfo = data.informantInfo;
+
+          fullName.value = `${data.clientInfo.firstName} ${data.clientInfo.middleName} ${data.clientInfo.lastName}`;
           setupViewOnly();
         } else {
           informantPersonalInfo.value.id = route.params.id;
           informantPersonalInfo.value.informantInfo = data.informantInfo;
           originalObj.value.informantInfo = data.informantInfo;
 
+          fullName.value = `${data.clientInfo.firstName} ${data.clientInfo.middleName} ${data.clientInfo.lastName}`;
           setupViewOnly();
         }
+
+        exportObj.value.clientName = fullName.value;
+        exportObj.value.informantName = `${informantPersonalInfo.value.informantInfo.firstName} ${informantPersonalInfo.value.informantInfo.middleName} ${informantPersonalInfo.value.informantInfo.lastName}`;
+        exportObj.value.age = informantPersonalInfo.value.informantInfo.age;
+        exportObj.value.sex = informantPersonalInfo.value.informantInfo.sex;
+        exportObj.value.educAttn =
+          informantPersonalInfo.value.informantInfo.educAttn;
+        exportObj.value.occupation = `${
+          informantPersonalInfo.value.informantInfo.occupation === "Others"
+            ? informantPersonalInfo.value.informantInfo.occupationOthers
+            : informantPersonalInfo.value.informantInfo.occupation
+        }`;
+        exportObj.value.income = `${informantPersonalInfo.value.informantInfo.income.type}: ${informantPersonalInfo.value.informantInfo.income.amount} `;
+        exportObj.value.probs = Object.values(
+          informantPersonalInfo.value.informantInfo.probs
+        ).join(", ");
+        exportObj.value.assistance =
+          informantPersonalInfo.value.informantInfo.assistance;
+
+        console.log(exportObj.value);
 
         // 1. Get probs from object and store in array
         for (const key in informantPersonalInfo.value.informantInfo.probs) {
@@ -918,6 +967,77 @@ export default {
     });
 
     // Functions
+    const exportToPDFBasic = () => {
+      const doc = new jsPDF("landscape");
+      // const data = filteredArr.value;
+
+      const headers = [
+        "Client Name",
+        "Informant Name",
+        "Age",
+        "Sex",
+        "Educational Level",
+        "Occupation",
+        "Income",
+        "Problems Presented",
+        "Assistance Gained",
+      ];
+
+      const data = [
+        [
+          exportObj.value.clientName,
+          exportObj.value.informantName,
+          exportObj.value.age,
+          exportObj.value.sex,
+          exportObj.value.educAttn,
+          exportObj.value.occupation,
+          exportObj.value.income,
+          exportObj.value.probs,
+          exportObj.value.assistance,
+        ],
+      ];
+
+      doc.autoTable({
+        head: [headers],
+        body: data,
+      });
+      doc.save("Export.pdf");
+    };
+
+    const exportToCSV = () => {
+      const headers = [
+        "Client Name",
+        "Informant Name",
+        "Age",
+        "Sex",
+        "Educational Level",
+        "Occupation",
+        "Income",
+        "Problems Presented",
+        "Assistance Gained",
+      ];
+
+      const data = [
+        [
+          exportObj.value.clientName,
+          exportObj.value.informantName,
+          exportObj.value.age,
+          exportObj.value.sex,
+          exportObj.value.educAttn,
+          exportObj.value.occupation,
+          exportObj.value.income,
+          `"${exportObj.value.probs}"`,
+          exportObj.value.assistance,
+        ],
+      ];
+
+      const csvContent = `${headers.join(",")}\n${data
+        .map((row) => row.join(","))
+        .join("\n")}`;
+
+      exportFile("Export.csv", csvContent, "text/csv");
+    };
+
     const toggleAlert = () => {
       showAlert.value = !showAlert.value;
     };
@@ -1065,6 +1185,7 @@ export default {
 
     return {
       educAss,
+      exportToPDFBasic,
       lackingErr,
       clearErr,
       housingOthers,
@@ -1095,6 +1216,7 @@ export default {
       AlertBox,
       disableClass,
       textDetails,
+      exportToCSV,
     };
   },
 };

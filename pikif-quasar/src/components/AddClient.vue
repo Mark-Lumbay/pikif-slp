@@ -730,7 +730,6 @@ export default {
             ? clientPersonalInfo.value.clientInfo.materials.floorOthers
             : clientPersonalInfo.value.clientInfo.materials.floor
         }`;
-        console.log(exportObj.value);
       }
     });
 

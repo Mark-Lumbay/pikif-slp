@@ -68,8 +68,7 @@ import { ref, reactive, computed, onMounted } from "vue";
 import { useRoute } from "vue-router";
 import { updateInfo, addFindings } from "src/services/services";
 import { getOneStudent } from "../services/services";
-// import { jsPDF } from "jspdf";
-// import autoTable from "jspdf-autotable";
+import { exportFile } from "quasar";
 
 import jsPDF from "jspdf";
 import { applyPlugin } from "jspdf-autotable";
@@ -164,36 +163,16 @@ export default {
       doc.save("Export.pdf");
     };
 
-    function wrapCsvValue(val, formatFn, row) {
-      let formatted = formatFn !== void 0 ? formatFn(val, row) : val;
-
-      formatted =
-        formatted === void 0 || formatted === null ? "" : String(formatted);
-
-      formatted = formatted.split('"').join('""');
-      return `"${formatted}"`;
-    }
-
     const exportToCSV = () => {
-      const content = [columns.map((col) => wrapCsvValue(col.label))]
-        .concat(
-          filteredArr.value.map((row) =>
-            columns
-              .map((col) =>
-                wrapCsvValue(
-                  typeof col.field === "function"
-                    ? col.field(row)
-                    : row[col.field === void 0 ? col.name : col.field],
-                  col.format,
-                  row
-                )
-              )
-              .join(",")
-          )
-        )
-        .join("\r\n");
+      const headers = ["Client Name", "Findings"];
 
-      exportFile("table-export.csv", content, "text/csv");
+      const data = [[exportObj.value.clientName, exportObj.value.findings]];
+
+      const csvContent = `${headers.join(",")}\n${data
+        .map((row) => row.join(","))
+        .join("\n")}`;
+
+      exportFile("Export.csv", csvContent, "text/csv");
     };
 
     const updateData = async () => {

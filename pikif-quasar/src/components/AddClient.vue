@@ -589,7 +589,28 @@
       </div>
 
       <div class="flex w-full justify-end" v-if="readOnly && !editMode">
-        <div class="w-full flex justify-end">
+        <div class="w-[50%] flex justify-start space-x-4 mt-6">
+          <button
+            flat
+            label="Cancel"
+            class="text-primaryRed h-12 hover:text-white hover:bg-primaryRed hover:border-transparent font-semibold py-2 px-6 border border-primaryRed rounded"
+            @click="exportToPDFBasic"
+          >
+            <q-icon name="las la-file-pdf" size="32px"></q-icon>
+            Export as PDF
+          </button>
+          <button
+            flat
+            label="Cancel"
+            class="text-btnGreen h-12 hover:text-white hover:bg-btnGreen hover:border-transparent font-semibold py-2 px-6 border border-btnGreen rounded"
+            @click="exportToCSV"
+          >
+            <q-icon name="las la-file-csv" size="32px"></q-icon>
+            Export as CSV
+          </button>
+        </div>
+
+        <div class="w-[50%] flex justify-end">
           <button
             class="bg-primaryBtn mb-2 w-[12vw] hover:bg-primaryHovBtn text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline h-14 transition-all ease-in-out"
             @click.prevent="setupEditMode"
@@ -632,6 +653,9 @@ import { useRoute } from "vue-router";
 import { getOneStudent } from "../services/services";
 import store from "../store";
 import AlertBox from "src/components/AlertBox.vue";
+import { jsPDF } from "jspdf";
+import autoTable from "jspdf-autotable";
+import { exportFile } from "quasar";
 
 export default {
   emits: ["clientInfoSubmit", "clientInfoUpdate"],
@@ -648,6 +672,7 @@ export default {
     const storeFunc = useStore();
     const route = useRoute();
     const authLevel = ref("");
+    const exportObj = ref([]);
     const textDetails = ref({
       type: 0,
       header: "Notice",
@@ -666,6 +691,7 @@ export default {
           clientPersonalInfo.value.id = route.params.id;
           clientPersonalInfo.value.clientInfo = data.clientInfo;
           originalObj.value.clientInfo = data.clientInfo;
+
           setupViewOnly();
         } else {
           clientPersonalInfo.value.id = route.params.id;
@@ -673,6 +699,38 @@ export default {
           originalObj.value.clientInfo = data.clientInfo;
           setupViewOnly();
         }
+
+        exportObj.value.fullName = `${clientPersonalInfo.value.clientInfo.firstName} ${clientPersonalInfo.value.clientInfo.middleName} ${clientPersonalInfo.value.clientInfo.lastName}`;
+        exportObj.value.age = clientPersonalInfo.value.clientInfo.age;
+        exportObj.value.sex = clientPersonalInfo.value.clientInfo.sex;
+        exportObj.value.category = clientPersonalInfo.value.clientInfo.category;
+        exportObj.value.educAttn = clientPersonalInfo.value.clientInfo.educAttn;
+        exportObj.value.status = `${
+          clientPersonalInfo.value.clientInfo.educAttn === true
+            ? "Active"
+            : "Inactive"
+        }`;
+        exportObj.value.condition = `${
+          clientPersonalInfo.value.clientInfo.condition === "Others"
+            ? clientPersonalInfo.value.clientInfo.conditionOthers
+            : clientPersonalInfo.value.clientInfo.condition
+        }`;
+        (exportObj.value.roof = `${
+          clientPersonalInfo.value.clientInfo.materials.roof === "Others"
+            ? clientPersonalInfo.value.clientInfo.materials.roofOthers
+            : clientPersonalInfo.value.clientInfo.materials.roof
+        }`),
+          (exportObj.value.wall = `${
+            clientPersonalInfo.value.clientInfo.materials.wall === "Others"
+              ? clientPersonalInfo.value.clientInfo.materials.wallOthers
+              : clientPersonalInfo.value.clientInfo.materials.wall
+          }`);
+        exportObj.value.floor = `${
+          clientPersonalInfo.value.clientInfo.materials.floor === "Others"
+            ? clientPersonalInfo.value.clientInfo.materials.floorOthers
+            : clientPersonalInfo.value.clientInfo.materials.floor
+        }`;
+        console.log(exportObj.value);
       }
     });
 
@@ -725,6 +783,83 @@ export default {
     });
 
     // Functions
+    const exportToPDFBasic = () => {
+      const doc = new jsPDF("landscape");
+      // const data = filteredArr.value;
+
+      const headers = [
+        "Full Name",
+        "Age",
+        "Sex",
+        "Category",
+        "Educational Level",
+        "Status",
+        "Housing Condition",
+        "Roof Material",
+        "Wall Material",
+        "Floor Material",
+      ];
+
+      const data = [
+        [
+          exportObj.value.fullName,
+          exportObj.value.age,
+          exportObj.value.sex,
+          exportObj.value.category,
+          exportObj.value.educAttn,
+          exportObj.value.status,
+          exportObj.value.condition,
+          exportObj.value.roof,
+          exportObj.value.wall,
+          exportObj.value.floor,
+        ],
+      ];
+
+      doc.autoTable({
+        head: [headers],
+        body: data,
+      });
+      doc.save("Export.pdf");
+    };
+
+    const exportToCSV = () => {
+      const headers = [
+        "Full Name",
+        "Age",
+        "Sex",
+        "Category",
+        "Educational Level",
+        "Status",
+        "Housing Condition",
+        "Roof Material",
+        "Wall Material",
+        "Floor Material",
+      ];
+
+      const data = [
+        [
+          exportObj.value.fullName,
+          exportObj.value.age,
+          exportObj.value.sex,
+          exportObj.value.category,
+          exportObj.value.educAttn,
+          exportObj.value.status,
+          exportObj.value.condition,
+          exportObj.value.roof,
+          exportObj.value.wall,
+          exportObj.value.floor,
+        ],
+      ];
+
+      // Convert data to CSV format
+      const csvContent = `${headers.join(",")}\n${data
+        .map((row) => row.join(","))
+        .join("\n")}`;
+
+      // Export as CSV file
+      exportFile("Export.csv", csvContent, "text/csv");
+    };
+
     const clearErr = () => {
       lackingErr.value = false;
     };
@@ -757,24 +892,6 @@ export default {
       editMode.value = false;
       updateMode.value = false;
     };
-
-    // function toRawObject(reactiveObj) {
-    //   let rawObj = {};
-    //   for (let key in reactiveObj) {
-    //     let value = reactiveObj[key];
-    //     if (value?.value !== undefined) {
-    //       // If it's a ref or computed ref, use the value directly
-    //       rawObj[key] = value.value;
-    //     } else if (typeof value === "object" && value !== null) {
-    //       // If it's a nested object, call toRawObject recursively
-    //       rawObj[key] = toRawObject(value);
-    //     } else {
-    //       // Otherwise, just copy the value
-    //       rawObj[key] = value;
-    //     }
-    //   }
-    //   return rawObj;
-    // }
 
     const validate = () => {
       for (const field in clientPersonalInfo.value.clientInfo) {
@@ -834,41 +951,6 @@ export default {
           }
         }
       }
-      // if (clientPersonalInfo.value.clientInfo.condition !== "Others") {
-      //   clientPersonalInfo.value.clientInfo.conditionOthers = "";
-      // } else {
-      //   if (clientPersonalInfo.value.clientInfo.conditionOthers === "") {
-      //     lackingErr.value = true;
-      //     return;
-      //   }
-      // }
-
-      // if (clientPersonalInfo.value.clientInfo.materials.roof !== "Others") {
-      //   clientPersonalInfo.value.clientInfo.materials.roofOthers = "";
-      // } else {
-      //   if (clientPersonalInfo.value.clientInfo.materials.roofOthers === "") {
-      //     lackingErr.value = true;
-      //     return;
-      //   }
-      // }
-
-      // if (clientPersonalInfo.value.clientInfo.materials.walls !== "Others") {
-      //   clientPersonalInfo.value.clientInfo.materials.wallOthers = "";
-      // } else {
-      //   if (clientPersonalInfo.value.clientInfo.materials.wallOthers === "") {
-      //     lackingErr.value = true;
-      //     return;
-      //   }
-      // }
-
-      // if (clientPersonalInfo.value.clientInfo.materials.floor !== "Others") {
-      //   clientPersonalInfo.value.clientInfo.materials.floorOthers = "";
-      // } else {
-      //   if (clientPersonalInfo.value.clientInfo.materials.floorOthers === "") {
-      //     lackingErr.value = true;
-      //     return;
-      //   }
-      // }
 
       if (validate()) {
         if (
@@ -891,6 +973,8 @@ export default {
     };
 
     return {
+      exportToPDFBasic,
+      exportToCSV,
       lackingErr,
       clearErr,
       clientPersonalInfo,

@@ -102,16 +102,39 @@
       </div>
 
       <div
-        class="flex w-full justify-end mt-6 px-3"
+        class="flex w-full mt-6 px-3"
         v-if="readOnly && !editMode && !addNewFindingsMode"
       >
-        <button
-          class="bg-primaryBtn mb-2 w-[12vw] hover:bg-primaryHovBtn text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline h-14 transition-all ease-in-out"
-          @click.prevent="setupEditMode"
-          :class="disableClass"
-        >
-          Edit
-        </button>
+        <div class="w-[50%] flex justify-start space-x-4 mt-6">
+          <button
+            flat
+            label="Cancel"
+            class="text-primaryRed h-12 hover:text-white hover:bg-primaryRed hover:border-transparent font-semibold py-2 px-6 border border-primaryRed rounded"
+            @click="exportPdf"
+          >
+            <q-icon name="las la-file-pdf" size="32px"></q-icon>
+            Export as PDF
+          </button>
+          <button
+            flat
+            label="Cancel"
+            class="text-btnGreen h-12 hover:text-white hover:bg-btnGreen hover:border-transparent font-semibold py-2 px-6 border border-btnGreen rounded"
+            @click="epxortCsv"
+          >
+            <q-icon name="las la-file-csv" size="32px"></q-icon>
+            Export as CSV
+          </button>
+        </div>
+
+        <div class="flex w-[50%] justify-end">
+          <button
+            class="bg-primaryBtn mb-2 w-[12vw] hover:bg-primaryHovBtn text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline h-14 transition-all ease-in-out"
+            @click.prevent="setupEditMode"
+            :class="disableClass"
+          >
+            Edit
+          </button>
+        </div>
       </div>
 
       <div class="flex w-full mb-6" v-if="addNewFindingsMode">
@@ -222,12 +245,18 @@ import { getOneStudent } from "../services/services";
 import store from "../store";
 import AlertBox from "src/components/AlertBox.vue";
 
+import jsPDF from "jspdf";
+import { applyPlugin } from "jspdf-autotable";
+applyPlugin(jsPDF);
+
 export default {
   emits: [
     "clientFindingsSubmit",
     "goBack",
     "clientFindingsUpdate",
     "newClientFindings",
+    "exportPdf",
+    "exportCsv",
   ],
   props: {
     withProp: {
@@ -250,6 +279,7 @@ export default {
     const addNewFindingsMode = ref(false);
     const showAlert = ref(false);
     const authLevel = ref("");
+    const exportObj = ref([]);
     const textDetails = ref({
       type: 0,
       header: "Notice",
@@ -334,6 +364,14 @@ export default {
       emit("goBack");
     };
 
+    const exportPdf = () => {
+      emit("exportPdf");
+    };
+
+    const epxortCsv = () => {
+      emit("exportCsv");
+    };
+
     const setupViewOnly = () => {
       textField.value = true;
       readOnly.value = true;
@@ -388,6 +426,8 @@ export default {
       AlertBox,
       disableClass,
       textDetails,
+      epxortCsv,
+      exportPdf,
     };
   },
 };

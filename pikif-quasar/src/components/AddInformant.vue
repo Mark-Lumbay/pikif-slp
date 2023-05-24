@@ -745,8 +745,12 @@ import { useRoute } from "vue-router";
 import { getOneStudent } from "../services/services";
 import store from "../store";
 import AlertBox from "src/components/AlertBox.vue";
-import { jsPDF } from "jspdf";
-import autoTable from "jspdf-autotable";
+// import { jsPDF } from "jspdf";
+// import autoTable from "jspdf-autotable";
+
+import jsPDF from "jspdf";
+import { applyPlugin } from "jspdf-autotable";
+applyPlugin(jsPDF);
 import { exportFile } from "quasar";
 
 export default {

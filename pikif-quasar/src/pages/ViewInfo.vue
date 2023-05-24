@@ -33,6 +33,8 @@
           :withProp="prop"
           @client-findings-update="saveUpdatedClientFindings"
           @new-client-findings="addNewFindings"
+          @export-pdf="exportToPDFBasic"
+          @export-csv="exportToCSV"
         ></AddFindings>
       </div>
 
@@ -66,8 +68,12 @@ import { ref, reactive, computed, onMounted } from "vue";
 import { useRoute } from "vue-router";
 import { updateInfo, addFindings } from "src/services/services";
 import { getOneStudent } from "../services/services";
-import { jsPDF } from "jspdf";
-import autoTable from "jspdf-autotable";
+// import { jsPDF } from "jspdf";
+// import autoTable from "jspdf-autotable";
+
+import jsPDF from "jspdf";
+import { applyPlugin } from "jspdf-autotable";
+applyPlugin(jsPDF);
 import store from "../store/index";
 
 export default {
@@ -82,6 +88,7 @@ export default {
     const route = useRoute();
     const id = route.params.id;
     const studentData = ref([]);
+    const exportObj = ref([]);
 
     onMounted(async () => {
       const data = await getOneStudent(route.params.id);
@@ -89,6 +96,11 @@ export default {
       studentData.value.clientInfo = data.clientInfo;
       studentData.value.informantInfo = data.informantInfo;
       studentData.value.initialFindings = data.initialFindings;
+
+      exportObj.value.clientName = `${data.clientInfo.firstName} ${data.clientInfo.middleName} ${data.clientInfo.lastName}`;
+      exportObj.value.findings = data.initialFindings.map(
+        (item) => item.findings
+      );
     });
 
     const prop = true;
@@ -138,9 +150,18 @@ export default {
     };
 
     const exportToPDFBasic = () => {
-      const doc = new jsPDF();
-      const data = studentData.value;
-      console.log(data.clientInfo);
+      const doc = new jsPDF("landscape");
+      const headers = ["Client Name", "Findings"];
+
+      console.log("TEST");
+
+      const data = [[exportObj.value.clientName, exportObj.value.findings]];
+
+      doc.autoTable({
+        head: [headers],
+        body: data,
+      });
+      doc.save("Export.pdf");
     };
 
     function wrapCsvValue(val, formatFn, row) {

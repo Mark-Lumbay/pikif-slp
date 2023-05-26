@@ -515,7 +515,9 @@
                 type="text"
                 placeholder="Other options"
                 :disabled="
-                  clientPersonalInfo.clientInfo.materials.wall !== 'Others'
+                  clientPersonalInfo.clientInfo.materials.wall !== 'Others' ||
+                  !editMode ||
+                  !addMode
                 "
                 v-model="clientPersonalInfo.clientInfo.materials.wallOthers"
               />
@@ -569,7 +571,9 @@
                 type="text"
                 placeholder="Other options"
                 :disabled="
-                  clientPersonalInfo.clientInfo.materials.floor !== 'Others'
+                  clientPersonalInfo.clientInfo.materials.floor !== 'Others' ||
+                  !editMode ||
+                  !addMode
                 "
                 v-model="clientPersonalInfo.clientInfo.materials.floorOthers"
               />

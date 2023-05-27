@@ -1,13 +1,13 @@
 <template>
-  <div class="flex space-y-4 p-6">
+  <div class="flex space-y-6 py-12 px-24">
     <div
       class="flex w-full h-[10vh] bg-white shadow-md sm:rounded-lg items-center px-6"
     >
       <div class="flex w-[50%]">
-        <p class="font-semibold text-2xl">Welcome back, {{ getName }}!</p>
+        <p class="font-medium text-3xl">Welcome back, {{ getName }}!</p>
       </div>
       <div class="flex w-[50%] justify-end">
-        <p class="text-xl">Monday, May 8, 2023</p>
+        <p class="text-xl font-medium">{{ today }}</p>
       </div>
 
       <div class="flex"></div>
@@ -280,6 +280,12 @@ export default {
     const store2 = useStore();
     const authLevel = ref("");
     const showAlert = ref(false);
+    const today = new Date().toLocaleDateString("en-US", {
+      weekday: "long",
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
     const textDetails = ref({
       type: 0,
       header: "Notice",
@@ -665,6 +671,7 @@ export default {
       showAlert,
       toggleAlert,
       textDetails,
+      today,
     };
   },
 };

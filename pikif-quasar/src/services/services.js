@@ -358,13 +358,9 @@ export async function updateStatus(newStatus, id) {
 }
 
 export async function getUserStatus(id) {
-  const token = store.getters.getToken;
+  console.log(token);
   try {
-    const status = await apiClient.get(`/getActiveStatus/${id}`, {
-      headers: {
-        authorization: `Bearer ${token}`,
-      },
-    });
+    const status = await apiClient.get(`/getActiveStatus/${id}`);
 
     return status.data;
   } catch (err) {

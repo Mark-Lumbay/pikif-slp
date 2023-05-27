@@ -36,7 +36,7 @@
 import store from "../store";
 import { auth } from "../firebase.js";
 import { getUserAuth } from "src/services/services.js";
-import { apiClient } from "../services/services";
+import { getUserStatus } from "../services/services";
 import { useRouter } from "vue-router";
 
 let user = store.getters.getState;
@@ -59,12 +59,15 @@ async function runCheck() {
   if (!user) {
     user = await getAuthState();
   } else {
+    const status = await getUserStatus(user.claims.user_id);
+    console.log(status);
     const userDetails = {
       fName: user.claims.firstName,
       lName: user.claims.lastName,
       user: user,
       email: user.claims.email,
       uid: user.claims.user_id,
+      isActive: status.data,
     };
 
     const token = user.token;

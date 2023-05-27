@@ -132,11 +132,11 @@ const store = createStore({
           context.commit("setUserToken", token);
           context.commit("setAuth", authLevel.data.auth);
 
-          return;
-        } else {
-          throw new Error("login failed");
+          return { status: true };
         }
-      } catch {}
+      } catch {
+        return { status: false };
+      }
     },
 
     async storeUserToken(context, token) {

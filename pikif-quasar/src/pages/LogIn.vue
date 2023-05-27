@@ -69,16 +69,6 @@
                 Sign Up
               </button>
             </div>
-
-            <!-- <div
-              class="mb-5 w-full bg-red-500 p-2 text-white font-semibold rounded"
-              v-if="incorrect"
-              @click.prevent="closeModal"
-            >
-              <h3 class="text-sm">
-                Account with the same email already exists
-              </h3>
-            </div> -->
           </form>
         </div>
       </div>
@@ -90,6 +80,12 @@
     @close-modal="closeResetModal"
     @reset-pass="forgetPass"
   ></ForgetPassword>
+
+  <AlertBox
+    :show-alert="inactiveAlert"
+    @toggle-alert="toggleInactive"
+    :message-obj="inactiveMsg"
+  ></AlertBox>
 </template>
 
 <script>
@@ -100,9 +96,10 @@ import { resetPass } from "../services/services";
 import { auth } from "../firebase.js";
 import ForgetPassword from "src/components/ForgetPassword.vue";
 import store from "../store/index";
+import AlertBox from "src/components/AlertBox.vue";
 
 export default {
-  components: { ForgetPassword },
+  components: { ForgetPassword, AlertBox },
   setup() {
     const email = ref("");
     const password = ref("");
@@ -113,10 +110,18 @@ export default {
     const resetModal = ref(false);
     const authErr = ref(false);
 
-    onMounted(() => {
-      authErr.value = store.getters.getAuthErr;
-      console.log(authErr.value);
+    const inactiveAlert = ref(false);
+    const inactiveMsg = ref({
+      type: 0,
+      header: "Notice",
+      bodyText:
+        "Your account was deactivated. Please contact an administrator if you think this is a mistake.",
     });
+
+    // onMounted(() => {
+    //   authErr.value = store.getters.getAuthErr;
+    //   console.log(authErr.value);
+    // });
 
     watch(
       () => authErr.value,
@@ -125,15 +130,27 @@ export default {
       }
     );
 
+    const toggleInactive = () => (inactiveAlert.value = !inactiveAlert.value);
     const closeResetModal = () => (resetModal.value = false);
     const showResetModal = () => (resetModal.value = true);
     const loginUser = async () => {
       try {
-        await store.dispatch("login", {
+        const loginReq = await store.dispatch("login", {
           email: email.value,
           password: password.value,
         });
-        router.push("/");
+
+        if (loginReq.status) {
+          const checkActive = store.getters.getActiveStatus;
+
+          if (checkActive) {
+            router.push("/");
+          } else {
+            inactiveAlert.value = true;
+          }
+        } else {
+          incorrect.value = true;
+        }
       } catch (err) {
         incorrect.value = true;
       }
@@ -162,6 +179,9 @@ export default {
       closeResetModal,
       showResetModal,
       resetModal,
+      inactiveAlert,
+      toggleInactive,
+      inactiveMsg,
     };
   },
 };

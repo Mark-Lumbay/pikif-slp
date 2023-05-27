@@ -31,8 +31,21 @@
           </form>
         </div>
 
-        <div class="w-[50%] flex justify-end">
-          <q-btn-dropdown color="primary" :label="`Filter: ${filterStr}`">
+        <div class="w-[50%] flex flex-row justify-end space-x-3">
+          <div class="flex">
+            <button
+              class="transition-colors ease-in-out text-btnGreen h-12 hover:text-white hover:bg-btnGreen hover:border-transparent font-semibold py-2 px-4 border border-btnGreen rounded"
+              @click.prevent="showModal"
+            >
+              <q-icon name="las la-print" size="32px"></q-icon>
+              Generate Report
+            </button>
+          </div>
+
+          <q-btn-dropdown
+            :label="`Filter: ${filterStr}`"
+            class="transition-colors ease-in-out text-white h-12 hover:text-white bg-primaryBtn hover:bg-primaryHovBtn hover:border-transparent font-semibold py-2 px-4 border border-primaryBtn rounded"
+          >
             <q-list>
               <q-item clickable v-close-popup @click="changeFilter(true)">
                 <q-item-section>
@@ -212,24 +225,6 @@
             <!-- Other columns... -->
           </template>
         </q-table>
-      </div>
-    </div>
-
-    <div class="shadow-md sm:rounded-lg flex-3 p-6 bg-white ml-6">
-      <div class="flex flex-row items-center mx-10">
-        <q-icon
-          name="las la-print"
-          size="200px"
-          class="text-black mx-20 my-6"
-        ></q-icon>
-      </div>
-      <div>
-        <button
-          class="px-4 py-2 bg-primaryRed text-white text-base font-medium rounded-md w-full shadow-sm hover:bg-primaryRedHover focus:outline-none focus:ring-2 focus:ring-green-300"
-          @click.prevent="showModal"
-        >
-          Generate Report
-        </button>
       </div>
     </div>
   </div>

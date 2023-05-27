@@ -397,7 +397,8 @@
                 placeholder="Other options"
                 :disabled="
                   clientPersonalInfo.clientInfo.condition !== 'Others' ||
-                  !editMode
+                  !editMode ||
+                  !addMode
                 "
                 v-model="clientPersonalInfo.clientInfo.conditionOthers"
               />

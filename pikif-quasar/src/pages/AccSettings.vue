@@ -205,7 +205,6 @@ export default {
     const userData = ref({
       firstName: "",
       lastName: "",
-      authorization: "read only",
     });
 
     // Other Variables

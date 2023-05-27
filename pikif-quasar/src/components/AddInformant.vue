@@ -167,7 +167,9 @@
                 placeholder="Specify job"
                 v-model="informantPersonalInfo.informantInfo.occupationOthers"
                 :disabled="
-                  informantPersonalInfo.informantInfo.occupation !== 'Others'
+                  informantPersonalInfo.informantInfo.occupation !== 'Others' ||
+                  !editMode ||
+                  !addMode
                 "
               />
             </div>
@@ -601,7 +603,9 @@
                 type="text"
                 placeholder="Other options"
                 :disabled="
-                  informantPersonalInfo.informantInfo.otherInc !== 'Others'
+                  informantPersonalInfo.informantInfo.otherInc !== 'Others' ||
+                  !editMode ||
+                  !addMode
                 "
                 v-model="informantPersonalInfo.informantInfo.otherIncOthers"
               />
@@ -652,7 +656,7 @@
                 type="text"
                 placeholder="Specify Other Problems:"
                 v-model="informantPersonalInfo.informantInfo.probsOthers"
-                :disabled="!checkBoxes[7].checked"
+                :disabled="!checkBoxes[7].checked || !addMode"
               />
             </div>
           </div>
@@ -897,6 +901,7 @@ export default {
     const floorOthers = ref("");
 
     const educAss = ref(false);
+    const addMode = ref(true);
 
     const checkBoxes = ref([
       { text: "Educational Assistance", checked: false },
@@ -1221,6 +1226,7 @@ export default {
       disableClass,
       textDetails,
       exportToCSV,
+      addMode,
     };
   },
 };

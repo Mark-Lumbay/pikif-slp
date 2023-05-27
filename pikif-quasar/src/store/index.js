@@ -113,6 +113,10 @@ const store = createStore({
       state.authError = true;
     },
 
+    setUserActive(state, status) {
+      state.isActive = status;
+    },
+
     removeUserToken(state) {
       state.token = null;
     },
@@ -127,15 +131,21 @@ const store = createStore({
         );
         if (response) {
           const token = await response.user.getIdToken(true);
+          const status = await getUserStatus(response.user.uid);
+          if (!status.data) return { status: true, active: false };
+
           const authLevel = await getUserAuth(response.user.uid);
 
+          console.log(status.data);
+
           context.commit("setUserToken", token);
+          context.commit("setUserActive", status.data);
           context.commit("setAuth", authLevel.data.auth);
 
-          return { status: true };
+          return { status: true, active: true };
         }
       } catch {
-        return { status: false };
+        return { status: false, active: true };
       }
     },
 
@@ -196,7 +206,6 @@ auth.onAuthStateChanged(async (newUser) => {
     const token = await newUser.getIdToken(true);
     const authLevel = await getUserAuth(user.claims.user_id);
     const status = await getUserStatus(user.claims.user_id);
-
     const fName = user.claims.firstName;
     const lName = user.claims.lastName;
     const details = {

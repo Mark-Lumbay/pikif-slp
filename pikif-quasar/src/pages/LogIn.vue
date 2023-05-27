@@ -141,12 +141,11 @@ export default {
         });
 
         if (loginReq.status) {
-          const checkActive = store.getters.getActiveStatus;
-
-          if (checkActive) {
-            router.push("/");
-          } else {
+          if (!loginReq.active) {
             inactiveAlert.value = true;
+            return;
+          } else {
+            router.push("/");
           }
         } else {
           incorrect.value = true;

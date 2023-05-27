@@ -60,7 +60,6 @@ async function runCheck() {
     user = await getAuthState();
   } else {
     const status = await getUserStatus(user.claims.user_id);
-    console.log(status);
     const userDetails = {
       fName: user.claims.firstName,
       lName: user.claims.lastName,

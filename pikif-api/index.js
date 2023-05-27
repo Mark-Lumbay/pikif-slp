@@ -16,16 +16,15 @@ app.use(json());
 app.use(cors());
 app.use(async (req, res, next) => {
   const header = req.headers.authorization;
-  const excludedEndpointPattern = /^\/getActiveStatus\/\d+$/; // Matches /getActiveStatus/:id where :id is a number
+  // const excludedEndpointPattern = /^\/getActiveStatus\/\d+$/; // Matches /getActiveStatus/:id where :id is a number
 
-  const excluded = excludedEndpointPattern.test(req.path);
-  console.log(excluded);
+  // const excluded = excludedEndpointPattern.test(req.path);
+  // console.log(excluded);
 
   if (
     req.path === "/island-kids/login" ||
     req.path === "/island-kids/register" ||
-    req.path === "/island-kids/system-message" ||
-    excluded
+    req.path === "/island-kids/system-message"
   ) {
     return next();
   }

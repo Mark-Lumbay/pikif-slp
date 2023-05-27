@@ -201,7 +201,7 @@ export default {
       };
 
       const result = await checkUserExists(userData);
-      if (result.status) {
+      if (result) {
         duplicate.value = true;
       } else {
         nextPage();

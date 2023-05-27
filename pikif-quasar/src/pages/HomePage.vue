@@ -186,17 +186,12 @@
           @row-click="viewRow"
         >
           <template v-slot:body-cell-actions="props">
-            <div class="w-full h-full flex justify-center items-center pt-2">
-              <q-btn
-                :icon="
-                  props.row.status === true
-                    ? 'las la-chevron-up'
-                    : 'las la-chevron-down'
-                "
-                @click.stop="
+            <q-td key="id" :props="props" @row-click="viewRow" class="">
+              <q-toggle
+                v-model="props.row.status"
+                @update:model-value="
                   () => {
                     if (authLevel !== 'Partial-Update') {
-                      props.row.status = !props.row.status;
                       changeStatus(props.key);
                       return;
                     } else {
@@ -204,12 +199,8 @@
                     }
                   }
                 "
-                class="text-black cursor-pointer"
-                dense
-                round
-                flat
-              ></q-btn>
-            </div>
+              />
+            </q-td>
           </template>
 
           <template v-slot:body-cell-status="props">
@@ -220,7 +211,14 @@
               :class="getStatusColor(props.row.status)"
               class="text-center font-semibold"
             >
-              {{ props.row.status === true ? "Active" : "Inactive" }}
+              <q-icon
+                name="lar la-circle"
+                class="rounded-full"
+                size="24px"
+                :class="
+                  props.row.status === true ? 'bg-btnGreen' : 'bg-primaryRed'
+                "
+              ></q-icon>
             </q-td>
             <!-- Other columns... -->
           </template>
@@ -362,6 +360,14 @@ export default {
         "q-table-column": "name",
       },
       {
+        name: "status",
+        label: "Status",
+        field: (row) => row.status,
+        format: (val) => `${val}`,
+        sortable: true,
+        align: "center",
+      },
+      {
         name: "fullName",
         label: "Name",
         field: (row) => row.fullName,
@@ -374,6 +380,7 @@ export default {
         label: "Age",
         field: "age",
         sortable: true,
+        sort: (a, b) => parseInt(a, 10) - parseInt(b, 10),
       },
       {
         name: "sex",
@@ -395,13 +402,7 @@ export default {
         format: (val) => `${val}`,
         sortable: true,
       },
-      {
-        name: "status",
-        label: "Status",
-        field: (row) => row.status,
-        format: (val) => `${val}`,
-        sortable: true,
-      },
+
       {
         name: "condition",
         label: "Housing Condition",

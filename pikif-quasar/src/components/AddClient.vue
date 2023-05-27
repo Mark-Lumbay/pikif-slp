@@ -700,15 +700,17 @@ export default {
           const data = await getOneStudent(route.params.id);
           clientPersonalInfo.value.id = route.params.id;
           clientPersonalInfo.value.clientInfo = data.clientInfo;
-          originalObj.value.clientInfo = data.clientInfo;
+          originalObj.clientInfo = data.clientInfo;
 
           setupViewOnly();
         } else {
           clientPersonalInfo.value.id = route.params.id;
           clientPersonalInfo.value.clientInfo = data.clientInfo;
-          originalObj.value.clientInfo = data.clientInfo;
+          originalObj.clientInfo = data.clientInfo;
           setupViewOnly();
         }
+
+        originalObj = toRawObject(originalObj);
 
         exportObj.value.fullName = `${clientPersonalInfo.value.clientInfo.firstName} ${clientPersonalInfo.value.clientInfo.middleName} ${clientPersonalInfo.value.clientInfo.lastName}`;
         exportObj.value.age = clientPersonalInfo.value.clientInfo.age;
@@ -751,9 +753,9 @@ export default {
     const addMode = ref(true);
     const showAlert = ref(false);
 
-    const originalObj = ref({
+    let originalObj = {
       clientInfo: {},
-    });
+    };
     const clientPersonalInfo = ref({
       clientInfo: {
         active: true,
@@ -793,6 +795,24 @@ export default {
     });
 
     // Functions
+    function toRawObject(reactiveObj) {
+      let rawObj = {};
+      for (let key in reactiveObj) {
+        let value = reactiveObj[key];
+        if (value?.value !== undefined) {
+          // If it's a ref or computed ref, use the value directly
+          rawObj[key] = value.value;
+        } else if (typeof value === "object" && value !== null) {
+          // If it's a nested object, call toRawObject recursively
+          rawObj[key] = toRawObject(value);
+        } else {
+          // Otherwise, just copy the value
+          rawObj[key] = value;
+        }
+      }
+      return rawObj;
+    }
+
     const exportToPDFBasic = () => {
       const doc = new jsPDF("landscape");
       // const data = filteredArr.value;
@@ -965,20 +985,19 @@ export default {
       }
 
       if (validate()) {
-        if (
-          originalObj.value.clientInfo !== clientPersonalInfo.value.clientInfo
-        ) {
-          emit(
-            `${
-              updateMode.value === false
-                ? "clientInfoSubmit"
-                : "clientInfoUpdate"
-            }`,
-            clientPersonalInfo.value.clientInfo
-          );
-        }
+        if (updateMode.value === false) {
+          emit("clientInfoSubmit", clientPersonalInfo.value.clientInfo);
+        } else {
+          const origObj = JSON.stringify(originalObj.clientInfo);
+          const newObj = JSON.stringify(clientPersonalInfo.value.clientInfo);
 
-        if (updateMode.value === true) setupViewOnly();
+          if (origObj !== newObj) {
+            emit("clientInfoUpdate", clientPersonalInfo.value.clientInfo);
+            setupViewOnly();
+          } else {
+            setupViewOnly();
+          }
+        }
       } else {
         lackingErr.value = true;
       }

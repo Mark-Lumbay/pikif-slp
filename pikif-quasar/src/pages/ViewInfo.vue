@@ -1,7 +1,7 @@
 <template>
   <div class="px-6 py-8 flex items-center justify-center h-full">
     <div
-      class="w-[90%] flex flex-col shadow-md rounded-xl p-4 space-x-4 bg-white mt-8"
+      class="flex flex-col shadow-md rounded-xl p-8 space-x-4 bg-white mt-8"
       v-if="!showMsg"
     >
       <div>
@@ -13,7 +13,7 @@
     </div>
 
     <div
-      class="w-[90%] flex flex-col shadow-md rounded-xl p-4 space-x-4 bg-white mt-8"
+      class="flex flex-col shadow-md rounded-xl p-8 space-x-4 bg-white mt-8"
       v-if="!showMsg"
     >
       <div>
@@ -25,7 +25,7 @@
     </div>
 
     <div
-      class="w-[90%] flex flex-col shadow-md rounded-xl p-4 space-x-4 bg-white mt-8"
+      class="flex flex-col shadow-md rounded-xl p-8 space-x-4 bg-white mt-8"
       v-if="!showMsg"
     >
       <div>
@@ -38,7 +38,7 @@
         ></AddFindings>
       </div>
 
-      <div class="flex w-full justify-end space-x-4 mt-4 px-3" v-if="hasUpdate">
+      <div class="flex justify-end space-x-4 mt-4 px-3" v-if="hasUpdate">
         <button
           class="bg-primaryRed mb-2 w-[12vw] hover:bg-primaryRedHover text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline h-14 transition-all ease-in-out"
           @click.prevent="updateData"

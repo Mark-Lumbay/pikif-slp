@@ -741,7 +741,7 @@
 </template>
 
 <script>
-import { ref, defineEmits, computed, onMounted } from "vue";
+import { ref, defineEmits, computed, onMounted, toRaw } from "vue";
 import { useStore } from "vuex";
 import { useRoute } from "vue-router";
 import { getOneStudent } from "../services/services";
@@ -790,14 +790,14 @@ export default {
           const data = await getOneStudent(route.params.id);
           informantPersonalInfo.value.id = route.params.id;
           informantPersonalInfo.value.informantInfo = data.informantInfo;
-          originalObj.value.informantInfo = data.informantInfo;
+          originalObj.informantInfo = data.informantInfo;
 
           fullName.value = `${data.clientInfo.firstName} ${data.clientInfo.middleName} ${data.clientInfo.lastName}`;
           setupViewOnly();
         } else {
           informantPersonalInfo.value.id = route.params.id;
           informantPersonalInfo.value.informantInfo = data.informantInfo;
-          originalObj.value.informantInfo = data.informantInfo;
+          originalObj.informantInfo = data.informantInfo;
 
           fullName.value = `${data.clientInfo.firstName} ${data.clientInfo.middleName} ${data.clientInfo.lastName}`;
           setupViewOnly();
@@ -849,7 +849,10 @@ export default {
           const othersCheckbox = checkBoxes.value.find(
             (checkbox) => checkbox.text === "Others"
           );
-          if (othersCheckbox && othersCheckbox.checked) {
+          if (
+            othersCheckbox &&
+            informantPersonalInfo.value.informantInfo.probsOthers
+          ) {
             return [
               ...checkBoxes.value,
               { text: checkBoxesOthers.value, checked: true },
@@ -866,12 +869,17 @@ export default {
             )
             .map((checkbox) => checkbox.text);
         });
+
+        if (informantPersonalInfo.value.informantInfo.probsOthers) {
+          checkBoxes.value[7].checked = true;
+        }
+        originalObj = toRawObject(originalObj);
       }
     });
 
-    const originalObj = ref({
+    let originalObj = {
       informantInfo: {},
-    });
+    };
 
     const lackingErr = ref(false);
     const readOnly = ref(false);
@@ -949,10 +957,7 @@ export default {
             (checkbox) => checkbox.text === "Others"
           );
           if (othersCheckbox && othersCheckbox.checked) {
-            return [
-              ...checkBoxes.value,
-              { text: checkBoxesOthers.value, checked: true },
-            ]
+            return [...checkBoxes.value]
               .filter(
                 (checkbox) => checkbox.checked && checkbox.text !== "Others"
               )
@@ -1105,7 +1110,8 @@ export default {
         } else if (
           field !== "occupationOthers" &&
           field !== "otherIncOthers" &&
-          field !== "probsOthers"
+          field !== "probsOthers" &&
+          field !== "probs"
         ) {
           if (
             informantPersonalInfo.value.informantInfo[field] === "" ||
@@ -1122,12 +1128,15 @@ export default {
     const submitInformantInfo = () => {
       for (const field of othersFields) {
         const property = `${field}Others`;
+
         if (informantPersonalInfo.value.informantInfo[field] !== "Others") {
           informantPersonalInfo.value.informantInfo[property] = "";
         } else {
           if (
-            informantPersonalInfo.value.informantInfo[property].trim() === ""
+            informantPersonalInfo.value.informantInfo[property].trim() === " "
           ) {
+            console.log("OTEN");
+
             lackingErr.value = true;
             return;
           }
@@ -1139,6 +1148,7 @@ export default {
       );
 
       if (othersCheckbox && !othersCheckbox.checked) {
+        console.log("TEST");
         informantPersonalInfo.value.informantInfo.probsOthers = "";
       } else {
         if (
@@ -1166,21 +1176,30 @@ export default {
       // }
 
       if (validate()) {
-        const plainObj = toRawObject(informantPersonalInfo.value.informantInfo);
-        if (
-          originalObj.value.informantInfo !==
-          informantPersonalInfo.value.informantInfo
-        ) {
-          emit(
-            `${
-              updateMode.value === false
-                ? "informantInfoSubmit"
-                : "informantInfoUpdate"
-            }`,
-            plainObj
+        if (updateMode.value === false) {
+          const plainObj = toRawObject(
+            informantPersonalInfo.value.informantInfo
           );
+          emit("informantInfoSubmit", plainObj);
+        } else {
+          const origObj = JSON.stringify(originalObj.informantInfo);
+          const newObj = JSON.stringify(
+            informantPersonalInfo.value.informantInfo
+          );
+
+          console.log(origObj);
+          console.log(newObj);
+
+          if (origObj !== newObj) {
+            emit(
+              "informantInfoUpdate",
+              informantPersonalInfo.value.informantInfo
+            );
+            setupViewOnly();
+          } else {
+            setupViewOnly();
+          }
         }
-        if (updateMode.value === true) setupViewOnly();
       } else {
         lackingErr.value = true;
       }

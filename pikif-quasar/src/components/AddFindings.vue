@@ -296,13 +296,15 @@ export default {
         if (!data) {
           const data = await getOneStudent(route.params.id);
           clientFindingsInfo.value = data.initialFindings;
-          originalObj.value.clientFindings = data.initialFindings;
+          originalObj = data.initialFindings;
           setupViewOnly();
         } else {
           clientFindingsInfo.value = data.initialFindings;
-          originalObj.value.clientFindings = data.initialFindings;
+          originalObj = data.initialFindings;
           setupViewOnly();
         }
+
+        // originalObj = toRawObject(originalObj);
       }
     });
 
@@ -312,9 +314,7 @@ export default {
       date: "",
       findings: "",
     });
-    const originalObj = ref({
-      clientFindings: {},
-    });
+    let originalObj = [];
 
     const disableClass = computed(() => {
       return authLevel.value === "Partial-Update" ? "disabled" : "";
@@ -324,9 +324,31 @@ export default {
       showAlert.value = !showAlert.value;
     };
 
+    function toRawObject(reactiveObj) {
+      let rawObj = {};
+      for (let key in reactiveObj) {
+        let value = reactiveObj[key];
+        if (value?.value !== undefined) {
+          // If it's a ref or computed ref, use the value directly
+          rawObj[key] = value.value;
+        } else if (typeof value === "object" && value !== null) {
+          // If it's a nested object, call toRawObject recursively
+          rawObj[key] = toRawObject(value);
+        } else {
+          // Otherwise, just copy the value
+          rawObj[key] = value;
+        }
+      }
+      return rawObj;
+    }
+
     const submitClientFindings = () => {
-      if (updateMode.value == true) {
-        if (originalObj.value.clientFindings !== clientFindingsInfo.value) {
+      if (updateMode.value === true) {
+        const raw = toRawObject(originalObj);
+        const origObj = JSON.stringify(raw);
+        const newObj = JSON.stringify(clientFindingsInfo.value);
+
+        if (origObj !== newObj) {
           emit("clientFindingsUpdate", clientFindingsInfo.value);
         }
       } else {

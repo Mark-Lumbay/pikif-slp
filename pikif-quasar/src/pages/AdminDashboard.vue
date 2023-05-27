@@ -30,7 +30,6 @@
               "
             />
           </q-td>
-          <!-- Other columns... -->
         </template>
       </q-table>
     </div>

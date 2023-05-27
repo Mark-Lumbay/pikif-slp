@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- <div class="flex w-full mb-6"></div> -->
-    <div class="flex flex-row">
+    <div class="flex w-[65vw] flex-row">
       <div class="w-full">
         <form>
           <div class="flex flex-wrap -mx-3 mb-4 w-full justify-center mt-6">

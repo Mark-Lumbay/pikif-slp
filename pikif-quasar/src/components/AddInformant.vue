@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="flex flex-row">
+    <div class="flex flex-row w-[65vw] h-[70vh] overflow-y-auto">
       <div class="w-full">
         <form>
           <div class="flex flex-wrap -mx-3 mb-4 w-full justify-center mt-6">

@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="flex w-full mb-6"></div>
-    <div class="flex flex-row w-full h-full">
+    <div class="flex flex-row w-[65vw] h-full">
       <div class="flex w-full mb-6" v-if="!addNewFindingsMode && iterateMode">
         <form
           v-for="(item, index) in clientFindingsInfo"

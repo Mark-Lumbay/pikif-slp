@@ -167,9 +167,8 @@
                 placeholder="Specify job"
                 v-model="informantPersonalInfo.informantInfo.occupationOthers"
                 :disabled="
-                  informantPersonalInfo.informantInfo.occupation !== 'Others' ||
                   !editMode ||
-                  !addMode
+                  informantPersonalInfo.informantInfo.occupation !== 'Others'
                 "
               />
             </div>
@@ -603,9 +602,8 @@
                 type="text"
                 placeholder="Other options"
                 :disabled="
-                  informantPersonalInfo.informantInfo.otherInc !== 'Others' ||
                   !editMode ||
-                  !addMode
+                  informantPersonalInfo.informantInfo.otherInc !== 'Others'
                 "
                 v-model="informantPersonalInfo.informantInfo.otherIncOthers"
               />
@@ -656,7 +654,7 @@
                 type="text"
                 placeholder="Specify Other Problems:"
                 v-model="informantPersonalInfo.informantInfo.probsOthers"
-                :disabled="!checkBoxes[7].checked || !addMode"
+                :disabled="!checkBoxes[7].checked || !editMode"
               />
             </div>
           </div>
@@ -717,7 +715,7 @@
         </div>
       </div>
 
-      <div class="flex w-full justify-end space-x-4 mt-4" v-if="editMode">
+      <div class="flex w-full justify-end space-x-4 mt-4" v-if="updateMode">
         <button
           class="bg-primaryRed mb-2 w-[12vw] hover:bg-primaryRedHover text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline h-14 transition-all ease-in-out"
           @click.prevent="setupCancelEdit"
@@ -878,7 +876,7 @@ export default {
     const lackingErr = ref(false);
     const readOnly = ref(false);
     const textField = ref(false);
-    const editMode = ref(false);
+    const editMode = ref(true);
     const updateMode = ref(false);
     const showAlert = ref(false);
 

@@ -396,9 +396,8 @@
                 type="text"
                 placeholder="Other options"
                 :disabled="
-                  clientPersonalInfo.clientInfo.condition !== 'Others' ||
                   !editMode ||
-                  !addMode
+                  clientPersonalInfo.clientInfo.condition !== 'Others'
                 "
                 v-model="clientPersonalInfo.clientInfo.conditionOthers"
               />
@@ -460,9 +459,8 @@
                 type="text"
                 placeholder="Other options"
                 :disabled="
-                  clientPersonalInfo.clientInfo.materials.roof !== 'Others' ||
                   !editMode ||
-                  !addMode
+                  clientPersonalInfo.clientInfo.materials.roof !== 'Others'
                 "
                 v-model="clientPersonalInfo.clientInfo.materials.roofOthers"
               />
@@ -516,9 +514,8 @@
                 type="text"
                 placeholder="Other options"
                 :disabled="
-                  clientPersonalInfo.clientInfo.materials.wall !== 'Others' ||
                   !editMode ||
-                  !addMode
+                  clientPersonalInfo.clientInfo.materials.wall !== 'Others'
                 "
                 v-model="clientPersonalInfo.clientInfo.materials.wallOthers"
               />
@@ -572,9 +569,8 @@
                 type="text"
                 placeholder="Other options"
                 :disabled="
-                  clientPersonalInfo.clientInfo.materials.floor !== 'Others' ||
                   !editMode ||
-                  !addMode
+                  clientPersonalInfo.clientInfo.materials.floor !== 'Others'
                 "
                 v-model="clientPersonalInfo.clientInfo.materials.floorOthers"
               />
@@ -631,7 +627,7 @@
         </div>
       </div>
 
-      <div class="flex w-full justify-end space-x-4 mt-4" v-if="editMode">
+      <div class="flex w-full justify-end space-x-4 mt-4" v-if="updateMode">
         <button
           class="bg-primaryRed mb-2 w-[12vw] hover:bg-primaryRedHover text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline h-14 transition-all ease-in-out"
           @click.prevent="setupCancelEdit"
@@ -750,7 +746,7 @@ export default {
     const lackingErr = ref(false);
     const readOnly = ref(false);
     const textField = ref(false);
-    const editMode = ref(false);
+    const editMode = ref(true);
     const updateMode = ref(false);
     const addMode = ref(true);
     const showAlert = ref(false);
@@ -887,6 +883,7 @@ export default {
       readOnly.value = true;
       updateMode.value = false;
       editMode.value = false;
+      addMode.value = false;
     };
 
     const setupEditMode = () => {
@@ -905,6 +902,7 @@ export default {
       textField.value = true;
       editMode.value = false;
       updateMode.value = false;
+      addMode.value = true;
     };
 
     const validate = () => {

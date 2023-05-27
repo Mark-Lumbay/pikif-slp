@@ -117,6 +117,7 @@ class userModel {
         lastName: lastName,
         auth: authorization,
         role: role,
+        isActive: true,
       });
 
       await auth().setCustomUserClaims(uid, {

@@ -1,228 +1,241 @@
 <template>
-  <div class="flex space-y-6 py-12 px-24">
-    <div
-      class="flex w-full h-[10vh] bg-white shadow-md sm:rounded-lg items-center px-6"
-    >
-      <div class="flex w-[50%]">
-        <p class="font-medium text-3xl">Welcome back, {{ getName }}!</p>
-      </div>
-      <div class="flex w-[50%] justify-end">
-        <p class="text-xl font-medium">{{ today }}</p>
-      </div>
-
-      <div class="flex"></div>
-    </div>
-
-    <div
-      class="relative overflow-x-auto shadow-md sm:rounded-lg flex-1 h-[70vh] p-6 bg-white"
-    >
-      <div class="flex w-full h-[5vh] items-center mb-4">
-        <div class="w-[50%] flex">
-          <form @submit.prevent="searchStudent">
-            <div class="border bg-slate-200 px-2 rounded">
-              <q-icon class="las la-search text-gray-500" size="32px"></q-icon>
-              <input
-                type="text"
-                placeholder="Search student"
-                class="w-80 h-10 bg-slate-200 p-3 rounded-l text-gray-700 focus:outline-none focus:shadow-outline"
-                v-model="search"
-              />
-            </div>
-          </form>
+  <div class="flex space-y-6 py-12 items-center">
+    <div class="flex px-16 space-y-6">
+      <div
+        class="flex w-full h-[10vh] bg-white shadow-md sm:rounded-lg items-center px-6"
+      >
+        <div class="flex w-[50%]">
+          <p class="font-medium text-3xl">Welcome back, {{ getName }}!</p>
+        </div>
+        <div class="flex w-[50%] justify-end">
+          <p class="text-xl font-medium">{{ today }}</p>
         </div>
 
-        <div class="w-[50%] flex flex-row justify-end space-x-3">
-          <div class="flex">
-            <button
-              class="transition-colors ease-in-out text-btnGreen h-12 hover:text-white hover:bg-btnGreen hover:border-transparent font-semibold py-2 px-4 border border-btnGreen rounded"
-              @click.prevent="showModal"
-            >
-              <q-icon name="las la-print" size="32px"></q-icon>
-              Generate Report
-            </button>
+        <div class="flex"></div>
+      </div>
+
+      <div
+        class="relative overflow-x-auto shadow-md sm:rounded-lg flex-1 h-[70vh] p-6 bg-white"
+      >
+        <div class="flex w-full h-[5vh] items-center mb-4">
+          <div class="w-[50%] flex">
+            <form @submit.prevent="searchStudent">
+              <div class="border bg-slate-200 px-2 rounded">
+                <q-icon
+                  class="las la-search text-gray-500"
+                  size="32px"
+                ></q-icon>
+                <input
+                  type="text"
+                  placeholder="Search student"
+                  class="w-80 h-10 bg-slate-200 p-3 rounded-l text-gray-700 focus:outline-none focus:shadow-outline"
+                  v-model="search"
+                />
+              </div>
+            </form>
           </div>
 
-          <q-btn-dropdown
-            :label="`Filter: ${filterStr}`"
-            class="transition-colors ease-in-out text-white h-12 hover:text-white bg-primaryBtn hover:bg-primaryHovBtn hover:border-transparent font-semibold py-2 px-4 border border-primaryBtn rounded"
-          >
-            <q-list>
-              <q-item clickable v-close-popup @click="changeFilter(true)">
-                <q-item-section>
-                  <q-item-label>Active</q-item-label>
-                </q-item-section>
-              </q-item>
-
-              <q-item clickable v-close-popup @click="changeFilter(false)">
-                <q-item-section>
-                  <q-item-label>Inactive</q-item-label>
-                </q-item-section>
-              </q-item>
-
-              <q-item
-                clickable
-                v-close-popup
-                @click="changeFilter('Pre-school')"
+          <div class="w-[50%] flex flex-row justify-end space-x-3">
+            <div class="flex">
+              <button
+                class="transition-colors ease-in-out text-btnGreen h-12 hover:text-white hover:bg-btnGreen hover:border-transparent font-semibold py-2 px-4 border border-btnGreen rounded"
+                @click.prevent="showModal"
               >
-                <q-item-section>
-                  <q-item-label>Pre-School</q-item-label>
-                </q-item-section>
-              </q-item>
+                <q-icon name="las la-print" size="32px"></q-icon>
+                Generate Report
+              </button>
+            </div>
 
-              <q-item
-                clickable
-                v-close-popup
-                @click="changeFilter('Elementary')"
-              >
-                <q-item-section>
-                  <q-item-label>Elementary</q-item-label>
-                </q-item-section>
-              </q-item>
-
-              <q-item
-                clickable
-                v-close-popup
-                @click="changeFilter('High School')"
-              >
-                <q-item-section>
-                  <q-item-label>High School</q-item-label>
-                </q-item-section>
-              </q-item>
-
-              <q-item
-                clickable
-                v-close-popup
-                @click="changeFilter('Senior High School')"
-              >
-                <q-item-section>
-                  <q-item-label>Senior High School</q-item-label>
-                </q-item-section>
-              </q-item>
-
-              <q-item clickable v-close-popup @click="changeFilter('College')">
-                <q-item-section>
-                  <q-item-label>College</q-item-label>
-                </q-item-section>
-              </q-item>
-
-              <q-item
-                clickable
-                v-close-popup
-                @click="changeFilter('Needly Adult')"
-              >
-                <q-item-section>
-                  <q-item-label>Needly Adult</q-item-label>
-                </q-item-section>
-              </q-item>
-
-              <q-item
-                clickable
-                v-close-popup
-                @click="changeFilter('Needly Youth')"
-              >
-                <q-item-section>
-                  <q-item-label>Needly Youth</q-item-label>
-                </q-item-section>
-              </q-item>
-
-              <q-item
-                clickable
-                v-close-popup
-                @click="changeFilter('Needly Senior Citizen')"
-              >
-                <q-item-section>
-                  <q-item-label>Needly Senior Citizen</q-item-label>
-                </q-item-section>
-              </q-item>
-
-              <q-item clickable v-close-popup @click="changeFilter('Survivor')">
-                <q-item-section>
-                  <q-item-label>Survivor</q-item-label>
-                </q-item-section>
-              </q-item>
-
-              <q-item clickable v-close-popup @click="changeFilter('CICL')">
-                <q-item-section>
-                  <q-item-label>CICL</q-item-label>
-                </q-item-section>
-              </q-item>
-
-              <q-item clickable v-close-popup @click="changeFilter('CEDC')">
-                <q-item-section>
-                  <q-item-label>CEDC</q-item-label>
-                </q-item-section>
-              </q-item>
-
-              <q-item clickable v-close-popup @click="changeFilter('C/PWD')">
-                <q-item-section>
-                  <q-item-label>C/PWD</q-item-label>
-                </q-item-section>
-              </q-item>
-
-              <q-item clickable v-close-popup @click="changeFilter('WEDC')">
-                <q-item-section>
-                  <q-item-label>WEDC</q-item-label>
-                </q-item-section>
-              </q-item>
-
-              <q-item clickable v-close-popup @click="changeFilter('None')">
-                <q-item-section>
-                  <q-item-label>None</q-item-label>
-                </q-item-section>
-              </q-item>
-            </q-list>
-          </q-btn-dropdown>
-        </div>
-      </div>
-      <div class="flex h-[88%]">
-        <q-table
-          bordered
-          title="Students"
-          :rows="returnFiltered"
-          :columns="columns"
-          row-key="id"
-          :pagination="initialPagination"
-          class="w-full"
-          @row-click="viewRow"
-        >
-          <template v-slot:body-cell-actions="props">
-            <q-td key="id" :props="props" @row-click="viewRow" class="">
-              <q-toggle
-                v-model="props.row.status"
-                @update:model-value="
-                  () => {
-                    if (authLevel !== 'Partial-Update') {
-                      changeStatus(props.key);
-                      return;
-                    } else {
-                      toggleAlert();
-                    }
-                  }
-                "
-              />
-            </q-td>
-          </template>
-
-          <template v-slot:body-cell-status="props">
-            <q-td
-              key="id"
-              :props="props"
-              @row-click="viewRow"
-              :class="getStatusColor(props.row.status)"
-              class="text-center font-semibold"
+            <q-btn-dropdown
+              :label="`Filter: ${filterStr}`"
+              class="transition-colors ease-in-out text-white h-12 hover:text-white bg-primaryBtn hover:bg-primaryHovBtn hover:border-transparent font-semibold py-2 px-4 border border-primaryBtn rounded"
             >
-              <q-icon
-                name="lar la-circle"
-                class="rounded-full"
-                size="24px"
-                :class="
-                  props.row.status === true ? 'bg-btnGreen' : 'bg-primaryRed'
-                "
-              ></q-icon>
-            </q-td>
-            <!-- Other columns... -->
-          </template>
-        </q-table>
+              <q-list>
+                <q-item clickable v-close-popup @click="changeFilter(true)">
+                  <q-item-section>
+                    <q-item-label>Active</q-item-label>
+                  </q-item-section>
+                </q-item>
+
+                <q-item clickable v-close-popup @click="changeFilter(false)">
+                  <q-item-section>
+                    <q-item-label>Inactive</q-item-label>
+                  </q-item-section>
+                </q-item>
+
+                <q-item
+                  clickable
+                  v-close-popup
+                  @click="changeFilter('Pre-school')"
+                >
+                  <q-item-section>
+                    <q-item-label>Pre-School</q-item-label>
+                  </q-item-section>
+                </q-item>
+
+                <q-item
+                  clickable
+                  v-close-popup
+                  @click="changeFilter('Elementary')"
+                >
+                  <q-item-section>
+                    <q-item-label>Elementary</q-item-label>
+                  </q-item-section>
+                </q-item>
+
+                <q-item
+                  clickable
+                  v-close-popup
+                  @click="changeFilter('High School')"
+                >
+                  <q-item-section>
+                    <q-item-label>High School</q-item-label>
+                  </q-item-section>
+                </q-item>
+
+                <q-item
+                  clickable
+                  v-close-popup
+                  @click="changeFilter('Senior High School')"
+                >
+                  <q-item-section>
+                    <q-item-label>Senior High School</q-item-label>
+                  </q-item-section>
+                </q-item>
+
+                <q-item
+                  clickable
+                  v-close-popup
+                  @click="changeFilter('College')"
+                >
+                  <q-item-section>
+                    <q-item-label>College</q-item-label>
+                  </q-item-section>
+                </q-item>
+
+                <q-item
+                  clickable
+                  v-close-popup
+                  @click="changeFilter('Needly Adult')"
+                >
+                  <q-item-section>
+                    <q-item-label>Needly Adult</q-item-label>
+                  </q-item-section>
+                </q-item>
+
+                <q-item
+                  clickable
+                  v-close-popup
+                  @click="changeFilter('Needly Youth')"
+                >
+                  <q-item-section>
+                    <q-item-label>Needly Youth</q-item-label>
+                  </q-item-section>
+                </q-item>
+
+                <q-item
+                  clickable
+                  v-close-popup
+                  @click="changeFilter('Needly Senior Citizen')"
+                >
+                  <q-item-section>
+                    <q-item-label>Needly Senior Citizen</q-item-label>
+                  </q-item-section>
+                </q-item>
+
+                <q-item
+                  clickable
+                  v-close-popup
+                  @click="changeFilter('Survivor')"
+                >
+                  <q-item-section>
+                    <q-item-label>Survivor</q-item-label>
+                  </q-item-section>
+                </q-item>
+
+                <q-item clickable v-close-popup @click="changeFilter('CICL')">
+                  <q-item-section>
+                    <q-item-label>CICL</q-item-label>
+                  </q-item-section>
+                </q-item>
+
+                <q-item clickable v-close-popup @click="changeFilter('CEDC')">
+                  <q-item-section>
+                    <q-item-label>CEDC</q-item-label>
+                  </q-item-section>
+                </q-item>
+
+                <q-item clickable v-close-popup @click="changeFilter('C/PWD')">
+                  <q-item-section>
+                    <q-item-label>C/PWD</q-item-label>
+                  </q-item-section>
+                </q-item>
+
+                <q-item clickable v-close-popup @click="changeFilter('WEDC')">
+                  <q-item-section>
+                    <q-item-label>WEDC</q-item-label>
+                  </q-item-section>
+                </q-item>
+
+                <q-item clickable v-close-popup @click="changeFilter('None')">
+                  <q-item-section>
+                    <q-item-label>None</q-item-label>
+                  </q-item-section>
+                </q-item>
+              </q-list>
+            </q-btn-dropdown>
+          </div>
+        </div>
+        <div class="flex h-[88%]">
+          <q-table
+            bordered
+            title="Students"
+            :rows="returnFiltered"
+            :columns="columns"
+            row-key="id"
+            :pagination="initialPagination"
+            class="w-full"
+            @row-click="viewRow"
+          >
+            <template v-slot:body-cell-actions="props">
+              <q-td key="id" :props="props" @row-click="viewRow" class="">
+                <q-toggle
+                  v-model="props.row.status"
+                  @update:model-value="
+                    () => {
+                      if (authLevel !== 'Partial-Update') {
+                        changeStatus(props.key);
+                        return;
+                      } else {
+                        toggleAlert();
+                      }
+                    }
+                  "
+                />
+              </q-td>
+            </template>
+
+            <template v-slot:body-cell-status="props">
+              <q-td
+                key="id"
+                :props="props"
+                @row-click="viewRow"
+                :class="getStatusColor(props.row.status)"
+                class="text-center font-semibold"
+              >
+                <q-icon
+                  name="lar la-circle"
+                  class="rounded-full"
+                  size="24px"
+                  :class="
+                    props.row.status === true ? 'bg-btnGreen' : 'bg-primaryRed'
+                  "
+                ></q-icon>
+              </q-td>
+              <!-- Other columns... -->
+            </template>
+          </q-table>
+        </div>
       </div>
     </div>
   </div>

@@ -166,6 +166,7 @@ export default {
         });
 
         if (loginReq.status) {
+          console.log(loginReq);
           if (!loginReq.active) {
             console.log(loginReq.active);
             inactiveAlert.value = true;

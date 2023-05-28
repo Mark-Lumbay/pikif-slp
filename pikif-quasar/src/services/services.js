@@ -3,7 +3,10 @@ import { useStore } from "vuex";
 import store from "../store";
 import { auth } from "../firebase.js";
 import { sendPasswordResetEmail } from "firebase/auth";
+import { Dialog } from "quasar";
+import { router } from "src/boot/router";
 
+let ctr = 0;
 const apiClient = axios.create({
   baseURL: "https://pikif-slp-production.up.railway.app/island-kids", // Replace with your API endpoint
 });
@@ -14,7 +17,15 @@ apiClient.interceptors.response.use(
   },
   (err) => {
     if (err.response.status === 401) {
-      window.location.href = "/login";
+      Dialog.create({
+        title: "Account Notice",
+        message:
+          " Your account has been disabled. Please contact an administrator if you think that this is a mistake",
+        cancel: true,
+        persistent: true,
+      })
+        .onOk(() => router.push("/login"))
+        .onCancel(() => {});
     }
   }
 );

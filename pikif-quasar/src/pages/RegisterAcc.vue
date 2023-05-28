@@ -147,6 +147,14 @@
               </h3>
             </div>
 
+            <div
+              class="mb-5 w-full bg-red-500 p-2 text-white font-semibold rounded"
+              v-if="duplicateEmail"
+              @click.prevent="closeDup"
+            >
+              <h3 class="text-sm">Email is already used</h3>
+            </div>
+
             <div class="mb-2 space-y-2 mt-14">
               <button
                 class="bg-primaryBtn mb-2 hover:bg-primaryHovBtn text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full h-14 transition-all ease-in-out"
@@ -196,6 +204,8 @@ export default {
     const password = ref("");
     const confirmPass = ref("");
 
+    const duplicateEmail = ref(false);
+
     const passErr = ref(false);
     const confirmModal = ref(false);
     const fieldsErr = ref(false);
@@ -204,6 +214,8 @@ export default {
     const errModals = [fieldsErr, err, passModal];
     const showAlert = ref(false);
     const passField = ref(0);
+
+    const closeDup = () => (duplicateEmail.value = false);
     const toggleField = () => {
       if (passField.value === 0) {
         passField.value = 1;
@@ -248,6 +260,7 @@ export default {
       }
       const emailCheck = await fetchSignInMethodsForEmail(auth, email.value);
       if (emailCheck.length) {
+        duplicateEmail.value = true;
         return;
       }
       const creds = {
@@ -300,6 +313,8 @@ export default {
       passField,
       typeField,
       toggleField,
+      duplicateEmail,
+      closeDup,
     };
   },
 };

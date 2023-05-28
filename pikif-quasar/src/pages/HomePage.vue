@@ -201,6 +201,7 @@
               <q-td key="id" :props="props" @row-click="viewRow" class="">
                 <q-toggle
                   v-model="props.row.status"
+                  :disable="ableToggle"
                   @update:model-value="
                     () => {
                       if (authLevel !== 'Partial-Update') {
@@ -333,6 +334,14 @@ export default {
 
     const getName = computed(() => {
       return firstName.value;
+    });
+
+    const ableToggle = computed(() => {
+      if (authLevel.value === "Partial-Update") {
+        return true;
+      } else {
+        return false;
+      }
     });
 
     const getStatusColor = (status) => {
@@ -686,6 +695,7 @@ export default {
       toggleAlert,
       textDetails,
       today,
+      ableToggle,
     };
   },
 };

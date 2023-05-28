@@ -88,14 +88,21 @@
 
             <div class="mb-5 space-y-2">
               <label class="block font-semibold" for="email">Password </label>
-
-              <input
-                class="shadow appearance-none border rounded h-14 py-2 px-3 w-full text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                name="email"
-                type="password"
-                placeholder="Enter Password"
-                v-model="password"
-              />
+              <div
+                class="flex flex-row shadow appearance-none border rounded h-14 py-2 px-3 w-full"
+              >
+                <input
+                  class="flex flex-1 h-full text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  name="email"
+                  :type="typeField"
+                  placeholder="Enter Password"
+                  v-model="password"
+                />
+                <q-icon
+                  class="flex h-full justify-center items-center las la-eye cursor-pointer"
+                  @click.prevent="toggleField"
+                ></q-icon>
+              </div>
             </div>
 
             <div
@@ -113,13 +120,21 @@
               <label class="block font-semibold" for="email"
                 >Confirm Password</label
               >
-              <input
-                class="shadow appearance-none border rounded h-14 py-2 px-3 w-full text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                name="email"
-                type="password"
-                placeholder="Re-enter Password"
-                v-model="confirmPass"
-              />
+              <div
+                class="flex flex-row shadow appearance-none border rounded h-14 py-2 px-3 w-full"
+              >
+                <input
+                  class="flex flex-1 h-full text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  name="email"
+                  :type="typeField"
+                  placeholder="Re-enter Password"
+                  v-model="confirmPass"
+                />
+                <q-icon
+                  class="flex h-full justify-center items-center las la-eye cursor-pointer"
+                  @click.prevent="toggleField"
+                ></q-icon>
+              </div>
             </div>
 
             <div
@@ -162,13 +177,15 @@
 
 <script>
 import { useRouter } from "vue-router";
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import { useStore } from "vuex";
 import { register } from "../services/services";
 import { auth } from "../firebase.js";
 import { fetchSignInMethodsForEmail } from "@firebase/auth";
+import AlertBox from "src/components/AlertBox.vue";
 
 export default {
+  components: { AlertBox },
   setup() {
     const router = useRouter();
     const store = useStore();
@@ -186,6 +203,22 @@ export default {
     const passModal = ref(false);
     const errModals = [fieldsErr, err, passModal];
     const showAlert = ref(false);
+    const passField = ref(0);
+    const toggleField = () => {
+      if (passField.value === 0) {
+        passField.value = 1;
+        return;
+      }
+      passField.value = 0;
+    };
+
+    const typeField = computed(() => {
+      if (passField.value === 0) {
+        return "password";
+      } else {
+        return "text";
+      }
+    });
 
     const textDetails = ref({
       type: 1,
@@ -267,6 +300,9 @@ export default {
       showAlert,
       toggleAlert,
       goLogin,
+      passField,
+      typeField,
+      toggleField,
     };
   },
 };

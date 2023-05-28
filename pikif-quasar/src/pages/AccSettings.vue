@@ -261,7 +261,6 @@ export default {
 
     const updateBasicInfo = async () => {
       if (userData.value.firstName != "" && userData.value.lastName != "") {
-        console.log(uid.value);
         await updateUserDetails(userData.value, uid.value);
         cancelEdit();
 

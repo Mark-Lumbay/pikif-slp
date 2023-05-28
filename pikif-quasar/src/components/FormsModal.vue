@@ -16,6 +16,7 @@
             <q-input
               dense
               autofocus
+              :type="returnType"
               @keyup.enter="prompt = false"
               :placeholder="formContents.placeholder1"
               v-model="text.currText"
@@ -30,6 +31,7 @@
             <q-input
               dense
               autofocus
+              :type="returnType"
               @keyup.enter="prompt = false"
               :placeholder="formContents.placeholder2"
               v-model="text.newText"
@@ -74,7 +76,7 @@
 </template>
 
 <script>
-import { ref, defineEmits, watch, onMounted } from "vue";
+import { ref, defineEmits, watch, onMounted, computed } from "vue";
 import { useStore } from "vuex";
 export default {
   emits: ["closeModal", "updateEmail", "updatePass"],
@@ -91,6 +93,7 @@ export default {
   },
   setup(props, { emit }) {
     const prompt = ref(false);
+    const fieldType = ref("text");
     const text = ref({
       currText: "",
       newText: "",
@@ -123,6 +126,7 @@ export default {
           formContents.value.text2 = "Your New Email";
           formContents.value.placeholder1 = "Enter current email";
           formContents.value.placeholder2 = "Enter new email";
+          fieldType.value = "text";
         }
         if (mode == 2) {
           formContents.value.headerText = "Change Your Password";
@@ -130,9 +134,14 @@ export default {
           formContents.value.text2 = "Your New Password";
           formContents.value.placeholder1 = "Enter current password";
           formContents.value.placeholder2 = "Enter new password";
+          fieldType.value = "password";
         }
       }
     );
+
+    const returnType = computed(() => {
+      return fieldType.value;
+    });
 
     const closeModal = () => emit("closeModal");
     const closeErr = () => (showErr.value = false);
@@ -162,6 +171,7 @@ export default {
       showErr,
       submitUpdate,
       closeErr,
+      returnType,
     };
   },
 };

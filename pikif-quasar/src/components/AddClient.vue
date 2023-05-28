@@ -907,7 +907,6 @@ export default {
     };
 
     const setupEditMode = () => {
-      console.log(authLevel.value);
 
       if (authLevel.value !== "Admin" && authLevel.value !== "Full-Update") {
         toggleAlert();

@@ -34,7 +34,6 @@ router.post("/addClientInfo", async (req, res) => {
     if (!clientInfo) res.status(400).send("Request Incomplete");
     res.status(200).send(clientId);
   } catch (err) {
-    console.log(err.message);
   }
 });
 

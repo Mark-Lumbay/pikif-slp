@@ -162,7 +162,6 @@ export default {
     // Variables
     const router = useRouter();
     const duplicate = ref(false);
-    console.log(props.clientInfo);
 
     const message = ref({
       messageType: "",
@@ -206,19 +205,16 @@ export default {
       } else {
         nextPage();
       }
-      console.log(data);
     };
 
     const saveInformantInfo = (info) => {
       data.informantInfo = info;
-      console.log(data);
 
       nextPage();
     };
 
     const saveClientFindings = (info) => {
       data.initialFindings.push(info);
-      console.log(data);
 
       addStudentInfo();
     };

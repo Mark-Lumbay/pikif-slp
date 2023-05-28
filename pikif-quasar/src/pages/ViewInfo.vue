@@ -130,17 +130,14 @@ export default {
 
     const saveUpdatedClientInfo = async (info) => {
       data.clientInfo = info;
-      console.log(data);
     };
 
     const saveUpdatedInformantInfo = (info) => {
       data.informantInfo = info;
-      console.log(data);
     };
 
     const saveUpdatedClientFindings = (info) => {
       data.initialFindings = info;
-      console.log(data);
     };
 
     const addNewFindings = async (info) => {
@@ -151,8 +148,6 @@ export default {
     const exportToPDFBasic = () => {
       const doc = new jsPDF("landscape");
       const headers = ["Client Name", "Findings"];
-
-      console.log("TEST");
 
       const data = [[exportObj.value.clientName, exportObj.value.findings]];
 

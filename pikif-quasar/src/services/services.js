@@ -3,7 +3,10 @@ import { useStore } from "vuex";
 import store from "../store";
 import { auth } from "../firebase.js";
 import { sendPasswordResetEmail } from "firebase/auth";
+import { Dialog } from "quasar";
+import { router } from "src/boot/router";
 
+let ctr = 0;
 const apiClient = axios.create({
   baseURL: "https://pikif-slp-production.up.railway.app/island-kids", // Replace with your API endpoint
 });
@@ -14,7 +17,15 @@ apiClient.interceptors.response.use(
   },
   (err) => {
     if (err.response.status === 401) {
-      window.location.href = "/login";
+      Dialog.create({
+        title: "Account Notice",
+        message:
+          " Your account has been disabled. Please contact an administrator if you think that this is a mistake",
+        cancel: true,
+        persistent: true,
+      })
+        .onOk(() => router.push("/login"))
+        .onCancel(() => {});
     }
   }
 );
@@ -97,7 +108,6 @@ export async function loadDashboard() {
     store2.dispatch("storeData", fullInfo);
     return basicInfo;
   } catch (err) {
-    console.log(`nag error yawa ${err}`);
     return { success: false, message: err.message };
   }
 }
@@ -145,7 +155,6 @@ export async function updateInfo(data, id) {
   const token = store.getters.getToken;
 
   const accInfo = store.getters.getBasicDetails;
-  console.log(accInfo);
   const payload = {
     accInfo,
     data,
@@ -233,7 +242,6 @@ export async function updateUserDetails(data, id) {
     });
     return { status: false, data: result.data.data.data };
   } catch (err) {
-    console.log(err);
     return { status: false, data: err };
   }
 }
@@ -262,7 +270,6 @@ export async function updateUserPassword(passData, id) {
         authorization: `Bearer ${token}`,
       },
     });
-    console.log(`Result is ${result}`);
     return true;
   } catch (err) {
     return false;
@@ -287,9 +294,7 @@ export async function getUserAuth(id) {
 export async function resetPass(email) {
   try {
     await sendPasswordResetEmail(auth, email);
-  } catch (err) {
-    console.log(err.message);
-  }
+  } catch (err) {}
 }
 
 export async function getAudit() {

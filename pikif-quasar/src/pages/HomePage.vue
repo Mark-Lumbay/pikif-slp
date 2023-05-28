@@ -201,6 +201,7 @@
               <q-td key="id" :props="props" @row-click="viewRow" class="">
                 <q-toggle
                   v-model="props.row.status"
+                  :disable="ableToggle"
                   @update:model-value="
                     () => {
                       if (authLevel !== 'Partial-Update') {
@@ -319,8 +320,6 @@ export default {
       () => nameHolder.value,
       (username) => {
         firstName.value = username;
-        console.log(username);
-        console.log(firstName.value);
       }
     );
 
@@ -333,6 +332,14 @@ export default {
 
     const getName = computed(() => {
       return firstName.value;
+    });
+
+    const ableToggle = computed(() => {
+      if (authLevel.value === "Partial-Update") {
+        return true;
+      } else {
+        return false;
+      }
     });
 
     const getStatusColor = (status) => {
@@ -472,10 +479,7 @@ export default {
     const changeStatus = async (id) => {
       try {
         const req = await toggleActive(id);
-        console.log(req);
-      } catch (err) {
-        console.log(err);
-      }
+      } catch (err) {}
     };
 
     function searchStudent() {
@@ -510,9 +514,7 @@ export default {
       });
     }
 
-    const toggleStatus = (docID) => {
-      console.log(docID);
-    };
+    const toggleStatus = (docID) => {};
 
     function filterTable(isSearch = false) {
       if (isSearch == true) {
@@ -686,6 +688,7 @@ export default {
       toggleAlert,
       textDetails,
       today,
+      ableToggle,
     };
   },
 };

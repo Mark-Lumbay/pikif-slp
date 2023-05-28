@@ -31,13 +31,21 @@
 
             <div class="mb-2 space-y-2">
               <label class="block font-semibold" for="email">Password</label>
-              <input
-                class="shadow appearance-none border rounded h-14 py-2 px-3 w-full text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                name="email"
-                type="password"
-                placeholder="Enter Password"
-                v-model="password"
-              />
+              <div
+                class="flex flex-row shadow appearance-none border rounded h-14 py-2 px-3 w-full"
+              >
+                <input
+                  class="flex flex-1 h-full text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  name="email"
+                  :type="typeField"
+                  placeholder="Enter Password"
+                  v-model="password"
+                />
+                <q-icon
+                  class="flex h-full justify-center items-center las la-eye cursor-pointer"
+                  @click.prevent="toggleField"
+                ></q-icon>
+              </div>
             </div>
 
             <div
@@ -89,7 +97,7 @@
 </template>
 
 <script>
-import { ref, onMounted, watch } from "vue";
+import { ref, onMounted, watch, computed } from "vue";
 import { useRouter } from "vue-router";
 import { useStore } from "vuex";
 import { resetPass } from "../services/services";
@@ -109,6 +117,7 @@ export default {
     const incorrect = ref(false);
     const resetModal = ref(false);
     const authErr = ref(false);
+    const passField = ref(0);
 
     const inactiveAlert = ref(false);
     const inactiveMsg = ref({
@@ -118,16 +127,25 @@ export default {
         "Your account was deactivated. Please contact an administrator if you think this is a mistake.",
     });
 
-    // onMounted(() => {
-    //   authErr.value = store.getters.getAuthErr;
-    //   console.log(authErr.value);
-    // });
+    const toggleField = () => {
+      if (passField.value === 0) {
+        passField.value = 1;
+        return;
+      }
+      passField.value = 0;
+    };
+
+    const typeField = computed(() => {
+      if (passField.value === 0) {
+        return "password";
+      } else {
+        return "text";
+      }
+    });
 
     watch(
       () => authErr.value,
-      (auth) => {
-        console.log(auth);
-      }
+      (auth) => {}
     );
 
     const toggleInactive = () => (inactiveAlert.value = !inactiveAlert.value);
@@ -142,7 +160,7 @@ export default {
 
         if (loginReq.status) {
           if (!loginReq.active) {
-            inactiveAlert.value = true;
+            // inactiveAlert.value = true;
             return;
           } else {
             router.push("/");
@@ -162,9 +180,7 @@ export default {
     const forgetPass = async (email) => {
       try {
         await resetPass(email);
-      } catch (err) {
-        console.log(err.message);
-      }
+      } catch (err) {}
     };
 
     return {
@@ -181,6 +197,8 @@ export default {
       inactiveAlert,
       toggleInactive,
       inactiveMsg,
+      toggleField,
+      typeField,
     };
   },
 };

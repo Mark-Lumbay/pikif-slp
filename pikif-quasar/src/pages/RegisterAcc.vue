@@ -88,14 +88,21 @@
 
             <div class="mb-5 space-y-2">
               <label class="block font-semibold" for="email">Password </label>
-
-              <input
-                class="shadow appearance-none border rounded h-14 py-2 px-3 w-full text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                name="email"
-                type="password"
-                placeholder="Enter Password"
-                v-model="password"
-              />
+              <div
+                class="flex flex-row shadow appearance-none border rounded h-14 py-2 px-3 w-full"
+              >
+                <input
+                  class="flex flex-1 h-full text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  name="email"
+                  :type="typeField"
+                  placeholder="Enter Password"
+                  v-model="password"
+                />
+                <q-icon
+                  class="flex h-full justify-center items-center las la-eye cursor-pointer"
+                  @click.prevent="toggleField"
+                ></q-icon>
+              </div>
             </div>
 
             <div
@@ -113,13 +120,21 @@
               <label class="block font-semibold" for="email"
                 >Confirm Password</label
               >
-              <input
-                class="shadow appearance-none border rounded h-14 py-2 px-3 w-full text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                name="email"
-                type="password"
-                placeholder="Re-enter Password"
-                v-model="confirmPass"
-              />
+              <div
+                class="flex flex-row shadow appearance-none border rounded h-14 py-2 px-3 w-full"
+              >
+                <input
+                  class="flex flex-1 h-full text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  name="email"
+                  :type="typeField"
+                  placeholder="Re-enter Password"
+                  v-model="confirmPass"
+                />
+                <q-icon
+                  class="flex h-full justify-center items-center las la-eye cursor-pointer"
+                  @click.prevent="toggleField"
+                ></q-icon>
+              </div>
             </div>
 
             <div
@@ -130,6 +145,14 @@
               <h3 class="text-sm">
                 Password does not match confirmation field
               </h3>
+            </div>
+
+            <div
+              class="mb-5 w-full bg-red-500 p-2 text-white font-semibold rounded"
+              v-if="duplicateEmail"
+              @click.prevent="closeDup"
+            >
+              <h3 class="text-sm">Email is already used</h3>
             </div>
 
             <div class="mb-2 space-y-2 mt-14">
@@ -162,13 +185,15 @@
 
 <script>
 import { useRouter } from "vue-router";
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import { useStore } from "vuex";
 import { register } from "../services/services";
 import { auth } from "../firebase.js";
 import { fetchSignInMethodsForEmail } from "@firebase/auth";
+import AlertBox from "src/components/AlertBox.vue";
 
 export default {
+  components: { AlertBox },
   setup() {
     const router = useRouter();
     const store = useStore();
@@ -179,6 +204,8 @@ export default {
     const password = ref("");
     const confirmPass = ref("");
 
+    const duplicateEmail = ref(false);
+
     const passErr = ref(false);
     const confirmModal = ref(false);
     const fieldsErr = ref(false);
@@ -186,6 +213,24 @@ export default {
     const passModal = ref(false);
     const errModals = [fieldsErr, err, passModal];
     const showAlert = ref(false);
+    const passField = ref(0);
+
+    const closeDup = () => (duplicateEmail.value = false);
+    const toggleField = () => {
+      if (passField.value === 0) {
+        passField.value = 1;
+        return;
+      }
+      passField.value = 0;
+    };
+
+    const typeField = computed(() => {
+      if (passField.value === 0) {
+        return "password";
+      } else {
+        return "text";
+      }
+    });
 
     const textDetails = ref({
       type: 1,
@@ -215,7 +260,7 @@ export default {
       }
       const emailCheck = await fetchSignInMethodsForEmail(auth, email.value);
       if (emailCheck.length) {
-        console.log("Email exists");
+        duplicateEmail.value = true;
         return;
       }
       const creds = {
@@ -228,10 +273,8 @@ export default {
 
       const regReq = await register(creds);
       if (regReq.success) {
-        console.log("Success");
         confirmModal.value = true;
       } else {
-        console.log(`Internal Server Error ${regReq.message}`);
       }
     };
     const clearErr = () => {
@@ -267,6 +310,11 @@ export default {
       showAlert,
       toggleAlert,
       goLogin,
+      passField,
+      typeField,
+      toggleField,
+      duplicateEmail,
+      closeDup,
     };
   },
 };

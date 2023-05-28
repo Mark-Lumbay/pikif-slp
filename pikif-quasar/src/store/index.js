@@ -129,16 +129,21 @@ const store = createStore({
           email,
           password
         );
+
         if (response) {
           const token = await response.user.getIdToken(true);
+          console.log(token);
+
+          context.commit("setUserToken", token);
+
           const status = await getUserStatus(response.user.uid);
+          console.log(status);
           if (!status.data) return { status: true, active: false };
 
           const authLevel = await getUserAuth(response.user.uid);
 
           console.log(status.data);
 
-          context.commit("setUserToken", token);
           context.commit("setUserActive", status.data);
           context.commit("setAuth", authLevel.data.auth);
 
@@ -204,6 +209,8 @@ auth.onAuthStateChanged(async (newUser) => {
   try {
     const user = await newUser.getIdTokenResult();
     const token = await newUser.getIdToken(true);
+    store.commit("setUserToken", token);
+
     const authLevel = await getUserAuth(user.claims.user_id);
     const status = await getUserStatus(user.claims.user_id);
     const fName = user.claims.firstName;
@@ -218,7 +225,6 @@ auth.onAuthStateChanged(async (newUser) => {
     };
 
     store.commit("setUser", details);
-    store.commit("setUserToken", token);
     store.commit("setAuth", authLevel.data.auth);
   } catch (err) {
     console.log(err);

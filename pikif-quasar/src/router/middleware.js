@@ -1,38 +1,3 @@
-// import store from "../store";
-// import { auth } from "../firebase.js";
-
-// let user = store.getters.getState;
-
-// function getAuthState() {
-//   return new Promise((resolve) => {
-//     auth.onAuthStateChanged((newUser) => {
-//       resolve(newUser.getIdTokenResult());
-//     });
-//   });
-// }
-
-// async function runCheck() {
-//   user = await getAuthState();
-//   const userDetails = {
-//     fName: user.claims.firstName,
-//     lName: user.claims.lastName,
-//     user: user,
-//     email: user.claims.email,
-//     uid: user.claims.user_id,
-//   };
-
-//   console.log(user);
-//   store.dispatch("storeUser", userDetails);
-// }
-
-// export default async function middleware(to, from, next) {
-//   await runCheck();
-//   if (to.meta.requiresAuth && !user) {
-//     return next("/login");
-//   } else {
-//     return next();
-//   }
-// }
 import store from "../store";
 import { auth } from "../firebase.js";
 import { getUserAuth } from "src/services/services.js";
@@ -60,6 +25,9 @@ async function runCheck() {
     user = await getAuthState();
   } else {
     const status = await getUserStatus(user.claims.user_id);
+    const token = user.token;
+    store.dispatch("storeUserToken", token);
+
     const userDetails = {
       fName: user.claims.firstName,
       lName: user.claims.lastName,
@@ -69,10 +37,7 @@ async function runCheck() {
       isActive: status.data,
     };
 
-    const token = user.token;
-
     store.dispatch("storeUser", userDetails);
-    store.dispatch("storeUserToken", token);
 
     const authLevel = await getUserAuth(userDetails.uid);
     store.dispatch("storeAuthLevel", authLevel.data.auth);
@@ -80,17 +45,6 @@ async function runCheck() {
 }
 
 export default async function middleware(to, from, next) {
-  // apiClient.interceptors.response.use(
-  //   (response) => {
-  //     return;
-  //   },
-  //   (err) => {
-  //     if (err.response.status === 401) {
-  //       router.push("/login");
-  //     }
-  //   }
-  // );
-
   if (!to.meta.requiresAuth) {
     return next();
   } else {

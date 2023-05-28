@@ -135,9 +135,11 @@ const store = createStore({
           console.log(token);
 
           context.commit("setUserToken", token);
+          let status = await getUserStatus(response.user.uid);
 
-          const status = await getUserStatus(response.user.uid);
-          console.log(status);
+          while (status === null) {
+            status = await getUserStatus(response.user.uid);
+          }
           if (!status.data) return { status: true, active: false };
 
           const authLevel = await getUserAuth(response.user.uid);

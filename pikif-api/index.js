@@ -18,7 +18,7 @@ app.use(async (req, res, next) => {
   const header = req.headers.authorization;
   const excludedEndpointPattern = /^\/getActiveStatus\/\d+$/; // Matches /getActiveStatus/:id where :id is a number
 
-  const excluded = excludedEndpointPattern.test(req.originalUrl);
+  const excluded = excludedEndpointPattern.test(req.path);
   console.log(excluded);
 
   if (

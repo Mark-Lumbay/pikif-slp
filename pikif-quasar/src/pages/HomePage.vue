@@ -320,8 +320,6 @@ export default {
       () => nameHolder.value,
       (username) => {
         firstName.value = username;
-        console.log(username);
-        console.log(firstName.value);
       }
     );
 
@@ -481,10 +479,7 @@ export default {
     const changeStatus = async (id) => {
       try {
         const req = await toggleActive(id);
-        console.log(req);
-      } catch (err) {
-        console.log(err);
-      }
+      } catch (err) {}
     };
 
     function searchStudent() {
@@ -519,9 +514,7 @@ export default {
       });
     }
 
-    const toggleStatus = (docID) => {
-      console.log(docID);
-    };
+    const toggleStatus = (docID) => {};
 
     function filterTable(isSearch = false) {
       if (isSearch == true) {

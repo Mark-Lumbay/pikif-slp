@@ -88,7 +88,6 @@ export default {
     ];
 
     const changeAccStatus = async (newStatus, id) => {
-      console.log(newStatus);
       await updateStatus(newStatus, id);
     };
 
@@ -98,7 +97,6 @@ export default {
 
     onMounted(async () => {
       rows.value = await getAccessLvl();
-      console.log(rows.value);
     });
 
     return {

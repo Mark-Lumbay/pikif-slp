@@ -132,7 +132,6 @@ const store = createStore({
 
         if (response) {
           const token = await response.user.getIdToken(true);
-          console.log(token);
 
           context.commit("setUserToken", token);
           let status = await getUserStatus(response.user.uid);
@@ -143,8 +142,6 @@ const store = createStore({
           if (!status.data) return { status: true, active: false };
 
           const authLevel = await getUserAuth(response.user.uid);
-
-          console.log(status.data);
 
           context.commit("setUserActive", status.data);
           context.commit("setAuth", authLevel.data.auth);
@@ -192,7 +189,6 @@ const store = createStore({
 
     getYourAuth(context, id) {
       const auth_level = this.getters.getAuthLevel;
-      console.log(auth_level);
       return auth_level;
     },
 
@@ -229,7 +225,6 @@ auth.onAuthStateChanged(async (newUser) => {
     store.commit("setUser", details);
     store.commit("setAuth", authLevel.data.auth);
   } catch (err) {
-    console.log(err);
     return err;
   }
 });

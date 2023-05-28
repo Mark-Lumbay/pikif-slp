@@ -248,7 +248,6 @@ export default {
       }
       const emailCheck = await fetchSignInMethodsForEmail(auth, email.value);
       if (emailCheck.length) {
-        console.log("Email exists");
         return;
       }
       const creds = {
@@ -261,10 +260,8 @@ export default {
 
       const regReq = await register(creds);
       if (regReq.success) {
-        console.log("Success");
         confirmModal.value = true;
       } else {
-        console.log(`Internal Server Error ${regReq.message}`);
       }
     };
     const clearErr = () => {

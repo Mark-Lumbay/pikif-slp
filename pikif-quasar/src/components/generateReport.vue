@@ -234,7 +234,6 @@ export default {
       () => props.openModal,
       (state) => {
         prompt.value = state;
-        console.log(prompt.value);
       }
     );
 

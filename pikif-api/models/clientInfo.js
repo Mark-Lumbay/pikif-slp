@@ -15,7 +15,6 @@ class ClientModel {
     try {
       await firestore().collection("auditLog").add(auditReport);
     } catch (err) {
-      console.log(err);
     }
   }
 
@@ -130,7 +129,6 @@ class ClientModel {
     });
 
     if (validate.error) {
-      console.log(validate.error.details[0].message);
       return false;
     }
 
@@ -282,7 +280,6 @@ class ClientModel {
       const updateReq = await docRef.set(updatePayload);
       return updateReq;
     } catch (error) {
-      console.error(error);
       return { status: false, message: "Internal Server Error" };
     }
   }

@@ -19,7 +19,6 @@ app.use(async (req, res, next) => {
   const excludedEndpointPattern = /^\/getActiveStatus\/\d+$/; // Matches /getActiveStatus/:id where :id is a number
 
   const excluded = excludedEndpointPattern.test(req.path);
-  console.log(excluded);
 
   if (
     req.path === "/island-kids/login" ||
@@ -67,9 +66,7 @@ app.use(async (req, res, next) => {
   }
 });
 
-app.listen(port, () => {
-  console.log(`Listening on url http://localhost${port}`);
-});
+app.listen(port, () => {});
 
 app.use("/island-kids", path);
 

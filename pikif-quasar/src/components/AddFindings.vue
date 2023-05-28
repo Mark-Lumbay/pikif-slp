@@ -371,7 +371,6 @@ export default {
       ) {
         lackingErr.value = true;
       } else {
-        console.log("TEST");
         emit("newClientFindings", newClientFindings.value);
       }
 
@@ -400,6 +399,7 @@ export default {
       updateMode.value = false;
       editMode.value = false;
       iterateMode.value = true;
+      addNewFindingsMode.value = false;
     };
 
     const setupEditMode = () => {

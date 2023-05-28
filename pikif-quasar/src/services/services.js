@@ -108,7 +108,6 @@ export async function loadDashboard() {
     store2.dispatch("storeData", fullInfo);
     return basicInfo;
   } catch (err) {
-    console.log(`nag error yawa ${err}`);
     return { success: false, message: err.message };
   }
 }
@@ -156,7 +155,6 @@ export async function updateInfo(data, id) {
   const token = store.getters.getToken;
 
   const accInfo = store.getters.getBasicDetails;
-  console.log(accInfo);
   const payload = {
     accInfo,
     data,
@@ -244,7 +242,6 @@ export async function updateUserDetails(data, id) {
     });
     return { status: false, data: result.data.data.data };
   } catch (err) {
-    console.log(err);
     return { status: false, data: err };
   }
 }
@@ -273,7 +270,6 @@ export async function updateUserPassword(passData, id) {
         authorization: `Bearer ${token}`,
       },
     });
-    console.log(`Result is ${result}`);
     return true;
   } catch (err) {
     return false;
@@ -298,9 +294,7 @@ export async function getUserAuth(id) {
 export async function resetPass(email) {
   try {
     await sendPasswordResetEmail(auth, email);
-  } catch (err) {
-    console.log(err.message);
-  }
+  } catch (err) {}
 }
 
 export async function getAudit() {

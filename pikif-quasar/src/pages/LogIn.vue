@@ -143,16 +143,9 @@ export default {
       }
     });
 
-    // onMounted(() => {
-    //   authErr.value = store.getters.getAuthErr;
-    //   console.log(authErr.value);
-    // });
-
     watch(
       () => authErr.value,
-      (auth) => {
-        console.log(auth);
-      }
+      (auth) => {}
     );
 
     const toggleInactive = () => (inactiveAlert.value = !inactiveAlert.value);
@@ -166,9 +159,7 @@ export default {
         });
 
         if (loginReq.status) {
-          console.log(loginReq);
           if (!loginReq.active) {
-            console.log(loginReq.active);
             // inactiveAlert.value = true;
             return;
           } else {
@@ -189,9 +180,7 @@ export default {
     const forgetPass = async (email) => {
       try {
         await resetPass(email);
-      } catch (err) {
-        console.log(err.message);
-      }
+      } catch (err) {}
     };
 
     return {

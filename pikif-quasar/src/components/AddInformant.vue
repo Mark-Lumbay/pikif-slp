@@ -821,8 +821,6 @@ export default {
         exportObj.value.assistance =
           informantPersonalInfo.value.informantInfo.assistance;
 
-        console.log(exportObj.value);
-
         // 1. Get probs from object and store in array
         for (const key in informantPersonalInfo.value.informantInfo.probs) {
           probs.push(informantPersonalInfo.value.informantInfo.probs[key]);
@@ -1117,7 +1115,6 @@ export default {
             informantPersonalInfo.value.informantInfo[field] === "" ||
             typeof informantPersonalInfo.value.informantInfo[field] === "number"
           ) {
-            console.log(field);
             return false;
           }
         }
@@ -1135,8 +1132,6 @@ export default {
           if (
             informantPersonalInfo.value.informantInfo[property].trim() === " "
           ) {
-            console.log("OTEN");
-
             lackingErr.value = true;
             return;
           }
@@ -1148,7 +1143,6 @@ export default {
       );
 
       if (othersCheckbox && !othersCheckbox.checked) {
-        console.log("TEST");
         informantPersonalInfo.value.informantInfo.probsOthers = "";
       } else {
         if (
@@ -1186,9 +1180,6 @@ export default {
           const newObj = JSON.stringify(
             informantPersonalInfo.value.informantInfo
           );
-
-          console.log(origObj);
-          console.log(newObj);
 
           if (origObj !== newObj) {
             emit(

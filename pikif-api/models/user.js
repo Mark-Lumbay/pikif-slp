@@ -89,7 +89,6 @@ class userModel {
     });
 
     if (validate.error) {
-      console.log(validate.error.details[0].message);
       return false;
     }
 

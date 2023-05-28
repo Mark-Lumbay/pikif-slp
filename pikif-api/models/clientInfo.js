@@ -14,8 +14,7 @@ class ClientModel {
 
     try {
       await firestore().collection("auditLog").add(auditReport);
-    } catch (err) {
-    }
+    } catch (err) {}
   }
 
   async addClientInfo(collectionName, data, userData) {

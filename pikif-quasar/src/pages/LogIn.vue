@@ -169,7 +169,7 @@ export default {
           console.log(loginReq);
           if (!loginReq.active) {
             console.log(loginReq.active);
-            inactiveAlert.value = true;
+            // inactiveAlert.value = true;
             return;
           } else {
             router.push("/");

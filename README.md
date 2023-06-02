@@ -37,3 +37,8 @@ https://pikif-3470c.web.app/
 - Axios
 - Express JS
 - Node JS
+
+## Folder Structure
+- pikif-api: This folder contains the backend/server side code for the system
+- pikifi-app: This code is depracated and is not used in the system. This was the old code for the frontend.
+- pikif-quasar: This contains the currently used code for the front-end of the system.

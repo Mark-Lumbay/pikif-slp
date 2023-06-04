@@ -16,18 +16,24 @@ app.use(json());
 app.use(cors());
 app.use(async (req, res, next) => {
   const header = req.headers.authorization;
-  const excludedEndpointPattern = /^\/getActiveStatus\/\d+$/; // Matches /getActiveStatus/:id where :id is a number
+  const excludedRoutes = [
+    "/island-kids/loadDashboard",
+    "/island-kids/getUserDetails",
+    "/island-kids/getUserAuth",
+    "/island-kids/loadAuditLog",
+    "/island-kids/loadAccessLvl",
+    "/island-kids/getActiveStatus",
+    "/island-kids/login",
+    "/island-kids/register",
+    "/island-kids/system-message",
+  ];
 
-  const excluded = excludedEndpointPattern.test(req.path);
-
-  if (
-    req.path === "/island-kids/login" ||
-    req.path === "/island-kids/register" ||
-    req.path === "/island-kids/system-message" ||
-    excluded
-  ) {
-    return next();
+  for (const route of excludedRoutes) {
+    if (req.path.startsWith(route)) {
+      return next();
+    }
   }
+
   if (header) {
     try {
       const token = header.split("Bearer ")[1];

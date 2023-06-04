@@ -8,7 +8,7 @@ import { router } from "src/boot/router";
 
 let ctr = 0;
 const apiClient = axios.create({
-  baseURL: "https://pikif-slp-production.up.railway.app/island-kids", // Replace with your API endpoint
+  baseURL: "https://pikif-slp-production.up.railway.app/island-kids",
 });
 
 apiClient.interceptors.response.use(

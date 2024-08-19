@@ -8,7 +8,8 @@ import { router } from "src/boot/router";
 
 let ctr = 0;
 const apiClient = axios.create({
-  baseURL: "https://pikif-slp-production.up.railway.app/island-kids",
+  baseURL: "http://localhost:8080/island-kids",
+  // baseURL: "https://pikif-slp-production.up.railway.app/island-kids",
 });
 
 apiClient.interceptors.response.use(
